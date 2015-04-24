@@ -9,9 +9,15 @@ Controllers.Users = (function () {
 			throw new Meteor.Error(500, 'Invalid input!');
 		}
 
-		// TODO: Ensure first users is admin.
+		if (!Meteor.users.findOne()) {
+			user.isAdmin = true;
+		}
 
-		// TODO: Ensure no duplicate users names / emails.
+		if (!user.isAdmin) {
+			if (Meteor.users.findOne({'emails.0.address': options.email})) {
+				throw new Meteor.Error(500, 'Email already exists');
+			}
+		}
 
 		return user;
 	}
