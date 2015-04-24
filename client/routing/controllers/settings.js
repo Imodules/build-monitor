@@ -3,7 +3,7 @@
  */
 
 'use strict';
-Controllers.Route.Setup = Controllers.Route.Base.extend({
+Controllers.Route.Settings = Controllers.Route.Base.extend({
 	onBeforeAction: function () {
 		this.next();
 	},
@@ -17,6 +17,6 @@ Controllers.Route.Setup = Controllers.Route.Base.extend({
 	},
 
 	action: function () {
-		this.render('setup');
+		this.render('settings');
 	}
 });
