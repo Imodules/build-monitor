@@ -7,15 +7,35 @@ Controllers.Settings = (function () {
 	/**
 	 * @return {boolean}
 	 */
-	function CreateSite(tcUrl) {
+	function UpdateSettings(tcUrl, uname, pword) {
 		if (!tcUrl) {
 			throw new Meteor.Error(500, 'Missing url');
 		}
 
-		return true;
+		var user = (s.isBlank(uname) ? false : uname),
+				password = (s.isBlank(pword) ? false : pword);
+
+		var settings = Collections.Settings.findOne();
+		if (!settings) {
+			return Collections.Settings.insert({
+				teamCity: {
+					url: tcUrl,
+					user: user,
+					password: password
+				}
+			});
+		}
+
+		return Collections.Settings.update({_id: settings._id}, {$set: {
+			teamCity: {
+				url: tcUrl,
+				user: user,
+				password: password
+			}
+		}});
 	}
 
 	return {
-		onCreateSite: CreateSite
+		onUpdateSettings: UpdateSettings
 	};
 })();

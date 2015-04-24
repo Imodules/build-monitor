@@ -44,9 +44,3 @@ AccountsTemplates.configure({
 		}
 	}
 });
-
-AccountsTemplates.configureRoute('signIn', {
-	name: 'signin',
-	path: '/login',
-	template: 'login'
-});

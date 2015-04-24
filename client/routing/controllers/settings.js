@@ -5,6 +5,9 @@
 'use strict';
 Controllers.Route.Settings = Controllers.Route.Base.extend({
 	onBeforeAction: function () {
+		if (!Meteor.user().isAdmin) {
+			Router.go('/profile');
+		}
 		this.next();
 	},
 
@@ -13,7 +16,7 @@ Controllers.Route.Settings = Controllers.Route.Base.extend({
 	},
 
 	data: function () {
-
+		return Collections.Settings.findOne();
 	},
 
 	action: function () {

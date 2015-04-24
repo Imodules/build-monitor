@@ -5,6 +5,9 @@
 'use strict';
 Controllers.Route.Configure = Controllers.Route.Base.extend({
 	onBeforeAction: function () {
+		if (!Meteor.user().isAdmin) {
+			Router.go('/profile');
+		}
 		this.next();
 	},
 

@@ -7085,7 +7085,7 @@ var packageMetadata = {
                 },
                 "version": {
                   "type": "constant",
-                  "value": "c19176e26e9844d34587711d4a5f88b1955ebb65"
+                  "value": "f0373dc7eb33014956d2350717adaee4480ecbd2"
                 },
                 "PUBLIC_SETTINGS": {
                   "type": "undefined"
@@ -7852,7 +7852,7 @@ var packageMetadata = {
       "members": {
         "autoupdateVersion": {
           "type": "constant",
-          "value": "fbeee66f3a4aeaf8b4a4df512d7c26a442e79535"
+          "value": "630fb5940d60381e3f81e50beeb9279f81546717"
         },
         "autoupdateVersionRefreshable": {
           "type": "constant",
@@ -19874,6 +19874,7 @@ var packageMetadata = {
   "accounts-ui": {},
   "underscorestring:underscore.string": {},
   "zimme:iron-router-active": {},
+  "duongthienduc:meteor-bootstrap-growl": {},
   "session": {},
   "livedata": {
     "DDP": {

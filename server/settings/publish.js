@@ -4,6 +4,11 @@
 
 'use strict';
 Meteor.publish('settings', function () {
-	// TODO: Make sure admin.
+	var user = Meteor.users.findOne({_id: this.userId},{fields: {isAdmin: 1}});
+
+	if (!user || !user.isAdmin) {
+		return this.ready();
+	}
+
 	return Collections.Settings.find({});
 });

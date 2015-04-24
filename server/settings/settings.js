@@ -17,5 +17,5 @@ Collections.Settings.allow({
 });
 
 Meteor.methods({
-	createSite: Controllers.Settings.onCreateSite
+	updateSettings: Controllers.Settings.onUpdateSettings
 });
