@@ -11,22 +11,10 @@ Router.configure({
 	layoutTemplate: 'blankLayout'
 });
 
-Router.route('/', { name: 'home', controller: Controllers.Route.Home });
+Router.plugin('ensureSignedIn');
 
-Controllers.Route.Home = Controllers.Route.Base.extend({
-	onBeforeAction: function () {
-		this.next();
-	},
+Router.route('/', { name: 'dashboard', controller: Controllers.Route.Dashboard });
+Router.route('/setup', { name: 'setup', controller: Controllers.Route.Setup });
 
-	waitOn: function () {
-
-	},
-
-	data: function () {
-
-	},
-
-	action: function () {
-		this.render('home');
-	}
-});
+Router.route('/login', { name: 'login', controller: Controllers.Route.Login });
+Router.route('/configure', { name: 'configure', controller: Controllers.Route.Configure });

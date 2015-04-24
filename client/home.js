@@ -4,11 +4,5 @@
 
 'use strict';
 Template.home.helpers({
-	hooks: function () {
-		return Collections.Hooks.find({});
-	}
-});
 
-Template.registerHelper('jsonify', function(json) {
-	return JSON.stringify(json);
 });

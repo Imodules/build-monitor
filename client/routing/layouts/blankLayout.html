@@ -1,3 +1,23 @@
 <template name="blankLayout">
-	{{> yield}}
+	<div class="container-fluid">
+		<div class="row" style="margin-bottom: 20px;">
+			<div class="col-xs-12">
+				<a href="{{pathFor route='dashboard'}}" class="btn btn-default"><i class="fa fa-dashboard"></i> Dashboard</a>
+			</div>
+		</div>
+		<div class="row" style="margin-bottom: 10px;">
+			<div class="col-xs-12">
+				<ul class="nav nav-tabs">
+					<li role="presentation" class="{{isActiveRoute regex='^setup$'}}"><a href="{{pathFor route='setup'}}">Setup</a></li>
+					<li role="presentation" class="{{isActiveRoute regex='^configure'}}"><a href="{{pathFor route='configure'}}">Configure</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				{{> yield}}
+			</div>
+		</div>
+	</div>
 </template>

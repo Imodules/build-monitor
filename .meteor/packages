@@ -5,6 +5,14 @@
 # but you can also edit it by hand.
 
 meteor-platform
-autopublish
-insecure
 iron:router
+velocity:html-reporter
+pstuart2:velocity-notify
+sanjo:jasmine
+less
+accounts-password
+twbs:bootstrap
+useraccounts:bootstrap
+fortawesome:fontawesome
+accounts-ui
+zimme:iron-router-active
