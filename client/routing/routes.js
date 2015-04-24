@@ -17,4 +17,5 @@ Router.route('/', { name: 'dashboard', controller: Controllers.Route.Dashboard }
 Router.route('/setup', { name: 'setup', controller: Controllers.Route.Setup });
 
 Router.route('/login', { name: 'login', controller: Controllers.Route.Login });
+Router.route('/profile', { name: 'profile', controller: Controllers.Route.Profile });
 Router.route('/configure', { name: 'configure', controller: Controllers.Route.Configure });

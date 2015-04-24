@@ -11,13 +11,9 @@ describe('Controllers.Users', function () {
 			}).toThrow();
 		});
 
-		it('should throw if username or email is not passed in options', function () {
+		it('should throw if email is not passed in options', function () {
 			expect(function () {
 				Controllers.Users.onCreateUser({username: 'user'}, {});
-			}).toThrow();
-
-			expect(function () {
-				Controllers.Users.onCreateUser({email: 'user@example.com'}, {});
 			}).toThrow();
 		});
 	});
