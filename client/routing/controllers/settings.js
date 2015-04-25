@@ -16,7 +16,9 @@ Controllers.Route.Settings = Controllers.Route.Base.extend({
 	},
 
 	data: function () {
-		return Collections.Settings.findOne();
+		return {
+			settings: Collections.Settings.find()
+		}
 	},
 
 	action: function () {
