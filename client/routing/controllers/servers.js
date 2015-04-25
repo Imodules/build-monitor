@@ -17,7 +17,7 @@ Controllers.Route.Servers = Controllers.Route.Base.extend({
 
 	data: function () {
 		return {
-			settings: Collections.Servers.find()
+			servers: Collections.Servers.find()
 		}
 	},
 

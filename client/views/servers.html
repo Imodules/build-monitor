@@ -12,13 +12,26 @@
 			</div>
 		</div>
 	</form>
-	{{#each settings}}
-		<div id="set_{{_id}}" class="row setting">
-			<div class="col-xs-12">
-				{{name}}
-			</div>
-		</div>
-	{{/each}}
+	<table id="serverList" class="table table-striped">
+		<thead>
+			<tr>
+				<th>Type</th>
+				<th>Name</th>
+				<th>Url</th>
+				<th>Username</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each servers}}
+				<tr>
+					<td>{{type}}</td>
+					<td>{{name}}</td>
+					<td>{{url}}</td>
+					<td>{{user}}</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
 </template>
 
 <template name="serverInput">
