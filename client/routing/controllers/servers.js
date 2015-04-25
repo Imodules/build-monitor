@@ -3,7 +3,7 @@
  */
 
 'use strict';
-Controllers.Route.Settings = Controllers.Route.Base.extend({
+Controllers.Route.Servers = Controllers.Route.Base.extend({
 	onBeforeAction: function () {
 		if (!Meteor.user().isAdmin) {
 			Router.go('/profile');
@@ -12,16 +12,16 @@ Controllers.Route.Settings = Controllers.Route.Base.extend({
 	},
 
 	waitOn: function () {
-		return Meteor.subscribe('settings');
+		return Meteor.subscribe('servers');
 	},
 
 	data: function () {
 		return {
-			settings: Collections.Settings.find()
+			settings: Collections.Servers.find()
 		}
 	},
 
 	action: function () {
-		this.render('settings');
+		this.render('servers');
 	}
 });

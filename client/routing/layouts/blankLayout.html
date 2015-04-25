@@ -10,8 +10,8 @@
 			<div class="col-xs-12">
 				<ul class="nav nav-tabs">
 					{{#if currentUser.isAdmin}}
-					<li role="presentation" class="{{isActiveRoute regex='^settings$'}}">
-						<a href="{{pathFor route='settings'}}"><i class="fa fa-cogs"></i> Settings</a>
+					<li role="presentation" class="{{isActiveRoute regex='^servers$'}}">
+						<a href="{{pathFor route='servers'}}"><i class="fa fa-server"></i> Servers</a>
 					</li>
 					<li role="presentation" class="{{isActiveRoute regex='^configure$'}}">
 						<a href="{{pathFor route='configure'}}"><i class="fa fa-cog"></i> Configure</a>

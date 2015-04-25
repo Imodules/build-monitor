@@ -3,13 +3,13 @@
  */
 
 'use strict';
-Views.settings = (function () {
+Views.Servers = (function () {
 	function Add(name, url, uname, pass, callback) {
 		if (!url) {
 			throw new Meteor.Error(500, 'Missing url');
 		}
 
-		Meteor.call('insertSettings', name, url, uname, pass, callback);
+		Meteor.call('insertServer', name, url, uname, pass, callback);
 	}
 
 	return {
@@ -17,11 +17,11 @@ Views.settings = (function () {
 	};
 })();
 
-Template.settings.events({
+Template.servers.events({
 	'click button.add': function (e, t) {
 		e.preventDefault();
 
-		Views.settings.onAdd(
+		Views.Servers.onAdd(
 				t.$('#name').val(),
 				t.$('#url').val(),
 				t.$('#user').val(),
@@ -32,7 +32,7 @@ Template.settings.events({
 							type: 'danger'
 						});
 					} else {
-						$.bootstrapGrowl('Settings saved.', {type: 'success'});
+						$.bootstrapGrowl('Server added.', {type: 'success'});
 
 						t.$('#name').val(null);
 						t.$('#url').val(null);

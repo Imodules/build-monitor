@@ -14,7 +14,7 @@ Router.configure({
 Router.plugin('ensureSignedIn');
 
 Router.route('/', { name: 'dashboard', controller: Controllers.Route.Dashboard });
-Router.route('/settings', { name: 'settings', controller: Controllers.Route.Settings });
+Router.route('/servers', { name: 'servers', controller: Controllers.Route.Servers });
 
 Router.route('/login', { name: 'login', controller: Controllers.Route.Login });
 Router.route('/profile', { name: 'profile', controller: Controllers.Route.Profile });

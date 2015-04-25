@@ -3,13 +3,13 @@
  */
 
 'use strict';
-describe('Controller.Settings', function () {
+describe('Controller.Servers', function () {
 	describe('onRefreshProjects()', function () {
 		it('should call out to url', function () {
 			spyOn(HTTP, 'call').and.callFake(function () {
 				return true;
 			});
-			spyOn(Collections.Settings, 'findOne').and.callFake(function () {
+			spyOn(Collections.Servers, 'findOne').and.callFake(function () {
 
 			});
 

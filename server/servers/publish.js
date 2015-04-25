@@ -3,12 +3,12 @@
  */
 
 'use strict';
-Meteor.publish('settings', function () {
+Meteor.publish('servers', function () {
 	var user = Meteor.users.findOne({_id: this.userId},{fields: {isAdmin: 1}});
 
 	if (!user || !user.isAdmin) {
 		return this.ready();
 	}
 
-	return Collections.Settings.find({});
+	return Collections.Servers.find({});
 });

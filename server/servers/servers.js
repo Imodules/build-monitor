@@ -3,7 +3,7 @@
  */
 
 'use strict';
-Collections.Settings.allow({
+Collections.Servers.allow({
 	insert: function () {
 		return false;
 	},
@@ -17,6 +17,6 @@ Collections.Settings.allow({
 });
 
 Meteor.methods({
-	insertSettings: Controllers.Settings.onInsertSettings,
-	updateSettings: Controllers.Settings.onUpdateSettings
+	insertServer: Controllers.Servers.onInsertServer,
+	updateServer: Controllers.Servers.onUpdateServer
 });

@@ -3,7 +3,7 @@
  */
 
 'use strict';
-Controllers.Settings = (function () {
+Controllers.Servers = (function () {
 	function _validateUser() {
 		if (!Meteor.user().isAdmin) {
 			throw new Meteor.Error(403, 'You are not authorized for this change.');
@@ -19,7 +19,7 @@ Controllers.Settings = (function () {
 		return {user: user, password: password};
 	}
 
-	function InsertSettings(name, url, uname, pword) {
+	function InsertServer(name, url, uname, pword) {
 		_validateUser();
 
 		if (!name || !url) {
@@ -28,7 +28,7 @@ Controllers.Settings = (function () {
 
 		var up = _cleanUnamePWord(uname, pword);
 
-		return Collections.Settings.insert({
+		return Collections.Servers.insert({
 			name: name,
 			type: 'teamcity',
 			url: url,
@@ -37,7 +37,7 @@ Controllers.Settings = (function () {
 		});
 	}
 
-	function UpdateSettings(id, name, url, uname, pword) {
+	function UpdateServer(id, name, url, uname, pword) {
 		_validateUser();
 
 		if (!id || !name || !url) {
@@ -46,7 +46,7 @@ Controllers.Settings = (function () {
 
 		var up = _cleanUnamePWord(uname, pword);
 
-		return Collections.Settings.update({_id: id}, {
+		return Collections.Servers.update({_id: id}, {
 			$set: {
 				name: name,
 				type: 'teamcity',
@@ -58,7 +58,7 @@ Controllers.Settings = (function () {
 	}
 
 	return {
-		onInsertSettings: InsertSettings,
-		onUpdateSettings: UpdateSettings
+		onInsertServer: InsertServer,
+		onUpdateServer: UpdateServer
 	};
 })();
