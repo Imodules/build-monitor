@@ -8,7 +8,6 @@ var s = {
 };
 
 describe('Controllers.Servers', function () {
-
 	describe('Non Admin user', function () {
 		beforeEach(function () {
 			spyOn(Meteor, 'user').and.callFake(function () {

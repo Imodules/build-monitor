@@ -23,7 +23,7 @@ describe('Views.Servers', function () {
 		});
 
 		it('should be able to add a new server', function (done) {
-			Views.Servers.onAdd('Cool Server Name', 'http://example.com/bs', 'exUser', 'exPass', function () {
+			ViewModels.Servers.onAdd('Cool Server Name', 'http://example.com/bs', 'exUser', 'exPass', function () {
 				expect($('#serverList > tbody > tr').length).toBe(1);
 				expect($('#serverList > tbody > tr td:nth-child(1)').text()).toBe('teamcity');
 				expect($('#serverList > tbody > tr td:nth-child(2)').text()).toBe('Cool Server Name');
