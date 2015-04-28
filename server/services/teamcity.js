@@ -16,6 +16,8 @@ Services.TeamCity.prototype = {
 		if (!this.server.user || !this.server.password) {
 			return false;
 		}
+
+		return true;
 	},
 	//endregion
 
@@ -35,20 +37,46 @@ Services.TeamCity.prototype = {
 		return opt;
 	},
 
+	_call: function (url, callback) {
+		var opt = this._buildOptions(),
+				fullUrl = this.server.url + url;
+
+		console.log('Calling: ' + fullUrl);
+		HTTP.get(fullUrl, opt, callback);
+	},
+
+	_addProject: function (data, method) {
+		method(
+				this.server._id,
+				data.parentProjectId,
+				data.id,
+				data.name,
+				data.href
+		);
+	},
+
+	_addBuildType: function (data, method) {
+		method(
+				this.server._id,
+				data.projectId,
+				data.id,
+				data.name,
+				data.href
+		);
+	},
+
 	refreshFromServer: function (addProject, addBuildType) {
 		var self = this,
-				fullUrl = self.server.url,
-				opt = self._buildOptions();
+				fullUrl;
 
-		if (self.hasAuth) {
-			fullUrl += '/httpAuth';
+		if (this.hasAuth) {
+			fullUrl = '/httpAuth';
 		} else {
-			fullUrl += '/guestAuth';
+			fullUrl = '/guestAuth';
 		}
 
 		fullUrl += '/app/rest/projects';
-
-		HTTP.get(fullUrl, opt, function (err, tcProjects) {
+		self._call(fullUrl, function (err, tcProjects) {
 			if (err) {
 				throw err;
 			}
@@ -58,20 +86,27 @@ Services.TeamCity.prototype = {
 			}
 
 			for(var i = 0; i < tcProjects.data.count; i++) {
-				var project = tcProjects.data.project[i],
-						opt = self._buildOptions();
+				var project = tcProjects.data.project[i];
 
 				if (project.id === '_Root') {
 					continue;
 				}
 
-				HTTP.get(self.server.url + project.href, opt, function (err, tcProject) {
+				self._addProject(project, addProject);
+
+				self._call(project.href, function (err, tcProject) {
 					if (err) {
 						throw err;
 					}
 
 					if (tcProject.statusCode !== 200) {
 						throw new Meteor.Error(500, 'Failed to call server: ' + tcProject.statusCode);
+					}
+
+					for(var b = 0; b < tcProject.data.buildTypes.count; b++) {
+						var buildType = tcProject.data.buildTypes.buildType[b];
+						console.log(buildType);
+						self._addBuildType(buildType, addBuildType);
 					}
 				});
 			}

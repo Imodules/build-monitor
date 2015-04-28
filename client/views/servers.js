@@ -26,7 +26,7 @@ Template.servers.events({
 	'click button.add': function (e, t) {
 		e.preventDefault();
 
-		Views.Servers.onAdd(
+		ViewModels.Servers.onAdd(
 				t.$('#name').val(),
 				t.$('#url').val(),
 				t.$('#user').val(),
@@ -50,7 +50,7 @@ Template.servers.events({
 
 	'click button.refresh': function (e) {
 		e.preventDefault();
-		Views.Servers.onRefreshProjects(this._id, function (err) {
+		ViewModels.Servers.onRefreshProjects(this._id, function (err) {
 			if (err) {
 				$.bootstrapGrowl(err.reason, {
 					type: 'danger'
