@@ -13,7 +13,9 @@ Services.TeamCity = function (server) {
 Services.TeamCity.prototype = {
 	//region Properties
 	get hasAuth() {
-		return !s.isBlank(this.server.user) && !s.isBlank(this.server.password);
+		if (!this.server.user || !this.server.password) {
+			return false;
+		}
 	},
 	//endregion
 
@@ -36,11 +38,7 @@ Services.TeamCity.prototype = {
 	refreshFromServer: function (addProject, addBuildType) {
 		var self = this,
 				fullUrl = self.server.url,
-				opt = {
-			headers: {
-				'Accept': 'application/json'
-			}
-		};
+				opt = self._buildOptions();
 
 		if (self.hasAuth) {
 			fullUrl += '/httpAuth';
@@ -59,11 +57,15 @@ Services.TeamCity.prototype = {
 				throw new Meteor.Error(500, 'Failed to call server: ' + tcProjects.statusCode);
 			}
 
-			for(var i = 0; i < tcProjects.count; i++) {
-				var project = tcProjects.project[i],
+			for(var i = 0; i < tcProjects.data.count; i++) {
+				var project = tcProjects.data.project[i],
 						opt = self._buildOptions();
 
-				HTTP.get(project.href, opt, function (err, tcProject) {
+				if (project.id === '_Root') {
+					continue;
+				}
+
+				HTTP.get(self.server.url + project.href, opt, function (err, tcProject) {
 					if (err) {
 						throw err;
 					}

@@ -5,7 +5,7 @@
 'use strict';
 var tcProjects = {
 	count: 2,
-	href: '/httpAuth/app/rest/projects',
+	href: '/guestAuth/app/rest/projects',
 	project: [{
 		id: '_Root',
 		name: '<Root project>',
@@ -39,16 +39,21 @@ describe('Services.TeamCity', function () {
 			tc.refreshFromServer();
 
 			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/projects', {
+				timeOut: 30000,
 				headers: {
 					'Accept': 'application/json'
 				}
 			}, jasmine.any(Function));
 
 			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/projects/id:MBP', {
+				timeOut: 30000,
 				headers: {
 					'Accept': 'application/json'
 				}
 			}, jasmine.any(Function));
+
+			expect(HTTP.get).not.toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/projects/id:_Root',
+			jasmine.any(Object), jasmine.any(Function))
 		});
 	});
 });
