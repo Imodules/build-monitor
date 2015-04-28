@@ -114,7 +114,7 @@ describe('Services.TeamCity', function () {
 					jasmine.any(Object), jasmine.any(Function));
 
 			expect(addProjectSpy.calls.count()).toBe(1);
-			expect(addProjectSpy.calls.allArgs()).toEqual([['srvId', '_Root', 'MBP', 'My Brew Planner', '/guestAuth/app/rest/projects/id:MBP']]);
+			expect(addProjectSpy.calls.allArgs()).toEqual([['srvId', null, 'MBP', 'My Brew Planner', '/guestAuth/app/rest/projects/id:MBP']]);
 
 			expect(addBuildTypeSpy.calls.count()).toBe(2);
 			expect(addBuildTypeSpy.calls.allArgs()).toEqual([

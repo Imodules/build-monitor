@@ -24,7 +24,7 @@ Controllers.Projects = (function () {
 	}
 
 	function AddBuildType(serverId, projectId, buildTypeId, name, url) {
-		Collections.BuildTypes.upsert({
+		return Collections.BuildTypes.upsert({
 			serverId: serverId,
 			projectId: projectId,
 			buildTypeId: buildTypeId
@@ -37,7 +37,7 @@ Controllers.Projects = (function () {
 	}
 
 	function AddProject(serverId, parentId, projectId, name, url) {
-		Collections.Projects.upsert({
+		return Collections.Projects.upsert({
 			serverId: serverId,
 			parentId: parentId,
 			projectId: projectId

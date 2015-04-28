@@ -46,9 +46,9 @@ Services.TeamCity.prototype = {
 	},
 
 	_addProject: function (data, method) {
-		method(
+		return method(
 				this.server._id,
-				data.parentProjectId,
+				data.parentProjectId === '_Root' ? null : data.parentProjectId,
 				data.id,
 				data.name,
 				data.href
@@ -56,7 +56,7 @@ Services.TeamCity.prototype = {
 	},
 
 	_addBuildType: function (data, method) {
-		method(
+		return method(
 				this.server._id,
 				data.projectId,
 				data.id,
@@ -85,14 +85,14 @@ Services.TeamCity.prototype = {
 				throw new Meteor.Error(500, 'Failed to call server: ' + tcProjects.statusCode);
 			}
 
-			for(var i = 0; i < tcProjects.data.count; i++) {
+			for (var i = 0; i < tcProjects.data.count; i++) {
 				var project = tcProjects.data.project[i];
 
 				if (project.id === '_Root') {
 					continue;
 				}
 
-				self._addProject(project, addProject);
+				var myProjId = self._addProject(project, addProject);
 
 				self._call(project.href, function (err, tcProject) {
 					if (err) {
@@ -103,7 +103,7 @@ Services.TeamCity.prototype = {
 						throw new Meteor.Error(500, 'Failed to call server: ' + tcProject.statusCode);
 					}
 
-					for(var b = 0; b < tcProject.data.buildTypes.count; b++) {
+					for (var b = 0; b < tcProject.data.buildTypes.count; b++) {
 						var buildType = tcProject.data.buildTypes.buildType[b];
 						self._addBuildType(buildType, addBuildType);
 					}
