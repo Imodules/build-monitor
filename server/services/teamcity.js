@@ -105,7 +105,6 @@ Services.TeamCity.prototype = {
 
 					for(var b = 0; b < tcProject.data.buildTypes.count; b++) {
 						var buildType = tcProject.data.buildTypes.buildType[b];
-						console.log(buildType);
 						self._addBuildType(buildType, addBuildType);
 					}
 				});

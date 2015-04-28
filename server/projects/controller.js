@@ -5,17 +5,6 @@
 'use strict';
 Controllers.Projects = (function () {
 	/**
-	 * Builds the ID.
-	 *
-	 * @private
-	 */
-	function _buildId(serverId, parentId, id) {
-		return serverId + '-'
-				+ (s.isBlank(parentId) ? '' : parentId + '-')
-				+ id;
-	}
-
-	/**
 	 * @return {boolean}
 	 */
 	function RefreshProjects(serverId) {
@@ -35,27 +24,29 @@ Controllers.Projects = (function () {
 	}
 
 	function AddBuildType(serverId, projectId, buildTypeId, name, url) {
-		var myId = _buildId(serverId, projectId, buildTypeId);
-
-		Collections.BuildTypes.upsert({_id: myId}, {$set: {
+		Collections.BuildTypes.upsert({
 			serverId: serverId,
 			projectId: projectId,
-			buildTypeId: buildTypeId,
-			name: name,
-			url: url
-		}}, {multi: false});
+			buildTypeId: buildTypeId
+		}, {
+			$set: {
+				name: name,
+				url: url
+			}
+		}, {multi: false});
 	}
 
 	function AddProject(serverId, parentId, projectId, name, url) {
-		var myId = _buildId(serverId, parentId, projectId);
-
-		Collections.Projects.upsert({_id: myId}, {$set: {
+		Collections.Projects.upsert({
 			serverId: serverId,
-			parentId: s.isBlank(parentId) ? false : parentId,
-			projectId: projectId,
-			name: name,
-			url: url
-		}}, {multi: false});
+			parentId: parentId,
+			projectId: projectId
+		}, {
+			$set: {
+				name: name,
+				url: url
+			}
+		}, {multi: false});
 	}
 
 	return {

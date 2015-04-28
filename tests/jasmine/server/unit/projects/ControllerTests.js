@@ -51,12 +51,13 @@ describe('Controller.Servers', function () {
 
 			Controllers.Projects.onAddProject('SrvId', 'PrId', 'ProjId', 'My Cool Name-o', 'http://example.com/mbp/bs');
 
-			expect(Collections.Projects.upsert).toHaveBeenCalledWith({_id: 'SrvId-PrId-ProjId'},
+			expect(Collections.Projects.upsert).toHaveBeenCalledWith({
+						serverId: 'SrvId',
+						parentId: 'PrId',
+						projectId: 'ProjId'
+					},
 					{
 						$set: {
-							serverId: 'SrvId',
-							parentId: 'PrId',
-							projectId: 'ProjId',
 							name: 'My Cool Name-o',
 							url: 'http://example.com/mbp/bs'
 						}
@@ -71,14 +72,15 @@ describe('Controller.Servers', function () {
 				return true;
 			});
 
-			Controllers.Projects.onAddProject('SrvId', null, 'ProjId', 'My Cool Name-o', 'http://example.com/mbp/bs');
+			Controllers.Projects.onAddProject('SrvId', '_Root', 'ProjId', 'My Cool Name-o', 'http://example.com/mbp/bs');
 
-			expect(Collections.Projects.upsert).toHaveBeenCalledWith({_id: 'SrvId-ProjId'},
+			expect(Collections.Projects.upsert).toHaveBeenCalledWith({
+						serverId: 'SrvId',
+						parentId: '_Root',
+						projectId: 'ProjId'
+					},
 					{
 						$set: {
-							serverId: 'SrvId',
-							parentId: false,
-							projectId: 'ProjId',
 							name: 'My Cool Name-o',
 							url: 'http://example.com/mbp/bs'
 						}
@@ -97,12 +99,13 @@ describe('Controller.Servers', function () {
 
 			Controllers.Projects.onAddBuild('SrvId', 'ProjId', 'BtId', 'My Cool Name BTO', 'http://example.com/mbp/btype');
 
-			expect(Collections.BuildTypes.upsert).toHaveBeenCalledWith({_id: 'SrvId-ProjId-BtId'},
+			expect(Collections.BuildTypes.upsert).toHaveBeenCalledWith({
+						serverId: 'SrvId',
+						projectId: 'ProjId',
+						buildTypeId: 'BtId'
+					},
 					{
 						$set: {
-							serverId: 'SrvId',
-							projectId: 'ProjId',
-							buildTypeId: 'BtId',
 							name: 'My Cool Name BTO',
 							url: 'http://example.com/mbp/btype'
 						}
