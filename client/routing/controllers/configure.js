@@ -12,11 +12,10 @@ Controllers.Route.Configure = Controllers.Route.Base.extend({
 	},
 
 	waitOn: function () {
-
-	},
-
-	data: function () {
-
+		return [
+			Meteor.subscribe('servers'),
+			Meteor.subscribe('projects')
+		];
 	},
 
 	action: function () {
