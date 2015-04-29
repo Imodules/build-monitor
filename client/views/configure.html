@@ -12,8 +12,13 @@
 	<div class="panel panel-default">
 		<div class="panel-heading" role="tab" id="ph_{{_id}}">
 			<h4 class="panel-title">
+				<div class="pull-right">
+					<span class="label label-default">{{childProjectCount}}</span>
+					<span class="label label-primary">{{childBuildTypeCount}}</span>
+					<span class="label label-danger">0</span>
+				</div>
 				<a data-toggle="collapse" data-parent="#{{parentAccordianId}}" href="#co_{{_id}}" aria-expanded="true" aria-controls="collapseOne">
-					{{name}} <span class="badge badge-primary">{{childCount}}</span>
+					{{name}}
 				</a>
 			</h4>
 		</div>
@@ -25,10 +30,28 @@
 							{{> cfgProjectRow}}
 						{{/each}}
 					</div>
-					{{else}}
-					<h3>No Children</h3>
 				{{/if}}
+				{{#each myBuilds}}
+					{{> cfgBuildTypeRow}}
+				{{/each}}
 			</div>
+		</div>
+	</div>
+</template>
+
+<template name="cfgBuildTypeRow">
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<h4>{{name}}</h4>
+		</div>
+		<div class="col-xs-12 col-sm-3">
+			<input type="text" class="form-control shortName" placeholder="Short text to display on the build monitor" value="{{shortName}}" />
+		</div>
+		<div class="col-xs-12 col-sm-1">
+			<input type="checkbox" class="isOn" checked={{isDisplayed}} data-toggle="toggle" data-on="Enabled" data-off="Disabled" data-size="small" data-width="80">
+		</div>
+		<div class="col-xs-12 col-sm-4">
+
 		</div>
 	</div>
 </template>

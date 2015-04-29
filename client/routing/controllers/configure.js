@@ -14,7 +14,8 @@ Controllers.Route.Configure = Controllers.Route.Base.extend({
 	waitOn: function () {
 		return [
 			Meteor.subscribe('servers'),
-			Meteor.subscribe('projects')
+			Meteor.subscribe('projects'),
+				Meteor.subscribe('buildTypes')
 		];
 	},
 
