@@ -7,8 +7,10 @@
 </template>
 
 <template name="buildItem">
-	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 buildItem {{buildStateClass}} {{isBuildingClass}}">
-		<div class="bi-title">{{myBigName}}</div>
-		<div class="bi-sub-title">{{name}}</div>
+	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 buildItem">
+		<div class="bi-wrapper  {{buildStateClass}} {{isBuildingClass}}">
+			<div class="bi-title">{{myBigName}}</div>
+			<div class="bi-sub-title">{{name}}</div>
+		</div>
 	</div>
 </template>
