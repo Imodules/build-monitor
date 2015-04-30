@@ -10,11 +10,10 @@ Controllers.Route.Dashboard = Controllers.Route.Base.extend({
 	},
 
 	waitOn: function () {
-
-	},
-
-	data: function () {
-
+		return [
+			Meteor.subscribe('displayedProjects'),
+			Meteor.subscribe('displayedBuildTypes')
+		];
 	},
 
 	action: function () {

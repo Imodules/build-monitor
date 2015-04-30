@@ -39,7 +39,17 @@ Services.TeamCity.prototype = {
 
 	_call: function (url, callback) {
 		var opt = this._buildOptions(),
-				fullUrl = this.server.url + url;
+				fullUrl = this.server.url;
+
+		if (url.indexOf('/httpAuth/') === -1 && url.indexOf('/guestAuth/') === -1) {
+			if (this.hasAuth) {
+				fullUrl += '/httpAuth';
+			} else {
+				fullUrl += '/guestAuth';
+			}
+		}
+
+		fullUrl += url;
 
 		console.log('Calling: ' + fullUrl);
 		HTTP.get(fullUrl, opt, callback);
@@ -65,18 +75,39 @@ Services.TeamCity.prototype = {
 		);
 	},
 
+	queryRunningBuilds: function () {
+		// TODO: UNIT TEST
+		// http://pstuart.no-ip.org:8111/httpAuth/app/rest/builds?locator=running:true
+		var self = this;
+
+		self._call('/app/rest/builds?locator=running:true', function (err, builds) {
+			if (err) {
+				throw err;
+			}
+
+			console.log(builds);
+			if (builds.data.count === 0) {
+				return;
+			}
+
+			console.log(builds.data.build[0]);
+			/*
+			 I20150429-22:59:31.848(-5)? { id: 671,
+			 I20150429-22:59:31.848(-5)?   buildTypeId: 'MBP_UnitTestAndBundle',
+			 I20150429-22:59:31.848(-5)?   number: '196',
+			 I20150429-22:59:31.848(-5)?   status: 'SUCCESS',
+			 I20150429-22:59:31.848(-5)?   state: 'running',
+			 I20150429-22:59:31.848(-5)?   running: true,
+			 I20150429-22:59:31.848(-5)?   percentageComplete: 48,
+			 I20150429-22:59:31.848(-5)?   href: '/httpAuth/app/rest/builds/id:671' }
+			 */
+		});
+	},
+
 	refreshFromServer: function (addProject, addBuildType) {
-		var self = this,
-				fullUrl;
+		var self = this;
 
-		if (this.hasAuth) {
-			fullUrl = '/httpAuth';
-		} else {
-			fullUrl = '/guestAuth';
-		}
-
-		fullUrl += '/app/rest/projects';
-		self._call(fullUrl, function (err, tcProjects) {
+		self._call('/app/rest/projects', function (err, tcProjects) {
 			if (err) {
 				throw err;
 			}
@@ -92,7 +123,7 @@ Services.TeamCity.prototype = {
 					continue;
 				}
 
-				var myProjId = self._addProject(project, addProject);
+				self._addProject(project, addProject);
 
 				self._call(project.href, function (err, tcProject) {
 					if (err) {

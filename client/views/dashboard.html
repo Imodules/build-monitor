@@ -1,3 +1,14 @@
 <template name="home">
-	<h3>Home</h3>
+	<div class="row">
+		{{#each buildItems}}
+			{{> buildItem}}
+		{{/each}}
+	</div>
+</template>
+
+<template name="buildItem">
+	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 buildItem {{buildStateClass}} {{isBuildingClass}}">
+		<div class="bi-title">{{myBigName}}</div>
+		<div class="bi-sub-title">{{name}}</div>
+	</div>
 </template>

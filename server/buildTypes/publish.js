@@ -5,3 +5,7 @@
 Meteor.publish('buildTypes', function () {
 	return Collections.BuildTypes.find();
 });
+
+Meteor.publish('displayedBuildTypes', function () {
+	return Collections.BuildTypes.find({isDisplayed: true});
+});

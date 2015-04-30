@@ -5,3 +5,7 @@
 Meteor.publish('projects', function () {
 	return Collections.Projects.find();
 });
+
+Meteor.publish('displayedProjects', function () {
+	return Collections.Projects.find({isDisplayed: true});
+});
