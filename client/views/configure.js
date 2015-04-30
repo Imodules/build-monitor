@@ -27,6 +27,18 @@ Template.configure.helpers({
 	}
 });
 
+Template.cfgProjectRow.rendered = function () {
+	var ic = this.$('#ic_' + this.data._id);
+
+	this.$('.collapse').collapse({toggle: false})
+			.on('show.bs.collapse', function () {
+				ic.removeClass('fa-caret-right').addClass('fa-caret-down');
+			})
+			.on('hide.bs.collapse', function () {
+				ic.removeClass('fa-caret-down').addClass('fa-caret-right');
+			});
+};
+
 Template.cfgProjectRow.helpers({
 	childProjectCount: function () {
 		return Collections.Projects.find({parentId: this.projectId}).count();
@@ -38,10 +50,13 @@ Template.cfgProjectRow.helpers({
 		return Collections.Projects.find({parentId: this.projectId}).count() > 0
 	},
 	myChildren: function () {
-		return Collections.Projects.find({parentId: this.projectId});
+		return Collections.Projects.find({parentId: this.projectId}, {sort: {name: 1}});
 	},
 	myBuilds: function () {
-		return Collections.BuildTypes.find({projectId: this.projectId});
+		return Collections.BuildTypes.find({projectId: this.projectId}, {sort: {name: 1}});
+	},
+	enabledBuildCount: function () {
+		return Collections.BuildTypes.find({projectId: this.projectId, isDisplayed: true}).count();
 	},
 	parentAccordianId: function () {
 		if (this.parentId === null) {

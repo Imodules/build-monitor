@@ -14,11 +14,11 @@
 			<h4 class="panel-title">
 				<div class="pull-right">
 					<span class="label label-default">{{childProjectCount}}</span>
-					<span class="label label-primary">{{childBuildTypeCount}}</span>
-					<span class="label label-danger">0</span>
+					<span class="label label-info">{{childBuildTypeCount}}</span>
+					<span class="label label-primary">{{enabledBuildCount}}</span>
 				</div>
 				<a data-toggle="collapse" data-parent="#{{parentAccordianId}}" href="#co_{{_id}}" aria-expanded="true" aria-controls="collapseOne">
-					{{name}}
+					<i id="ic_{{_id}}" class="fa fa-caret-right fa-fw"></i> {{name}}
 				</a>
 			</h4>
 		</div>
