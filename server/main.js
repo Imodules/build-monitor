@@ -5,7 +5,8 @@
 'use strict';
 
 // TODO: This won't work too well if we have multiple server instances.
-// TODO: Add a configuration option to indicate if this is the main server instance.
+// TODO: Add a configuration option to indicate if this is the main server instance, or...
+// TODO: Create a second server only app / node server that just the timers.
 
 var RUNNING_BUILD_QUERY_MS = 20000,
 		CURRENT_BUILD_STATUS_QUERY_MS = 5000;
@@ -14,18 +15,14 @@ Controllers.Server = (function () {
 	var buildQueryHandle = false,
 			statusQueryHandle = false;
 
-	function _BuildQueryInterval() {
+	function BuildQueryInterval() {
 		console.log('Build Query...');
 
-		// TODO: UNIT TEST
 		var servers = Collections.Servers.find();
 		servers.forEach(function (server) {
 			var service = Services.Factory.getService(server);
 			service.queryRunningBuilds();
 		});
-
-
-		// If we have active builds, start that timeout.
 	}
 
 	function Startup() {
@@ -34,11 +31,12 @@ Controllers.Server = (function () {
 			buildQueryHandle = false;
 		}
 
-		buildQueryHandle = Meteor.setInterval(_BuildQueryInterval, RUNNING_BUILD_QUERY_MS);
+		buildQueryHandle = Meteor.setInterval(BuildQueryInterval, RUNNING_BUILD_QUERY_MS);
 	}
 
 	return {
-		onStartUp: Startup
+		onStartUp: Startup,
+		onBuildQueryInterval: BuildQueryInterval
 	};
 })();
 

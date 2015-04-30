@@ -76,8 +76,6 @@ Services.TeamCity.prototype = {
 	},
 
 	queryRunningBuilds: function () {
-		// TODO: UNIT TEST
-		// http://pstuart.no-ip.org:8111/httpAuth/app/rest/builds?locator=running:true
 		var self = this;
 
 		self._call('/app/rest/builds?locator=running:true', function (err, builds) {
@@ -85,22 +83,16 @@ Services.TeamCity.prototype = {
 				throw err;
 			}
 
-			console.log(builds);
 			if (builds.data.count === 0) {
 				return;
 			}
 
-			console.log(builds.data.build[0]);
-			/*
-			 I20150429-22:59:31.848(-5)? { id: 671,
-			 I20150429-22:59:31.848(-5)?   buildTypeId: 'MBP_UnitTestAndBundle',
-			 I20150429-22:59:31.848(-5)?   number: '196',
-			 I20150429-22:59:31.848(-5)?   status: 'SUCCESS',
-			 I20150429-22:59:31.848(-5)?   state: 'running',
-			 I20150429-22:59:31.848(-5)?   running: true,
-			 I20150429-22:59:31.848(-5)?   percentageComplete: 48,
-			 I20150429-22:59:31.848(-5)?   href: '/httpAuth/app/rest/builds/id:671' }
-			 */
+			for(var i=0; i<builds.data.count; i++) {
+				var build = builds.data.build[i];
+
+				Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: build.buildTypeId},
+						{$set: {isBuilding: true, currentBuildHref: build.href}}, {multi: false});
+			}
 		});
 	},
 

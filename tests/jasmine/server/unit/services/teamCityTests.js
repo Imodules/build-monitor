@@ -72,6 +72,25 @@ var tcProject = {
 	}
 };
 
+var tcRunningBuilds = {
+	statusCode: 200,
+	data: {
+		count: 1,
+		href: '/httpAuth/app/rest/builds?locator=running:true',
+		build: [{
+			id: 112427,
+			buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri',
+			number: '131',
+			status: 'SUCCESS',
+			state: 'running',
+			running: true,
+			percentageComplete: 3,
+			href: '/httpAuth/app/rest/builds/id:112427',
+			webUrl: 'http://buildserver2:90/viewLog.html?buildId=112427&buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsMissouri'
+		}]
+	}
+};
+
 describe('Services.TeamCity', function () {
 	describe('refreshFromServer()', function () {
 		it('should call HTTP.get', function () {
@@ -122,5 +141,64 @@ describe('Services.TeamCity', function () {
 				['srvId', 'MBP', 'MBP_UnitTestAndBundle', 'Unit Test and Bundle', '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle']
 			]);
 		});
+	});
+
+	describe('queryRunningBuilds()', function () {
+		it('should update the BuildTypes colleciton with the running builds', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				cb(null, tcRunningBuilds);
+			});
+			spyOn(Collections.BuildTypes, 'update');
+
+			var tc = new Services.TeamCity({
+				_id: 'srvId2',
+				url: 'http://example.com/bs'
+			});
+
+			tc.queryRunningBuilds();
+
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/builds?locator=running:true', {
+				timeOut: 30000,
+				headers: {
+					'Accept': 'application/json'
+				}
+			}, jasmine.any(Function));
+
+			expect(Collections.BuildTypes.update).toHaveBeenCalledWith({serverId: 'srvId2', buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'},
+					{$set: {isBuilding: true, currentBuildHref: '/httpAuth/app/rest/builds/id:112427'}}, {multi: false});
+		});
+
+		//it('should not re-update builds that it has already started', function () {
+		//	spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+		//		cb(null, tcRunningBuilds);
+		//	});
+		//	spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
+		//		return {
+		//			fetch: function () {
+		//				return [
+		//					{buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'}
+		//				];
+		//			}
+		//		}
+		//	});
+		//	spyOn(Collections.BuildTypes, 'update');
+		//
+		//	var tc = new Services.TeamCity({
+		//		_id: 'srvId2',
+		//		url: 'http://example.com/bs'
+		//	});
+		//
+		//	tc.queryRunningBuilds();
+		//
+		//	expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/builds?locator=running:true', {
+		//		timeOut: 30000,
+		//		headers: {
+		//			'Accept': 'application/json'
+		//		}
+		//	}, jasmine.any(Function));
+		//
+		//	expect(Collections.BuildTypes.find).toHaveBeenCalledWith({serverId: 'srvId2', isBuilding: true}, {fields: {buildTypeId: 1}});
+		//	expect(Collections.BuildTypes.update).not.toHaveBeenCalled();
+		//});
 	});
 });
