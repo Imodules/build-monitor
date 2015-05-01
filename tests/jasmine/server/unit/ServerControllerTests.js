@@ -80,4 +80,10 @@ describe('Controllers.Server', function () {
 					.toHaveBeenCalledWith('MBP_UnitTestAndBundle', 2);
 		});
 	});
+
+	describe('onStartRunningBuilds', function () {
+		it('should start the timer if we have builds and an existing timer does not exist', function () {
+
+		});
+	});
 });
