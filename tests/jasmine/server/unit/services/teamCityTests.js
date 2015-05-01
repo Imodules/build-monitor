@@ -126,7 +126,7 @@ var tcLast2BuildsSuccess = {
 				"buildTypeId": "MBP_UnitTestAndBundle",
 				"number": "193",
 				"status": "SUCCESS",
-				"state": "finished",
+				"state": "running",
 				"href": "/httpAuth/app/rest/builds/id:665"
 			},
 			{
@@ -278,7 +278,7 @@ describe('Services.TeamCity', function () {
 			});
 			tc.refreshBuildHistory('MBP_UnitTestAndBundle', 2);
 
-			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle/builds?count=2', {
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle/builds?locator=running:any&count=2', {
 				timeOut: 30000,
 				headers: {
 					'Accept': 'application/json'
@@ -288,7 +288,7 @@ describe('Services.TeamCity', function () {
 			expect(Collections.BuildTypes.update.calls.count()).toBe(1);
 			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
 					{serverId: 'srvId3', buildTypeId: 'MBP_UnitTestAndBundle'},
-					{$set: {isLastBuildSuccess: true}},
+					{$set: {isLastBuildSuccess: true, isBuilding: true}},
 					{multi: false}
 			);
 		});
@@ -306,7 +306,7 @@ describe('Services.TeamCity', function () {
 			});
 			tc.refreshBuildHistory('MBP_UnitTestAndBundle', 2);
 
-			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle/builds?count=2', {
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle/builds?locator=running:any&count=2', {
 				timeOut: 30000,
 				headers: {
 					'Accept': 'application/json'
@@ -316,7 +316,7 @@ describe('Services.TeamCity', function () {
 			expect(Collections.BuildTypes.update.calls.count()).toBe(1);
 			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
 					{serverId: 'srvId3', buildTypeId: 'MBP_UnitTestAndBundle'},
-					{$set: {isLastBuildSuccess: false}},
+					{$set: {isLastBuildSuccess: false, isBuilding: false}},
 					{multi: false}
 			);
 		});

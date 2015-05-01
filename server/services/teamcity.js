@@ -106,7 +106,7 @@ Services.TeamCity.prototype = {
 
 	refreshBuildHistory: function (buildTypeId, numberOfHistoricBuilds) {
 		var self = this;
-		self._call('/app/rest/buildTypes/id:' + buildTypeId + '/builds?count=' + numberOfHistoricBuilds, function (err, builds) {
+		self._call('/app/rest/buildTypes/id:' + buildTypeId + '/builds?locator=running:any&count=' + numberOfHistoricBuilds, function (err, builds) {
 			if (err) {
 				throw err;
 			}
@@ -117,7 +117,8 @@ Services.TeamCity.prototype = {
 
 			var build = builds.data.build[0];
 			Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: buildTypeId},
-					{$set: {isLastBuildSuccess: build.status === 'SUCCESS'}}, {multi: false});
+					{$set: {isLastBuildSuccess: build.status === 'SUCCESS', isBuilding: build.state === 'running'}},
+					{multi: false});
 		});
 	},
 
