@@ -87,11 +87,19 @@ Services.TeamCity.prototype = {
 				return;
 			}
 
-			for(var i=0; i<builds.data.count; i++) {
+			var currentActive = Collections.BuildTypes.find(
+					{serverId: self.server._id, isBuilding: true},
+					{fields: {buildTypeId: 1}}
+			).fetch();
+
+			for (var i = 0; i < builds.data.count; i++) {
 				var build = builds.data.build[i];
 
-				Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: build.buildTypeId},
-						{$set: {isBuilding: true, currentBuildHref: build.href}}, {multi: false});
+				console.log(currentActive);
+				if (!_.find(currentActive, function (c) { return c.buildTypeId === build.buildTypeId })) {
+					Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: build.buildTypeId},
+							{$set: {isBuilding: true, currentBuildHref: build.href}}, {multi: false});
+				}
 			}
 		});
 	},

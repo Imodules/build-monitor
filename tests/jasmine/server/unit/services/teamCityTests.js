@@ -149,6 +149,13 @@ describe('Services.TeamCity', function () {
 				cb(null, tcRunningBuilds);
 			});
 			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
+				return {
+					fetch: function () {
+						return [];
+					}
+				}
+			});
 
 			var tc = new Services.TeamCity({
 				_id: 'srvId2',
@@ -168,37 +175,39 @@ describe('Services.TeamCity', function () {
 					{$set: {isBuilding: true, currentBuildHref: '/httpAuth/app/rest/builds/id:112427'}}, {multi: false});
 		});
 
-		//it('should not re-update builds that it has already started', function () {
-		//	spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-		//		cb(null, tcRunningBuilds);
-		//	});
-		//	spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
-		//		return {
-		//			fetch: function () {
-		//				return [
-		//					{buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'}
-		//				];
-		//			}
-		//		}
-		//	});
-		//	spyOn(Collections.BuildTypes, 'update');
-		//
-		//	var tc = new Services.TeamCity({
-		//		_id: 'srvId2',
-		//		url: 'http://example.com/bs'
-		//	});
-		//
-		//	tc.queryRunningBuilds();
-		//
-		//	expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/builds?locator=running:true', {
-		//		timeOut: 30000,
-		//		headers: {
-		//			'Accept': 'application/json'
-		//		}
-		//	}, jasmine.any(Function));
-		//
-		//	expect(Collections.BuildTypes.find).toHaveBeenCalledWith({serverId: 'srvId2', isBuilding: true}, {fields: {buildTypeId: 1}});
-		//	expect(Collections.BuildTypes.update).not.toHaveBeenCalled();
-		//});
+		it('should not re-update builds that it has already started', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				cb(null, tcRunningBuilds);
+			});
+			spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
+				return {
+					fetch: function () {
+						return [
+							{buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'}
+						];
+					}
+				}
+			});
+			spyOn(Collections.BuildTypes, 'update');
+
+			var tc = new Services.TeamCity({
+				_id: 'srvId2',
+				url: 'http://example.com/bs'
+			});
+
+			tc.queryRunningBuilds();
+
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/builds?locator=running:true', {
+				timeOut: 30000,
+				headers: {
+					'Accept': 'application/json'
+				}
+			}, jasmine.any(Function));
+
+			expect(Collections.BuildTypes.find).toHaveBeenCalledWith(
+					{serverId: 'srvId2', isBuilding: true}, {fields: {buildTypeId: 1}}
+			);
+			expect(Collections.BuildTypes.update).not.toHaveBeenCalled();
+		});
 	});
 });
