@@ -81,9 +81,89 @@ describe('Controllers.Server', function () {
 		});
 	});
 
-	describe('onStartRunningBuilds', function () {
-		it('should start the timer if we have builds and an existing timer does not exist', function () {
+	describe('onStartRunningBuildsTimer()', function () {
+		it('should start the timer', function () {
+			spyOn(Meteor, 'setInterval').and.callFake(function (cb) {
+				cb();
+				return {obj: 'someid'};
+			});
 
+			spyOn(Controllers.Server, 'onRunningBuildQueryInterval');
+
+			Controllers.Server.onStartRunningBuildsTimer('SweetServerId');
+
+			expect(Meteor.setInterval).toHaveBeenCalledWith(jasmine.any(Function), 5000);
+			expect(Controllers.Server.onRunningBuildQueryInterval).toHaveBeenCalledWith('SweetServerId');
+		});
+	});
+
+	describe('onStopRunningBuildsTimer()', function () {
+		it('should stop the timer', function () {
+			spyOn(Meteor, 'clearInterval');
+			spyOn(Meteor, 'setInterval').and.callFake(function () {
+				return {obj: 'HelloSweety'};
+			});
+
+			// Testing it this way so we ensure we are adding and remove from the internal array.
+			Controllers.Server.onStartRunningBuildsTimer('SweetServerId3');
+			expect(Meteor.setInterval).toHaveBeenCalledWith(jasmine.any(Function), 5000);
+			Controllers.Server.onCheckRunningBuildsTimer('SweetServerId3', false);
+
+			expect(Meteor.clearInterval).toHaveBeenCalledWith({obj: 'HelloSweety'});
+		});
+	});
+
+	describe('onCheckRunningBuildsTimer()', function () {
+		it('should start the timer if we have builds and an existing timer does not exist', function () {
+			spyOn(_, 'find').and.callFake(function () { return undefined; });
+
+			spyOn(Controllers.Server, 'onStartRunningBuildsTimer');
+			spyOn(Controllers.Server, 'onStopRunningBuildsTimer');
+
+			Controllers.Server.onCheckRunningBuildsTimer('CoolSrvId', true);
+
+			expect(Controllers.Server.onStopRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Server.onStartRunningBuildsTimer).toHaveBeenCalledWith('CoolSrvId');
+		});
+
+		it('should not start the timer if we have builds and an existing timer does exist', function () {
+			spyOn(_, 'find').and.callFake(function () { return { serverId: 'CoolSrvId2', timerId: 'Kids'}; });
+
+			spyOn(Controllers.Server, 'onStartRunningBuildsTimer');
+			spyOn(Controllers.Server, 'onStopRunningBuildsTimer');
+
+			Controllers.Server.onCheckRunningBuildsTimer('CoolSrvId2', true);
+
+			expect(Controllers.Server.onStopRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Server.onStartRunningBuildsTimer).not.toHaveBeenCalled();
+		});
+
+		it('should remove the timer if we no longer have builds and the timer exists', function () {
+			spyOn(_, 'find').and.callFake(function () { return { serverId: 'CoolSrvId3', timerId: 'Kiddos'}; });
+
+			spyOn(Controllers.Server, 'onStartRunningBuildsTimer');
+			spyOn(Controllers.Server, 'onStopRunningBuildsTimer');
+			spyOn(Controllers.Server, 'onRunningBuildQueryInterval');
+
+			Controllers.Server.onCheckRunningBuildsTimer('CoolSrvId3', false);
+
+			expect(Controllers.Server.onStopRunningBuildsTimer).toHaveBeenCalledWith({ serverId: 'CoolSrvId3', timerId: 'Kiddos'});
+			expect(Controllers.Server.onStartRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Server.onRunningBuildQueryInterval).toHaveBeenCalledWith('CoolSrvId3');
+		});
+
+		it('should not remove the timer if we no longer have builds and the timer does not exists', function () {
+			spyOn(_, 'find').and.callFake(function () { return undefined; });
+
+			spyOn(Controllers.Server, 'onStartRunningBuildsTimer');
+			spyOn(Controllers.Server, 'onStopRunningBuildsTimer');
+			spyOn(Controllers.Server, 'onRunningBuildQueryInterval');
+
+			Controllers.Server.onCheckRunningBuildsTimer('CoolSrvId3', false);
+
+			expect(Controllers.Server.onStopRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Server.onStartRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Server.onRunningBuildQueryInterval).not.toHaveBeenCalled();
 		});
 	});
 });

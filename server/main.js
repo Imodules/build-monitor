@@ -15,25 +15,31 @@ Controllers.Server = (function () {
 	var buildQueryHandle = false,
 			currentBuildServerTimerHandles = [];
 
-	// TODO: Unit test
-	function StartRunningBuilds(serverId, hasActiveBuilds) {
+	function StartRunningBuildsTimer(serverId) {
+		var self = this;
+		console.log('Starting running build timer for server: ' + serverId);
+		var id = Meteor.setInterval(function () {
+			self.onRunningBuildQueryInterval(serverId);
+		}, CURRENT_BUILD_STATUS_QUERY_MS);
+
+		currentBuildServerTimerHandles.push({serverId: serverId, timerId: id});
+	}
+
+	function StopRunningBuildsTimer(serverTimerHandle) {
+		console.log('Stopping running build timer for server: ' + serverTimerHandle.serverId);
+		Meteor.clearInterval(serverTimerHandle.timerId);
+		currentBuildServerTimerHandles = _.reject(currentBuildServerTimerHandles, function(s) { return s.serverId === serverTimerHandle.serverId; });
+	}
+
+	function CheckRunningBuildsTimer(serverId, hasActiveBuilds) {
 		var serverTimerHandle = _.find(currentBuildServerTimerHandles, function (s) { return s.serverId === serverId; });
 
 		if (hasActiveBuilds && !serverTimerHandle) {
-			console.log('Starting running build timer for server: ' + serverId);
-			var id = Meteor.setInterval(function () {
-				RunningBuildQueryInterval(serverId);
-			}, CURRENT_BUILD_STATUS_QUERY_MS);
-
-			currentBuildServerTimerHandles.push({serverId: serverId, timerId: id});
-
+			this.onStartRunningBuildsTimer(serverId);
 		} else if(!hasActiveBuilds && serverTimerHandle) {
-			console.log('Stopping running build timer for server: ' + serverId);
-			Meteor.clearInterval(serverTimerHandle.timerId);
-			currentBuildServerTimerHandles = _.reject(currentBuildServerTimerHandles, function(s) { return s.serverId === serverId; });
-
+			this.onStopRunningBuildsTimer(serverTimerHandle);
 			// one last call to make sure everything has their final state.
-			RunningBuildQueryInterval(serverId);
+			this.onRunningBuildQueryInterval(serverId);
 		}
 	}
 
@@ -41,7 +47,7 @@ Controllers.Server = (function () {
 		var servers = Collections.Servers.find();
 		servers.forEach(function (server) {
 			var service = Services.Factory.getService(server);
-			service.queryRunningBuilds(StartRunningBuilds);
+			service.queryRunningBuilds(CheckRunningBuildsTimer);
 		});
 	}
 
@@ -76,8 +82,10 @@ Controllers.Server = (function () {
 		onStartUp: Startup,
 		onBuildQueryInterval: BuildQueryInterval,
 		onRefreshActiveBuilds: RefreshActiveBuilds,
-		onStartRunningBuilds: StartRunningBuilds,
-		onRunningBuildQueryInterval: RunningBuildQueryInterval
+		onCheckRunningBuildsTimer: CheckRunningBuildsTimer,
+		onRunningBuildQueryInterval: RunningBuildQueryInterval,
+		onStartRunningBuildsTimer: StartRunningBuildsTimer,
+		onStopRunningBuildsTimer: StopRunningBuildsTimer
 	};
 })();
 
