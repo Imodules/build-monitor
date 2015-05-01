@@ -75,7 +75,7 @@ Services.TeamCity.prototype = {
 		);
 	},
 
-	queryRunningBuilds: function () {
+	queryRunningBuilds: function (cb) {
 		var self = this;
 
 		self._call('/app/rest/builds?locator=running:true', function (err, builds) {
@@ -84,7 +84,7 @@ Services.TeamCity.prototype = {
 			}
 
 			if (builds.data.count === 0) {
-				return;
+				return cb(self.server._id, false);
 			}
 
 			var currentActive = Collections.BuildTypes.find(
@@ -101,6 +101,8 @@ Services.TeamCity.prototype = {
 							{$set: {isBuilding: true, currentBuildHref: build.href}}, {multi: false});
 				}
 			}
+
+			cb(self.server._id, true);
 		});
 	},
 
@@ -115,9 +117,16 @@ Services.TeamCity.prototype = {
 				return;
 			}
 
-			var build = builds.data.build[0];
+			var isSuccess = builds.data.build[0].status === 'SUCCESS',
+					isBuilding = builds.data.build[0].state === 'running';
+
+			// If we are running, then get the previous status.
+			if (isBuilding && builds.data.count > 1) {
+				isSuccess = builds.data.build[1].status === 'SUCCESS'
+			}
+
 			Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: buildTypeId},
-					{$set: {isLastBuildSuccess: build.status === 'SUCCESS', isBuilding: build.state === 'running'}},
+					{$set: {isLastBuildSuccess: isSuccess, isBuilding: isBuilding}},
 					{multi: false});
 		});
 	},

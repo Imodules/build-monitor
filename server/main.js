@@ -13,16 +13,43 @@ var RUNNING_BUILD_QUERY_MS = 20000,
 
 Controllers.Server = (function () {
 	var buildQueryHandle = false,
-			statusQueryHandle = false;
+			currentBuildServerTimerHandles = [];
+
+	// TODO: Unit test
+	function StartRunningBuilds(serverId, hasActiveBuilds) {
+		var serverTimerHandle = _.find(currentBuildServerTimerHandles, function (s) { return s.serverId === serverId; });
+
+		if (hasActiveBuilds && !serverTimerHandle) {
+			console.log('Starting running build timer for server: ' + serverId);
+			var id = Meteor.setInterval(function () {
+				RunningBuildQueryInterval(serverId);
+			}, CURRENT_BUILD_STATUS_QUERY_MS);
+
+			currentBuildServerTimerHandles.push({serverId: serverId, timerId: id});
+
+		} else if(!hasActiveBuilds && serverTimerHandle) {
+			console.log('Stopping running build timer for server: ' + serverId);
+			Meteor.clearInterval(serverTimerHandle.timerId);
+			currentBuildServerTimerHandles = _.reject(currentBuildServerTimerHandles, function(s) { return s.serverId === serverId; });
+
+			// one last call to make sure everything has their final state.
+			RunningBuildQueryInterval(serverId);
+		}
+	}
 
 	function BuildQueryInterval() {
-		console.log('Build Query...');
-
 		var servers = Collections.Servers.find();
 		servers.forEach(function (server) {
 			var service = Services.Factory.getService(server);
-			service.queryRunningBuilds();
+			service.queryRunningBuilds(StartRunningBuilds);
 		});
+	}
+
+	// TODO: Unit test
+	function RunningBuildQueryInterval(serverId) {
+		console.log('Running build timer for server: ' + serverId);
+
+		// Call /httpAuth/app/rest/builds/id:673 which should be currentBuildHref for the build type.
 	}
 
 	function Startup() {
@@ -48,7 +75,9 @@ Controllers.Server = (function () {
 	return {
 		onStartUp: Startup,
 		onBuildQueryInterval: BuildQueryInterval,
-		onRefreshActiveBuilds: RefreshActiveBuilds
+		onRefreshActiveBuilds: RefreshActiveBuilds,
+		onStartRunningBuilds: StartRunningBuilds,
+		onRunningBuildQueryInterval: RunningBuildQueryInterval
 	};
 })();
 
