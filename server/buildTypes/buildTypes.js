@@ -20,7 +20,7 @@ Collections.BuildTypes.allow({
 				var server = Collections.Servers.findOne({_id: doc.serverId}),
 						service = Services.Factory.getService(server);
 
-				service.refreshBuildHistory(doc.buildTypeId, 1);
+				service.refreshBuildHistory(doc.buildTypeId, 2);
 			}
 		}
 
