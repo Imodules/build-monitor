@@ -104,6 +104,23 @@ Services.TeamCity.prototype = {
 		});
 	},
 
+	refreshBuildHistory: function (buildTypeId, numberOfHistoricBuilds) {
+		var self = this;
+		self._call('/app/rest/buildTypes/id:' + buildTypeId + '/builds?count=' + numberOfHistoricBuilds, function (err, builds) {
+			if (err) {
+				throw err;
+			}
+
+			if (builds.data.count === 0) {
+				return;
+			}
+
+			var build = builds.data.build[0];
+			Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: buildTypeId},
+					{$set: {isLastBuildSuccess: build.status === 'SUCCESS'}}, {multi: false});
+		});
+	},
+
 	refreshFromServer: function (addProject, addBuildType) {
 		var self = this;
 

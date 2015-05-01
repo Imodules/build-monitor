@@ -34,12 +34,25 @@ Controllers.Server = (function () {
 		buildQueryHandle = Meteor.setInterval(BuildQueryInterval, RUNNING_BUILD_QUERY_MS);
 	}
 
+	function RefreshActiveBuilds() {
+		var servers = Collections.Servers.find();
+		servers.forEach(function (server) {
+			var bts = Collections.BuildTypes.find({serverId: server._id, isDisplayed: true});
+			bts.forEach(function (bt) {
+				var service = Services.Factory.getService(server);
+				service.refreshBuildHistory(bt.buildTypeId, 2);
+			});
+		});
+	}
+
 	return {
 		onStartUp: Startup,
-		onBuildQueryInterval: BuildQueryInterval
+		onBuildQueryInterval: BuildQueryInterval,
+		onRefreshActiveBuilds: RefreshActiveBuilds
 	};
 })();
 
 Meteor.startup(function () {
 	Controllers.Server.onStartUp();
+	Controllers.Server.onRefreshActiveBuilds();
 });
