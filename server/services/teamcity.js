@@ -87,7 +87,7 @@ Services.TeamCity.prototype = {
 				return cb(self.server._id, false);
 			}
 
-			// TODO: This should be done in a different class. This class is just for TC communication.
+			// TODO: This should be done in a different class. This class is just for TC communication. use Controllers.BuildTypes
 			var currentActive = Collections.BuildTypes.find(
 					{serverId: self.server._id, isBuilding: true},
 					{fields: {buildTypeId: 1}}
@@ -99,7 +99,7 @@ Services.TeamCity.prototype = {
 				console.log(currentActive);
 				if (!_.find(currentActive, function (c) { return c.buildTypeId === build.buildTypeId })) {
 
-					// TODO: This should be done in a different class. This class is just for TC communication.
+					// TODO: This should be done in a different class. This class is just for TC communication. use Controllers.BuildTypes
 					Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: build.buildTypeId},
 							{$set: {isBuilding: true, currentBuildHref: build.href}}, {multi: false});
 				}
@@ -109,7 +109,7 @@ Services.TeamCity.prototype = {
 		});
 	},
 
-	refreshBuildHistory: function (buildTypeId, numberOfHistoricBuilds) {// TODO: This should be done in a different class. This class is just for TC communication.
+	refreshBuildHistory: function (buildTypeId, numberOfHistoricBuilds) {
 		var self = this;
 		self._call('/app/rest/buildTypes/id:' + buildTypeId + '/builds?locator=running:any&count=' + numberOfHistoricBuilds, function (err, builds) {
 			if (err) {
@@ -128,7 +128,7 @@ Services.TeamCity.prototype = {
 				isSuccess = builds.data.build[1].status === 'SUCCESS'
 			}
 
-			// TODO: This should be done in a different class. This class is just for TC communication.
+			// TODO: This should be done in a different class. This class is just for TC communication. Use Controllers.BuildTypes
 			Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: buildTypeId},
 					{$set: {isLastBuildSuccess: isSuccess, isBuilding: isBuilding}},
 					{multi: false});
@@ -175,8 +175,22 @@ Services.TeamCity.prototype = {
 
 	},
 
-	getCurrentBuildStatus: function (server, build) {
+	getCurrentBuildStatus: function (build, cb) {
+		var self = this;
 
+		self._call(build.currentBuildHref, function (err, tcBuild) {
+			if (err) {
+				throw err;
+			}
+
+			if (tcBuild.statusCode !== 200) {
+				throw new Meteor.Error(500, 'Failed to call server: ' + tcBuild.statusCode);
+			}
+
+			cb(build._id, build.isLastBuildSuccess,
+					tcBuild.data.status === 'SUCCESS', tcBuild.data.state === 'running',
+					tcBuild.data.percentageComplete, tcBuild.data.statusText);
+		});
 	}
 	//endregion
 };

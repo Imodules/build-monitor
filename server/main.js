@@ -16,17 +16,18 @@ Controllers.Server = (function () {
 			currentBuildServerTimerHandles = [];
 
 	function StartRunningBuildsTimer(serverId) {
-		var self = this;
 		console.log('Starting running build timer for server: ' + serverId);
 		var id = Meteor.setInterval(function () {
-			self.onRunningBuildQueryInterval(serverId);
+			Controllers.Server.onRunningBuildQueryInterval(serverId);
 		}, CURRENT_BUILD_STATUS_QUERY_MS);
 
 		currentBuildServerTimerHandles.push({serverId: serverId, timerId: id});
 	}
 
-	function StopRunningBuildsTimer(serverTimerHandle) {
-		console.log('Stopping running build timer for server: ' + serverTimerHandle.serverId);
+	function StopRunningBuildsTimer(serverId) {
+		console.log('Stopping running build timer for server: ' + serverId);
+		var serverTimerHandle = _.find(currentBuildServerTimerHandles, function (s) { return s.serverId === serverId; });
+
 		Meteor.clearInterval(serverTimerHandle.timerId);
 		currentBuildServerTimerHandles = _.reject(currentBuildServerTimerHandles, function(s) { return s.serverId === serverTimerHandle.serverId; });
 	}
@@ -35,11 +36,7 @@ Controllers.Server = (function () {
 		var serverTimerHandle = _.find(currentBuildServerTimerHandles, function (s) { return s.serverId === serverId; });
 
 		if (hasActiveBuilds && !serverTimerHandle) {
-			this.onStartRunningBuildsTimer(serverId);
-		} else if(!hasActiveBuilds && serverTimerHandle) {
-			this.onStopRunningBuildsTimer(serverTimerHandle);
-			// one last call to make sure everything has their final state.
-			this.onRunningBuildQueryInterval(serverId);
+			Controllers.Server.onStartRunningBuildsTimer(serverId);
 		}
 	}
 
@@ -51,19 +48,22 @@ Controllers.Server = (function () {
 		});
 	}
 
-	// TODO: Unit test
 	function RunningBuildQueryInterval(serverId) {
 		console.log('Running build timer for server: ' + serverId);
 
 		var server = Collections.Servers.findOne({_id: serverId});
 		var service = Services.Factory.getService(server);
 
-		var builds = Collections.BuildTypes.find({serverId: serverId, isBuilding: true}, {fields: {currentBuildHref: 1}});
-		builds.forEach(function (build) {
-			service.getCurrentBuildStatus();
-		});
+		var builds = Collections.BuildTypes.find({serverId: serverId, isBuilding: true}, {fields: {currentBuildHref: 1, isLastBuildSuccess: 1}}).fetch();
 
-		// Call /httpAuth/app/rest/builds/id:673 which should be currentBuildHref for the build type.
+		if (builds.length === 0) {
+			Controllers.Server.onStopRunningBuildsTimer(serverId);
+			return;
+		}
+
+		builds.forEach(function (build) {
+			service.getCurrentBuildStatus(build, Controllers.BuildTypes.onUpdateBuildStatus);
+		});
 	}
 
 	function Startup() {
