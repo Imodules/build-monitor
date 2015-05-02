@@ -53,11 +53,17 @@ div.buildItem {
 			color: @lightText;
 			font-size: x-small;
 		}
+
+		.bsCurrent {
+			color: white;
+
+			&>div {
+				max-height: 20px;
+				overflow: hidden;;
+			}
+		}
 	}
 }
-
-// http://pstuart.no-ip.org:8111/httpAuth/app/rest/builds?count=5
-// http://pstuart.no-ip.org:8111/httpAuth/app/rest/builds?sinceBuild=id:659
 
 .blink_me {
 	-webkit-animation-name: blinker;

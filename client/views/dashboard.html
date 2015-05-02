@@ -11,6 +11,13 @@
 		<div class="bi-wrapper  {{buildStateClass}} {{isBuildingClass}}">
 			<div class="bi-title">{{myBigName}}</div>
 			<div class="bi-sub-title">{{name}}</div>
+
+			{{#if isBuilding}}
+				<div class="bsCurrent">
+					{{currentBuild.statusText}} ({{currentBuild.pctComplete}}%)
+				</div>
+			{{/if}}
+
 		</div>
 	</div>
 </template>
