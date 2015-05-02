@@ -21,7 +21,22 @@ Controllers.BuildTypes = (function () {
 				{multi: false});
 	}
 
+	function GetActiveServerBuilds(serverId) {
+		return Collections.BuildTypes.find(
+				{serverId: serverId, isBuilding: true},
+				{fields: {buildTypeId: 1}}
+		).fetch();
+	}
+
+	function StartBuild(serverId, buildTypeId, href, percentComplete) {
+		Collections.BuildTypes.update({serverId: serverId, buildTypeId: buildTypeId},
+				{$set: {isBuilding: true, currentBuildHref: href, currentBuild: {pctComplete: percentComplete}}},
+				{multi: false});
+	}
+
 	return {
-		onUpdateBuildStatus: UpdateBuildStatus
+		onUpdateBuildStatus: UpdateBuildStatus,
+		onGetActiveServerBuilds: GetActiveServerBuilds,
+		onStartBuild: StartBuild
 	};
 })();

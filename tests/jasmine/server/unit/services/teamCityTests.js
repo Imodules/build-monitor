@@ -298,7 +298,7 @@ describe('Services.TeamCity', function () {
 						serverId: 'srvId2',
 						buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'
 					},
-					{$set: {isBuilding: true, currentBuildHref: '/httpAuth/app/rest/builds/id:112427'}}, {multi: false});
+					{$set: {isBuilding: true, currentBuildHref: '/httpAuth/app/rest/builds/id:112427', currentBuild: {pctComplete: 0}}}, {multi: false});
 		});
 
 		it('should not re-update builds that it has already started', function () {

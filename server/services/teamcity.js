@@ -87,21 +87,13 @@ Services.TeamCity.prototype = {
 				return cb(self.server._id, false);
 			}
 
-			// TODO: This should be done in a different class. This class is just for TC communication. use Controllers.BuildTypes
-			var currentActive = Collections.BuildTypes.find(
-					{serverId: self.server._id, isBuilding: true},
-					{fields: {buildTypeId: 1}}
-			).fetch();
+			var currentActive = Controllers.BuildTypes.onGetActiveServerBuilds(self.server._id);
 
 			for (var i = 0; i < builds.data.count; i++) {
 				var build = builds.data.build[i];
 
-				console.log(currentActive);
 				if (!_.find(currentActive, function (c) { return c.buildTypeId === build.buildTypeId })) {
-
-					// TODO: This should be done in a different class. This class is just for TC communication. use Controllers.BuildTypes
-					Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: build.buildTypeId},
-							{$set: {isBuilding: true, currentBuildHref: build.href}}, {multi: false});
+					Controllers.BuildTypes.onStartBuild(self.server._id, build.buildTypeId, build.href, 0);
 				}
 			}
 

@@ -4,10 +4,11 @@
 
 'use strict';
 describe('Controllers.BuildTypes', function () {
-	describe('UpdateBuildStatus()', function () {
+	describe('onUpdateBuildStatus()', function () {
 		beforeEach(function () {
 			spyOn(Collections.BuildTypes, 'update');
 		});
+
 		it('should update the build in the database with the current build information', function () {
 			Controllers.BuildTypes.onUpdateBuildStatus('btId69', true, true, true, 20, 'Still running bro');
 
@@ -46,6 +47,23 @@ describe('Controllers.BuildTypes', function () {
 					{$set: {isLastBuildSuccess: true, isBuilding: false, currentBuild: {pctComplete: 100, statusText: 'Done'}}},
 					{multi: false}
 			);
+		});
+	});
+
+	describe('onGetActiveServerBuilds', function () {
+		it('should call Collections.BuildTypes.find', function () {
+			spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
+				return {
+					fetch: function () {
+						return [];
+					}
+				}
+			});
+
+			Controllers.BuildTypes.onGetActiveServerBuilds('MeCo0lId');
+
+			expect(Collections.BuildTypes.find).toHaveBeenCalledWith({serverId: 'MeCo0lId', isBuilding: true},
+					{fields: {buildTypeId: 1}});
 		});
 	});
 });
