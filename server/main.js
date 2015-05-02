@@ -55,6 +55,14 @@ Controllers.Server = (function () {
 	function RunningBuildQueryInterval(serverId) {
 		console.log('Running build timer for server: ' + serverId);
 
+		var server = Collections.Servers.findOne({_id: serverId});
+		var service = Services.Factory.getService(server);
+
+		var builds = Collections.BuildTypes.find({serverId: serverId, isBuilding: true}, {fields: {currentBuildHref: 1}});
+		builds.forEach(function (build) {
+			service.getCurrentBuildStatus();
+		});
+
 		// Call /httpAuth/app/rest/builds/id:673 which should be currentBuildHref for the build type.
 	}
 

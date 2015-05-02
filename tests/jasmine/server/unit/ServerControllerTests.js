@@ -104,12 +104,15 @@ describe('Controllers.Server', function () {
 				return {obj: 'HelloSweety'};
 			});
 
+			spyOn(Controllers.Server, 'onRunningBuildQueryInterval');
+
 			// Testing it this way so we ensure we are adding and remove from the internal array.
 			Controllers.Server.onStartRunningBuildsTimer('SweetServerId3');
 			expect(Meteor.setInterval).toHaveBeenCalledWith(jasmine.any(Function), 5000);
 			Controllers.Server.onCheckRunningBuildsTimer('SweetServerId3', false);
 
 			expect(Meteor.clearInterval).toHaveBeenCalledWith({obj: 'HelloSweety'});
+			expect(Controllers.Server.onRunningBuildQueryInterval).toHaveBeenCalledWith('SweetServerId3');
 		});
 	});
 
@@ -164,6 +167,31 @@ describe('Controllers.Server', function () {
 			expect(Controllers.Server.onStopRunningBuildsTimer).not.toHaveBeenCalled();
 			expect(Controllers.Server.onStartRunningBuildsTimer).not.toHaveBeenCalled();
 			expect(Controllers.Server.onRunningBuildQueryInterval).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('OnRunningBuildQueryInterval()', function () {
+		it('should query for all active builds by server and get updated details', function () {
+			spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
+				return [
+					{_id: 'ab12', currentBuildHref: '/guestAuth/something/cool/id:456'},
+					{_id: 'cd13', currentBuildHref: '/guestAuth/something/cool/id:897'}
+				];
+			});
+			spyOn(Collections.Servers, 'findOne').and.callFake(function () {
+				return {_id: 'SeverId', url: 'http://example.com/bs1', type: 'teamcity'};
+			});
+
+			spyOn(Services.TeamCity.prototype, 'getCurrentBuildStatus');
+
+			Controllers.Server.onRunningBuildQueryInterval('SeverId');
+
+			expect(Collections.BuildTypes.find).toHaveBeenCalledWith(
+					{serverId: 'SeverId', isBuilding: true},
+					{fields: {currentBuildHref: 1}}
+			);
+
+			expect(Services.TeamCity.prototype.getCurrentBuildStatus.calls.count()).toBe(2);
 		});
 	});
 });

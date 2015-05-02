@@ -87,6 +87,7 @@ Services.TeamCity.prototype = {
 				return cb(self.server._id, false);
 			}
 
+			// TODO: This should be done in a different class. This class is just for TC communication.
 			var currentActive = Collections.BuildTypes.find(
 					{serverId: self.server._id, isBuilding: true},
 					{fields: {buildTypeId: 1}}
@@ -97,6 +98,8 @@ Services.TeamCity.prototype = {
 
 				console.log(currentActive);
 				if (!_.find(currentActive, function (c) { return c.buildTypeId === build.buildTypeId })) {
+
+					// TODO: This should be done in a different class. This class is just for TC communication.
 					Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: build.buildTypeId},
 							{$set: {isBuilding: true, currentBuildHref: build.href}}, {multi: false});
 				}
@@ -106,7 +109,7 @@ Services.TeamCity.prototype = {
 		});
 	},
 
-	refreshBuildHistory: function (buildTypeId, numberOfHistoricBuilds) {
+	refreshBuildHistory: function (buildTypeId, numberOfHistoricBuilds) {// TODO: This should be done in a different class. This class is just for TC communication.
 		var self = this;
 		self._call('/app/rest/buildTypes/id:' + buildTypeId + '/builds?locator=running:any&count=' + numberOfHistoricBuilds, function (err, builds) {
 			if (err) {
@@ -125,6 +128,7 @@ Services.TeamCity.prototype = {
 				isSuccess = builds.data.build[1].status === 'SUCCESS'
 			}
 
+			// TODO: This should be done in a different class. This class is just for TC communication.
 			Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: buildTypeId},
 					{$set: {isLastBuildSuccess: isSuccess, isBuilding: isBuilding}},
 					{multi: false});
@@ -168,6 +172,10 @@ Services.TeamCity.prototype = {
 				});
 			}
 		});
+
+	},
+
+	getCurrentBuildStatus: function (server, build) {
 
 	}
 	//endregion
