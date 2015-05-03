@@ -2,8 +2,6 @@
  * Created by paul on 4/26/15.
  */
 
-/* global Backbone: true */
-
 'use strict';
 
 Services.TeamCity = function (server) {
@@ -88,12 +86,24 @@ Services.TeamCity.prototype = {
 			}
 
 			var currentActive = Controllers.BuildTypes.onGetActiveServerBuilds(self.server._id);
-
 			for (var i = 0; i < builds.data.count; i++) {
 				var build = builds.data.build[i];
 
-				if (!_.find(currentActive, function (c) { return c.buildTypeId === build.buildTypeId })) {
-					Controllers.BuildTypes.onStartBuild(self.server._id, build.buildTypeId, build.href, 0);
+				if (!_.find(currentActive, function (c) {
+							return c.buildTypeId === build.buildTypeId
+						})) {
+
+					var bh = new Models.BuildHistory({
+						id: build.id,
+						number: build.number,
+						isSuccess: build.status === 'SUCCESS',
+						isBuilding: build.state === 'running',
+						href: build.href
+					});
+
+					Controllers.BuildTypes.onStartBuild(
+							self.server._id, build.buildTypeId, bh, build.percentageComplete
+					);
 				}
 			}
 
@@ -103,7 +113,8 @@ Services.TeamCity.prototype = {
 
 	refreshBuildHistory: function (buildTypeId, numberOfHistoricBuilds) {
 		var self = this;
-		self._call('/app/rest/buildTypes/id:' + buildTypeId + '/builds?locator=running:any&count=' + numberOfHistoricBuilds, function (err, builds) {
+		self._call('/app/rest/buildTypes/id:' + buildTypeId
+				+ '/builds?locator=running:any&count=' + numberOfHistoricBuilds, function (err, builds) {
 			if (err) {
 				throw err;
 			}
@@ -117,10 +128,29 @@ Services.TeamCity.prototype = {
 
 			// If we are running, then get the previous status.
 			if (isBuilding && builds.data.count > 1) {
-				isSuccess = builds.data.build[1].status === 'SUCCESS'
+				isSuccess = builds.data.build[1].status === 'SUCCESS';
 			}
 
-			Controllers.BuildTypes.onUpdateBuildHistory(self.server._id, buildTypeId, isSuccess, isBuilding);
+			var buildHistories = [];
+			for (var i = 0; i < builds.data.count; i++) {
+				var build = builds.data.build[i],
+						bh = new Models.BuildHistory({
+							id: build.id,
+							number: build.number,
+							isSuccess: build.status === 'SUCCESS',
+							isBuilding: build.state === 'running',
+							href: build.href
+						});
+
+				buildHistories.push(bh);
+			}
+
+			Controllers.BuildTypes.onUpdateBuildHistory(
+					self.server._id,
+					buildTypeId,
+					isSuccess,
+					isBuilding,
+					buildHistories);
 		});
 	},
 
@@ -167,7 +197,7 @@ Services.TeamCity.prototype = {
 	getCurrentBuildStatus: function (build, cb) {
 		var self = this;
 
-		self._call(build.currentBuildHref, function (err, tcBuild) {
+		self._call(build.currentBuild.href, function (err, tcBuild) {
 			if (err) {
 				throw err;
 			}
@@ -176,7 +206,7 @@ Services.TeamCity.prototype = {
 				throw new Meteor.Error(500, 'Failed to call server: ' + tcBuild.statusCode);
 			}
 
-			cb(build._id, build.isLastBuildSuccess,
+			cb(build._id, build.currentBuild.href, build.isLastBuildSuccess,
 					tcBuild.data.status === 'SUCCESS', tcBuild.data.state === 'running',
 					tcBuild.data.percentageComplete, tcBuild.data.statusText);
 		});

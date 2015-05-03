@@ -75,9 +75,9 @@ describe('Controllers.Server', function () {
 
 			expect(Services.TeamCity.prototype.refreshBuildHistory.calls.count()).toBe(4);
 			expect(Services.TeamCity.prototype.refreshBuildHistory)
-					.toHaveBeenCalledWith('MBP_AcceptanceTest', 2);
+					.toHaveBeenCalledWith('MBP_AcceptanceTest', 10);
 			expect(Services.TeamCity.prototype.refreshBuildHistory)
-					.toHaveBeenCalledWith('MBP_UnitTestAndBundle', 2);
+					.toHaveBeenCalledWith('MBP_UnitTestAndBundle', 10);
 		});
 	});
 
@@ -148,8 +148,8 @@ describe('Controllers.Server', function () {
 				return {
 					fetch: function () {
 						return [
-							{_id: 'ab12', currentBuildHref: '/guestAuth/something/cool/id:456', isLastBuildSuccess: true},
-							{_id: 'cd13', currentBuildHref: '/guestAuth/something/cool/id:897', isLastBuildSuccess: false}
+							{_id: 'ab12', currentBuild: {href: '/guestAuth/something/cool/id:456'}, isLastBuildSuccess: true},
+							{_id: 'cd13', currentBuild: {href: '/guestAuth/something/cool/id:897'}, isLastBuildSuccess: false}
 						];
 					}
 				};
@@ -164,12 +164,12 @@ describe('Controllers.Server', function () {
 
 			expect(Collections.BuildTypes.find).toHaveBeenCalledWith(
 					{serverId: 'SeverId', isBuilding: true},
-					{fields: {currentBuildHref: 1, isLastBuildSuccess: 1}}
+					{fields: {currentBuild: 1, isLastBuildSuccess: 1}}
 			);
 
 			expect(Services.TeamCity.prototype.getCurrentBuildStatus.calls.count()).toBe(2);
-			expect(Services.TeamCity.prototype.getCurrentBuildStatus).toHaveBeenCalledWith({_id: 'ab12', currentBuildHref: '/guestAuth/something/cool/id:456', isLastBuildSuccess: true}, jasmine.any(Function));
-			expect(Services.TeamCity.prototype.getCurrentBuildStatus).toHaveBeenCalledWith({_id: 'cd13', currentBuildHref: '/guestAuth/something/cool/id:897', isLastBuildSuccess: false}, jasmine.any(Function));
+			expect(Services.TeamCity.prototype.getCurrentBuildStatus).toHaveBeenCalledWith({_id: 'ab12', currentBuild: {href: '/guestAuth/something/cool/id:456'}, isLastBuildSuccess: true}, jasmine.any(Function));
+			expect(Services.TeamCity.prototype.getCurrentBuildStatus).toHaveBeenCalledWith({_id: 'cd13', currentBuild: {href: '/guestAuth/something/cool/id:897'}, isLastBuildSuccess: false}, jasmine.any(Function));
 		});
 
 		it('should stop the timer if no more active builds', function () {

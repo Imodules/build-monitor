@@ -26,14 +26,20 @@ Controllers.Server = (function () {
 
 	function StopRunningBuildsTimer(serverId) {
 		console.log('Stopping running build timer for server: ' + serverId);
-		var serverTimerHandle = _.find(currentBuildServerTimerHandles, function (s) { return s.serverId === serverId; });
+		var serverTimerHandle = _.find(currentBuildServerTimerHandles, function (s) {
+			return s.serverId === serverId;
+		});
 
 		Meteor.clearInterval(serverTimerHandle.timerId);
-		currentBuildServerTimerHandles = _.reject(currentBuildServerTimerHandles, function(s) { return s.serverId === serverTimerHandle.serverId; });
+		currentBuildServerTimerHandles = _.reject(currentBuildServerTimerHandles, function (s) {
+			return s.serverId === serverTimerHandle.serverId;
+		});
 	}
 
 	function CheckRunningBuildsTimer(serverId, hasActiveBuilds) {
-		var serverTimerHandle = _.find(currentBuildServerTimerHandles, function (s) { return s.serverId === serverId; });
+		var serverTimerHandle = _.find(currentBuildServerTimerHandles, function (s) {
+			return s.serverId === serverId;
+		});
 
 		if (hasActiveBuilds && !serverTimerHandle) {
 			Controllers.Server.onStartRunningBuildsTimer(serverId);
@@ -54,7 +60,12 @@ Controllers.Server = (function () {
 		var server = Collections.Servers.findOne({_id: serverId});
 		var service = Services.Factory.getService(server);
 
-		var builds = Collections.BuildTypes.find({serverId: serverId, isBuilding: true}, {fields: {currentBuildHref: 1, isLastBuildSuccess: 1}}).fetch();
+		var builds = Collections.BuildTypes.find({serverId: serverId, isBuilding: true}, {
+			fields: {
+				currentBuild: 1,
+				isLastBuildSuccess: 1
+			}
+		}).fetch();
 
 		if (builds.length === 0) {
 			Controllers.Server.onStopRunningBuildsTimer(serverId);
@@ -81,7 +92,7 @@ Controllers.Server = (function () {
 			var bts = Collections.BuildTypes.find({serverId: server._id, isDisplayed: true});
 			bts.forEach(function (bt) {
 				var service = Services.Factory.getService(server);
-				service.refreshBuildHistory(bt.buildTypeId, 2);
+				service.refreshBuildHistory(bt.buildTypeId, 10);
 			});
 		});
 	}

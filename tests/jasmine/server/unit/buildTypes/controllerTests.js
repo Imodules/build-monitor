@@ -10,41 +10,54 @@ describe('Controllers.BuildTypes', function () {
 		});
 
 		it('should update the build in the database with the current build information', function () {
-			Controllers.BuildTypes.onUpdateBuildStatus('btId69', true, true, true, 20, 'Still running bro');
+			Controllers.BuildTypes.onUpdateBuildStatus('btId69', 'somewhere', true, true, true, 20, 'Still running bro');
 
 			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
 					{_id: 'btId69'},
-					{$set: {currentBuild: {pctComplete: 20, statusText: 'Still running bro'}}},
+					{$set: {currentBuild: {href: 'somewhere', pctComplete: 20, statusText: 'Still running bro'}}},
 					{multi: false}
 			);
 		});
 
 		it('should change isLastBuildSuccess to false if it is currently true and this build is failing', function () {
-			Controllers.BuildTypes.onUpdateBuildStatus('btId70', true, false, true, 20, 'Still running bro');
+			Controllers.BuildTypes.onUpdateBuildStatus('btId70', 'righthere', true, false, true, 20, 'Still running bro');
 
 			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
-					{$set: {isLastBuildSuccess: false, currentBuild: {pctComplete: 20, statusText: 'Still running bro'}}},
+					{
+						$set: {
+							isLastBuildSuccess: false,
+							currentBuild: {href: 'righthere', pctComplete: 20, statusText: 'Still running bro'}
+						}
+					},
 					{multi: false}
 			);
 		});
 
-		it('should not change isLastBuildSuccess to true if is currently false and the new build is a success and it is still running', function() {
-			Controllers.BuildTypes.onUpdateBuildStatus('btId70', false, true, true, 50, 'Cool Step 1/3');
+		it('should not change isLastBuildSuccess to true if is currently false and the new build is a success and it is still running', function () {
+			Controllers.BuildTypes.onUpdateBuildStatus('btId70', 'gogogog', false, true, true, 50, 'Cool Step 1/3');
 
 			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
-					{$set: {currentBuild: {pctComplete: 50, statusText: 'Cool Step 1/3'}}},
+					{$set: {currentBuild: {href: 'gogogog', pctComplete: 50, statusText: 'Cool Step 1/3'}}},
 					{multi: false}
 			);
 		});
 
 		it('should change isLastBuildSuccess to true if it was false and the current build succeeded and it is complete', function () {
-			Controllers.BuildTypes.onUpdateBuildStatus('btId70', false, true, false, 100, 'Done');
+			Controllers.BuildTypes.onUpdateBuildStatus('btId70', 'yupyup', false, true, false, 100, 'Done');
 
 			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
-					{$set: {isLastBuildSuccess: true, isBuilding: false, currentBuild: {pctComplete: 100, statusText: 'Done'}}},
+					{
+						$set: {
+							isLastBuildSuccess: true,
+							isBuilding: false,
+							currentBuild: {href: 'yupyup', pctComplete: 100, statusText: 'Done'},
+							'builds.0.isBuilding': false,
+							'builds.0.isSuccess': true
+						}
+					},
 					{multi: false}
 			);
 		});
@@ -57,7 +70,7 @@ describe('Controllers.BuildTypes', function () {
 					fetch: function () {
 						return [];
 					}
-				}
+				};
 			});
 
 			Controllers.BuildTypes.onGetActiveServerBuilds('MeCo0lId');
@@ -67,15 +80,235 @@ describe('Controllers.BuildTypes', function () {
 		});
 	});
 
+	describe('onStartBuild()', function () {
+		it('should update current build info and insert new build history at the 0 index', function () {
+			spyOn(Collections.BuildTypes, 'findOne').and.callFake(function () {
+				return {
+					_id: 'Coolio',
+					builds: [{
+						id: 665,
+						number: '193',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:665'
+
+					}, {
+						id: 661,
+						number: '192',
+						isSuccess: false,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:661'
+					}]
+				}
+			});
+
+			spyOn(Collections.BuildTypes, 'update');
+
+			Controllers.BuildTypes.onStartBuild('Sweet1', 'MyBuildTypeHere', {
+				json: {
+					id: 668,
+					number: '194',
+					isSuccess: true,
+					isBuilding: true,
+					href: '/httpAuth/app/rest/builds/id:668'
+
+				}
+			}, 1);
+
+			expect(Collections.BuildTypes.findOne).toHaveBeenCalledWith({
+				serverId: 'Sweet1',
+				buildTypeId: 'MyBuildTypeHere'
+			}, {fields: {builds: 1}});
+
+			expect(Collections.BuildTypes.update).toHaveBeenCalledWith({_id: 'Coolio'},
+					{
+						$set: {
+							isBuilding: true, currentBuild: {pctComplete: 1, href: '/httpAuth/app/rest/builds/id:668'},
+							builds: [{
+								id: 668,
+								number: '194',
+								isSuccess: true,
+								isBuilding: true,
+								href: '/httpAuth/app/rest/builds/id:668'
+							}, {
+								id: 665,
+								number: '193',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:665'
+
+							}, {
+								id: 661,
+								number: '192',
+								isSuccess: false,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:661'
+							}]
+						}
+					}, {multi: false}
+			);
+		});
+
+		it('should remove the last build history if we are at 10', function () {
+			spyOn(Collections.BuildTypes, 'findOne').and.callFake(function () {
+				return {
+					_id: 'WowBigOne',
+					builds: [{
+						id: 670,
+						number: '200',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:670'
+					}, {
+						id: 669,
+						number: '199',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:669'
+					}, {
+						id: 668,
+						number: '198',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:668'
+					}, {
+						id: 667,
+						number: '197',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:667'
+					}, {
+						id: 666,
+						number: '196',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:666'
+					}, {
+						id: 665,
+						number: '195',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:665'
+					}, {
+						id: 664,
+						number: '194',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:664'
+					}, {
+						id: 663,
+						number: '193',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:663'
+					}, {
+						id: 662,
+						number: '192',
+						isSuccess: true,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:662'
+					}, {
+						id: 661,
+						number: '191',
+						isSuccess: false,
+						isBuilding: false,
+						href: '/httpAuth/app/rest/builds/id:661'
+					}]
+				}
+			});
+
+			spyOn(Collections.BuildTypes, 'update');
+
+			Controllers.BuildTypes.onStartBuild('WowBigOne', 'YesYesIKnow', {
+				json: {
+					id: 700,
+					number: '210',
+					isSuccess: true,
+					isBuilding: true,
+					href: '/httpAuth/app/rest/builds/id:700'
+				}
+			}, 1);
+
+			expect(Collections.BuildTypes.update).toHaveBeenCalledWith({_id: 'WowBigOne'},
+					{
+						$set: {
+							isBuilding: true, currentBuild: {pctComplete: 1, href: '/httpAuth/app/rest/builds/id:700'},
+							builds: [{
+								id: 700,
+								number: '210',
+								isSuccess: true,
+								isBuilding: true,
+								href: '/httpAuth/app/rest/builds/id:700'
+							}, {
+								id: 670,
+								number: '200',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:670'
+							}, {
+								id: 669,
+								number: '199',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:669'
+							}, {
+								id: 668,
+								number: '198',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:668'
+							}, {
+								id: 667,
+								number: '197',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:667'
+							}, {
+								id: 666,
+								number: '196',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:666'
+							}, {
+								id: 665,
+								number: '195',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:665'
+							}, {
+								id: 664,
+								number: '194',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:664'
+							}, {
+								id: 663,
+								number: '193',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:663'
+							}, {
+								id: 662,
+								number: '192',
+								isSuccess: true,
+								isBuilding: false,
+								href: '/httpAuth/app/rest/builds/id:662'
+							}]
+						}
+					}, {multi: false}
+			);
+		});
+	});
+
 	describe('onUpdateBuildHistory()', function () {
 		it('should update the BuildTypes history', function () {
 			spyOn(Collections.BuildTypes, 'update');
 
-			Controllers.BuildTypes.onUpdateBuildHistory('NowNowNow', 'Something Here', true, false);
+			Controllers.BuildTypes.onUpdateBuildHistory('NowNowNow', 'Something Here', true, false, []);
 
 			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
 					{serverId: 'NowNowNow', buildTypeId: 'Something Here'},
-					{$set: {isLastBuildSuccess: true, isBuilding: false}},
+					{$set: {isLastBuildSuccess: true, isBuilding: false, builds: []}},
 					{multi: false}
 			);
 		});

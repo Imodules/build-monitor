@@ -266,7 +266,7 @@ describe('Services.TeamCity', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
 				cb(null, tcRunningBuilds);
 			});
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Controllers.BuildTypes, 'onStartBuild');
 			spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
 				return {
 					fetch: function () {
@@ -294,27 +294,27 @@ describe('Services.TeamCity', function () {
 			expect(runningBuildCallback.calls.count()).toBe(1);
 			expect(runningBuildCallback.calls.allArgs()).toEqual([['srvId2', true]]);
 
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith({
-						serverId: 'srvId2',
-						buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'
-					},
-					{$set: {isBuilding: true, currentBuildHref: '/httpAuth/app/rest/builds/id:112427', currentBuild: {pctComplete: 0}}}, {multi: false});
+			expect(Controllers.BuildTypes.onStartBuild).toHaveBeenCalledWith('srvId2', 'UpdateSite_AmazonWebServices_UpdateAwsMissouri', {
+				json: {
+					id: 112427,
+					number: '131',
+					isSuccess: true,
+					isBuilding: true,
+					href: '/httpAuth/app/rest/builds/id:112427'
+				}
+			}, 3);
 		});
 
 		it('should not re-update builds that it has already started', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
 				cb(null, tcRunningBuilds);
 			});
-			spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
-				return {
-					fetch: function () {
-						return [
-							{buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'}
-						];
-					}
-				}
+			spyOn(Controllers.BuildTypes, 'onGetActiveServerBuilds').and.callFake(function () {
+				return [
+					{buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'}
+				];
 			});
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Controllers.BuildTypes, 'onStartBuild');
 			var runningBuildCallback = jasmine.createSpy('spy');
 
 			var tc = new Services.TeamCity({
@@ -333,10 +333,8 @@ describe('Services.TeamCity', function () {
 
 			expect(runningBuildCallback.calls.count()).toBe(1);
 			expect(runningBuildCallback.calls.allArgs()).toEqual([['srvId2', true]]);
-			expect(Collections.BuildTypes.find).toHaveBeenCalledWith(
-					{serverId: 'srvId2', isBuilding: true}, {fields: {buildTypeId: 1}}
-			);
-			expect(Collections.BuildTypes.update).not.toHaveBeenCalled();
+			expect(Controllers.BuildTypes.onGetActiveServerBuilds).toHaveBeenCalledWith('srvId2');
+			expect(Controllers.BuildTypes.onStartBuild).not.toHaveBeenCalled();
 		});
 
 		it('sound call the callback with false if no running builds are returned', function () {
@@ -373,7 +371,7 @@ describe('Services.TeamCity', function () {
 				cb(null, tcLast2BuildsRunningAndFailure);
 			});
 
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Controllers.BuildTypes, 'onUpdateBuildHistory');
 
 			var tc = new Services.TeamCity({
 				_id: 'srvId3',
@@ -388,11 +386,24 @@ describe('Services.TeamCity', function () {
 				}
 			}, jasmine.any(Function));
 
-			expect(Collections.BuildTypes.update.calls.count()).toBe(1);
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
-					{serverId: 'srvId3', buildTypeId: 'MBP_UnitTestAndBundle'},
-					{$set: {isLastBuildSuccess: false, isBuilding: true}},
-					{multi: false}
+			expect(Controllers.BuildTypes.onUpdateBuildHistory).toHaveBeenCalledWith(
+					'srvId3', 'MBP_UnitTestAndBundle', false, true, [{
+						json: {
+							id: 665,
+							number: '193',
+							isSuccess: true,
+							isBuilding: true,
+							href: '/httpAuth/app/rest/builds/id:665'
+						}
+					}, {
+						json: {
+							id: 661,
+							number: '192',
+							isSuccess: false,
+							isBuilding: false,
+							href: '/httpAuth/app/rest/builds/id:661'
+						}
+					}]
 			);
 		});
 
@@ -401,7 +412,7 @@ describe('Services.TeamCity', function () {
 				cb(null, tcLast1BuildSuccess);
 			});
 
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Controllers.BuildTypes, 'onUpdateBuildHistory');
 
 			var tc = new Services.TeamCity({
 				_id: 'srvId3',
@@ -416,11 +427,16 @@ describe('Services.TeamCity', function () {
 				}
 			}, jasmine.any(Function));
 
-			expect(Collections.BuildTypes.update.calls.count()).toBe(1);
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
-					{serverId: 'srvId3', buildTypeId: 'MBP_UnitTestAndBundle'},
-					{$set: {isLastBuildSuccess: true, isBuilding: false}},
-					{multi: false}
+			expect(Controllers.BuildTypes.onUpdateBuildHistory).toHaveBeenCalledWith(
+					'srvId3', 'MBP_UnitTestAndBundle', true, false, [{
+						json: {
+							id: 665,
+							number: '193',
+							isSuccess: true,
+							isBuilding: false,
+							href: '/httpAuth/app/rest/builds/id:665'
+						}
+					}]
 			);
 		});
 
@@ -429,7 +445,7 @@ describe('Services.TeamCity', function () {
 				cb(null, tcLast2BuildsFailure);
 			});
 
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Controllers.BuildTypes, 'onUpdateBuildHistory');
 
 			var tc = new Services.TeamCity({
 				_id: 'srvId3',
@@ -444,12 +460,24 @@ describe('Services.TeamCity', function () {
 				}
 			}, jasmine.any(Function));
 
-			expect(Collections.BuildTypes.update.calls.count()).toBe(1);
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
-					{serverId: 'srvId3', buildTypeId: 'MBP_UnitTestAndBundle'},
-					{$set: {isLastBuildSuccess: false, isBuilding: false}},
-					{multi: false}
-			);
+			expect(Controllers.BuildTypes.onUpdateBuildHistory).toHaveBeenCalledWith(
+					'srvId3', 'MBP_UnitTestAndBundle', false, false, [{
+						json: {
+							id: 665,
+							number: '193',
+							isSuccess: false,
+							isBuilding: false,
+							href: '/httpAuth/app/rest/builds/id:665'
+						}
+					}, {
+						json: {
+							id: 661,
+							number: '192',
+							isSuccess: true,
+							isBuilding: false,
+							href: '/httpAuth/app/rest/builds/id:661'
+						}
+					}]);
 		});
 	});
 
@@ -468,7 +496,11 @@ describe('Services.TeamCity', function () {
 				url: 'http://example.com/severserver'
 			});
 
-			tc.getCurrentBuildStatus({_id: 'MyBuildId', currentBuildHref: '/build/server/detailed/stuff/id:113', isLastBuildSuccess: true}, cbSpy);
+			tc.getCurrentBuildStatus({
+				_id: 'MyBuildId',
+				currentBuild: {href: '/build/server/detailed/stuff/id:113'},
+				isLastBuildSuccess: true
+			}, cbSpy);
 
 			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/severserver/guestAuth/build/server/detailed/stuff/id:113', {
 				timeOut: 30000,
@@ -477,7 +509,7 @@ describe('Services.TeamCity', function () {
 				}
 			}, jasmine.any(Function));
 
-			expect(cbSpy).toHaveBeenCalledWith('MyBuildId', true, true, true, 30, 'Step 1/3');
+			expect(cbSpy).toHaveBeenCalledWith('MyBuildId', '/build/server/detailed/stuff/id:113', true, true, true, 30, 'Step 1/3');
 		});
 	});
 });
