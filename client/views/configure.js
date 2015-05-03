@@ -37,13 +37,27 @@ ViewModels.Configure = (function () {
 	};
 })();
 
-Template.configure.rendered = function () {
-	$('input[type="checkbox"]').bootstrapToggle();
-};
-
 Template.configure.helpers({
 	topLevelProjects: function () {
 		return Collections.Projects.find({parentId: null});
+	},
+	allMyBuilds: function () {
+		var myBuilds = Collections.MyBuildDisplay.find({isDisplayed: true}, {fields: {buildId: 1}}).fetch(),
+				myBuildIds = _.pluck(myBuilds, 'buildId');
+
+		return Collections.Builds.find({_id: {$in: myBuildIds}});
+	},
+	isDisplayedOnly: function () {
+		return Session.equals('displayedOnly', true);
+	},
+	isDisplayedOnlyActive: function () {
+		return Session.equals('displayedOnly', true) ? 'active' : '';
+	}
+});
+
+Template.configure.events({
+	'click #buildsOnly': function () {
+		Session.set('displayedOnly', !Session.equals('displayedOnly', true));
 	}
 });
 
@@ -88,7 +102,21 @@ Template.cfgProjectRow.helpers({
 	}
 });
 
+Template.cfgBuildTypeRow.rendered = function () {
+	this.$('input[type="checkbox"]').bootstrapToggle();
+};
+
 Template.cfgBuildTypeRow.helpers({
+	isDisplayedOnly: function () {
+		return Session.equals('displayedOnly', true);
+	},
+	parentName: function () {
+		var parent = Collections.Projects.findOne({projectId: this.projectId});
+		if (parent) {
+			return parent.name;
+		}
+		return '';
+	},
 	myBuildDisplayItem: function () {
 		var myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: Meteor.userId(), buildId: this._id});
 		if (!myBuildDisplayItem) {

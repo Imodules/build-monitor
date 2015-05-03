@@ -3,10 +3,24 @@
 		<h1><i class="fa fa-cogs"></i> Configure</h1>
 	</div>
 
+	<div class="row">
+		<div class="col-xs-12">
+			<ul class="nav nav-pills">
+				<li id="buildsOnly" role="presentation" class="{{isDisplayedOnlyActive}}"><a href="#"><i class="fa fa-filter"></i> Show Displayed Builds Only</a></li>
+			</ul>
+		</div>
+	</div>
+	<br/>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-		{{#each topLevelProjects}}
-			{{> cfgProjectRow}}
-		{{/each}}
+		{{#unless isDisplayedOnly}}
+			{{#each topLevelProjects}}
+				{{> cfgProjectRow}}
+			{{/each}}
+		{{else}}
+				{{#each allMyBuilds}}
+					{{> cfgBuildTypeRow}}
+				{{/each}}
+		{{/unless}}
 	</div>
 </template>
 
@@ -45,7 +59,12 @@
 
 	<div class="row">
 		<div class="col-xs-12 col-sm-4">
-			<h4>{{name}}</h4>
+			<h4>
+				{{name}}
+				{{#if isDisplayedOnly}}
+					<small>{{parentName}}</small>
+				{{/if}}
+			</h4>
 		</div>
 		{{#with myBuildDisplayItem}}
 		<div class="col-xs-12 col-sm-3">
