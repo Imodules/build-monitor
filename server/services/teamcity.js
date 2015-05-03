@@ -120,10 +120,7 @@ Services.TeamCity.prototype = {
 				isSuccess = builds.data.build[1].status === 'SUCCESS'
 			}
 
-			// TODO: This should be done in a different class. This class is just for TC communication. Use Controllers.BuildTypes
-			Collections.BuildTypes.update({serverId: self.server._id, buildTypeId: buildTypeId},
-					{$set: {isLastBuildSuccess: isSuccess, isBuilding: isBuilding}},
-					{multi: false});
+			Controllers.BuildTypes.onUpdateBuildHistory(self.server._id, buildTypeId, isSuccess, isBuilding);
 		});
 	},
 

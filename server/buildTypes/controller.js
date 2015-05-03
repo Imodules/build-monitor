@@ -34,9 +34,16 @@ Controllers.BuildTypes = (function () {
 				{multi: false});
 	}
 
+	function UpdateBuildHistory(serverId, buildTypeId, isLastSuccess, isBuilding) {
+		Collections.BuildTypes.update({serverId: serverId, buildTypeId: buildTypeId},
+				{$set: {isLastBuildSuccess: isLastSuccess, isBuilding: isBuilding}},
+				{multi: false});
+	}
+
 	return {
 		onUpdateBuildStatus: UpdateBuildStatus,
 		onGetActiveServerBuilds: GetActiveServerBuilds,
-		onStartBuild: StartBuild
+		onStartBuild: StartBuild,
+		onUpdateBuildHistory: UpdateBuildHistory
 	};
 })();

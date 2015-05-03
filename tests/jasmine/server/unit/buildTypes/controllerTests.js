@@ -50,7 +50,7 @@ describe('Controllers.BuildTypes', function () {
 		});
 	});
 
-	describe('onGetActiveServerBuilds', function () {
+	describe('onGetActiveServerBuilds()', function () {
 		it('should call Collections.BuildTypes.find', function () {
 			spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
 				return {
@@ -64,6 +64,20 @@ describe('Controllers.BuildTypes', function () {
 
 			expect(Collections.BuildTypes.find).toHaveBeenCalledWith({serverId: 'MeCo0lId', isBuilding: true},
 					{fields: {buildTypeId: 1}});
+		});
+	});
+
+	describe('onUpdateBuildHistory()', function () {
+		it('should update the BuildTypes history', function () {
+			spyOn(Collections.BuildTypes, 'update');
+
+			Controllers.BuildTypes.onUpdateBuildHistory('NowNowNow', 'Something Here', true, false);
+
+			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
+					{serverId: 'NowNowNow', buildTypeId: 'Something Here'},
+					{$set: {isLastBuildSuccess: true, isBuilding: false}},
+					{multi: false}
+			);
 		});
 	});
 });
