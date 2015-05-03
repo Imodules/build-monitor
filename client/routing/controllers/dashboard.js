@@ -5,10 +5,6 @@
 'use strict';
 Controllers.Route.Dashboard = Controllers.Route.Base.extend({
 	layoutTemplate: 'dashboard',
-	onBeforeAction: function () {
-		this.next();
-	},
-
 	waitOn: function () {
 		return [
 			Meteor.subscribe('displayedProjects'),

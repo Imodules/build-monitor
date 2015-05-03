@@ -4,6 +4,7 @@
 
 'use strict';
 Controllers.BuildTypes = (function () {
+	// TODO: Too many parameters. Fix.
 	function UpdateBuildStatus(id, href, isLastBuildSuccess, isCurrentSuccess, isBuilding, percentageComplete, statusText) {
 		var upd = {currentBuild: {href: href, pctComplete: percentageComplete, statusText: statusText}};
 

@@ -3,17 +3,37 @@
  */
 
 ViewModels.Configure = (function () {
-	function updateBuildTypeShortName(id, shortName) {
-		Collections.BuildTypes.update({_id: id}, {$set: {shortName: shortName}}, {multi: false});
+	function _upsert(id, shortName, isOn, cb) {
+		var userId = Meteor.userId(),
+				myBuildItem = Collections.MyBuildDisplay.findOne({userId: userId, buildTypeId: id});
+
+		if (!myBuildItem) {
+			Collections.MyBuildDisplay.insert({
+				userId: userId, buildTypeId: id, isDisplayed: (isOn === true), shortName: shortName
+			}, cb);
+		} else {
+			var setItem = { };
+			if (isOn !== null) {
+				setItem.isDisplayed = isOn;
+			}
+			if (!s(shortName).isBlank()) {
+				setItem.shortName = shortName;
+			}
+			Collections.MyBuildDisplay.update({_id: myBuildItem._id}, {$set: setItem}, cb);
+		}
 	}
 
-	function updateDisplayToggle(id, isOn) {
-		Collections.BuildTypes.update({_id: id}, {$set: {isDisplayed: isOn}}, {multi: false});
+	function updateBuildTypeShortName(id, shortName, cb) {
+		return _upsert(id, shortName, null, cb);
+	}
+
+	function updateDisplayToggle(id, isOn, cb) {
+		return _upsert(id, null, isOn, cb);
 	}
 
 	return {
-		OnUpdateBuildTypeShortName: updateBuildTypeShortName,
-		OnUpdateDisplayToggle: updateDisplayToggle
+		onUpdateBuildTypeShortName: updateBuildTypeShortName,
+		onUpdateDisplayToggle: updateDisplayToggle
 	};
 })();
 
@@ -69,17 +89,27 @@ Template.cfgProjectRow.helpers({
 });
 
 Template.cfgBuildTypeRow.helpers({
-	isDisplayed: function () {
-		return this.isDisplayed;
+	myBuildDisplayItem: function () {
+		console.log(this);
+		var myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: Meteor.userId(), buildTypeId: this._id});
+		if (!myBuildDisplayItem) {
+			return {
+				isDisplayed: false,
+				shortName: null,
+				buildTypeId: this._id
+			}
+		}
+
+		return myBuildDisplayItem;
 	}
 });
 
 Template.cfgBuildTypeRow.events({
 	'keyup input.shortName': function (e, t) {
-		ViewModels.Configure.OnUpdateBuildTypeShortName(this._id, t.$(e.currentTarget).val());
+		ViewModels.Configure.onUpdateBuildTypeShortName(this.buildTypeId, t.$(e.currentTarget).val());
 	},
 
 	'change input.isOn': function (e, t) {
-		ViewModels.Configure.OnUpdateDisplayToggle(this._id, t.$(e.currentTarget).is(':checked'));
+		ViewModels.Configure.onUpdateDisplayToggle(this.buildTypeId, t.$(e.currentTarget).is(':checked'));
 	}
 });

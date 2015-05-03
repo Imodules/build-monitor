@@ -4,10 +4,6 @@
 
 'use strict';
 Controllers.Route.Profile = Controllers.Route.Base.extend({
-    onBeforeAction: function () {
-        this.next();
-    },
-
     waitOn: function () {
 
     },

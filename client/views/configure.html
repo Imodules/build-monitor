@@ -40,10 +40,12 @@
 </template>
 
 <template name="cfgBuildTypeRow">
+
 	<div class="row">
 		<div class="col-xs-12 col-sm-4">
 			<h4>{{name}}</h4>
 		</div>
+		{{#with myBuildDisplayItem}}
 		<div class="col-xs-12 col-sm-3">
 			<input type="text" class="form-control shortName" placeholder="Short text to display on the build monitor" value="{{shortName}}" />
 		</div>
@@ -53,5 +55,6 @@
 		<div class="col-xs-12 col-sm-4">
 
 		</div>
+		{{/with}}
 	</div>
 </template>
