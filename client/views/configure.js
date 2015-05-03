@@ -5,11 +5,11 @@
 ViewModels.Configure = (function () {
 	function _upsert(id, shortName, isOn, cb) {
 		var userId = Meteor.userId(),
-				myBuildItem = Collections.MyBuildDisplay.findOne({userId: userId, buildTypeId: id});
+				myBuildItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: id});
 
 		if (!myBuildItem) {
 			Collections.MyBuildDisplay.insert({
-				userId: userId, buildTypeId: id, isDisplayed: (isOn === true), shortName: shortName
+				userId: userId, buildId: id, isDisplayed: (isOn === true), shortName: shortName
 			}, cb);
 		} else {
 			var setItem = { };
@@ -64,7 +64,7 @@ Template.cfgProjectRow.helpers({
 		return Collections.Projects.find({parentId: this.projectId}).count();
 	},
 	childBuildTypeCount: function () {
-		return Collections.BuildTypes.find({projectId: this.projectId}).count();
+		return Collections.Builds.find({projectId: this.projectId}).count();
 	},
 	hasChildren: function () {
 		return Collections.Projects.find({parentId: this.projectId}).count() > 0
@@ -73,10 +73,10 @@ Template.cfgProjectRow.helpers({
 		return Collections.Projects.find({parentId: this.projectId}, {sort: {name: 1}});
 	},
 	myBuilds: function () {
-		return Collections.BuildTypes.find({projectId: this.projectId}, {sort: {name: 1}});
+		return Collections.Builds.find({projectId: this.projectId}, {sort: {name: 1}});
 	},
 	enabledBuildCount: function () {
-		return Collections.BuildTypes.find({projectId: this.projectId, isDisplayed: true}).count();
+		return Collections.Builds.find({projectId: this.projectId, isDisplayed: true}).count();
 	},
 	parentAccordianId: function () {
 		if (this.parentId === null) {
@@ -91,12 +91,12 @@ Template.cfgProjectRow.helpers({
 Template.cfgBuildTypeRow.helpers({
 	myBuildDisplayItem: function () {
 		console.log(this);
-		var myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: Meteor.userId(), buildTypeId: this._id});
+		var myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: Meteor.userId(), buildId: this._id});
 		if (!myBuildDisplayItem) {
 			return {
 				isDisplayed: false,
 				shortName: null,
-				buildTypeId: this._id
+				buildId: this._id
 			}
 		}
 
@@ -106,10 +106,10 @@ Template.cfgBuildTypeRow.helpers({
 
 Template.cfgBuildTypeRow.events({
 	'keyup input.shortName': function (e, t) {
-		ViewModels.Configure.onUpdateBuildTypeShortName(this.buildTypeId, t.$(e.currentTarget).val());
+		ViewModels.Configure.onUpdateBuildTypeShortName(this.buildId, t.$(e.currentTarget).val());
 	},
 
 	'change input.isOn': function (e, t) {
-		ViewModels.Configure.onUpdateDisplayToggle(this.buildTypeId, t.$(e.currentTarget).is(':checked'));
+		ViewModels.Configure.onUpdateDisplayToggle(this.buildId, t.$(e.currentTarget).is(':checked'));
 	}
 });

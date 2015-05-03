@@ -60,7 +60,7 @@ Controllers.Server = (function () {
 		var server = Collections.Servers.findOne({_id: serverId});
 		var service = Services.Factory.getService(server);
 
-		var builds = Collections.BuildTypes.find({serverId: serverId, isBuilding: true}, {
+		var builds = Collections.Builds.find({serverId: serverId, isBuilding: true}, {
 			fields: {
 				currentBuild: 1,
 				isLastBuildSuccess: 1
@@ -73,7 +73,7 @@ Controllers.Server = (function () {
 		}
 
 		builds.forEach(function (build) {
-			service.getCurrentBuildStatus(build, Controllers.BuildTypes.onUpdateBuildStatus);
+			service.getCurrentBuildStatus(build, Controllers.Builds.onUpdateBuildStatus);
 		});
 	}
 
@@ -89,10 +89,10 @@ Controllers.Server = (function () {
 	function RefreshActiveBuilds() {
 		var servers = Collections.Servers.find();
 		servers.forEach(function (server) {
-			var bts = Collections.BuildTypes.find({serverId: server._id, isDisplayed: true});
+			var bts = Collections.Builds.find({serverId: server._id, isDisplayed: true});
 			bts.forEach(function (bt) {
 				var service = Services.Factory.getService(server);
-				service.refreshBuildHistory(bt.buildTypeId, 10);
+				service.refreshBuildHistory(bt.serviceBuildId, 10);
 			});
 		});
 	}

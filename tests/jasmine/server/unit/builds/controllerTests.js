@@ -6,13 +6,13 @@
 describe('Controllers.BuildTypes', function () {
 	describe('onUpdateBuildStatus()', function () {
 		beforeEach(function () {
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Collections.Builds, 'update');
 		});
 
 		it('should update the build in the database with the current build information', function () {
-			Controllers.BuildTypes.onUpdateBuildStatus('btId69', 'somewhere', true, true, true, 20, 'Still running bro');
+			Controllers.Builds.onUpdateBuildStatus('btId69', 'somewhere', true, true, true, 20, 'Still running bro');
 
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
+			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId69'},
 					{$set: {currentBuild: {href: 'somewhere', pctComplete: 20, statusText: 'Still running bro'}}},
 					{multi: false}
@@ -20,9 +20,9 @@ describe('Controllers.BuildTypes', function () {
 		});
 
 		it('should change isLastBuildSuccess to false if it is currently true and this build is failing', function () {
-			Controllers.BuildTypes.onUpdateBuildStatus('btId70', 'righthere', true, false, true, 20, 'Still running bro');
+			Controllers.Builds.onUpdateBuildStatus('btId70', 'righthere', true, false, true, 20, 'Still running bro');
 
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
+			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
 					{
 						$set: {
@@ -35,9 +35,9 @@ describe('Controllers.BuildTypes', function () {
 		});
 
 		it('should not change isLastBuildSuccess to true if is currently false and the new build is a success and it is still running', function () {
-			Controllers.BuildTypes.onUpdateBuildStatus('btId70', 'gogogog', false, true, true, 50, 'Cool Step 1/3');
+			Controllers.Builds.onUpdateBuildStatus('btId70', 'gogogog', false, true, true, 50, 'Cool Step 1/3');
 
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
+			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
 					{$set: {currentBuild: {href: 'gogogog', pctComplete: 50, statusText: 'Cool Step 1/3'}}},
 					{multi: false}
@@ -45,9 +45,9 @@ describe('Controllers.BuildTypes', function () {
 		});
 
 		it('should change isLastBuildSuccess to true if it was false and the current build succeeded and it is complete', function () {
-			Controllers.BuildTypes.onUpdateBuildStatus('btId70', 'yupyup', false, true, false, 100, 'Done');
+			Controllers.Builds.onUpdateBuildStatus('btId70', 'yupyup', false, true, false, 100, 'Done');
 
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
+			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
 					{
 						$set: {
@@ -65,7 +65,7 @@ describe('Controllers.BuildTypes', function () {
 
 	describe('onGetActiveServerBuilds()', function () {
 		it('should call Collections.BuildTypes.find', function () {
-			spyOn(Collections.BuildTypes, 'find').and.callFake(function () {
+			spyOn(Collections.Builds, 'find').and.callFake(function () {
 				return {
 					fetch: function () {
 						return [];
@@ -73,16 +73,16 @@ describe('Controllers.BuildTypes', function () {
 				};
 			});
 
-			Controllers.BuildTypes.onGetActiveServerBuilds('MeCo0lId');
+			Controllers.Builds.onGetActiveServerBuilds('MeCo0lId');
 
-			expect(Collections.BuildTypes.find).toHaveBeenCalledWith({serverId: 'MeCo0lId', isBuilding: true},
-					{fields: {buildTypeId: 1}});
+			expect(Collections.Builds.find).toHaveBeenCalledWith({serverId: 'MeCo0lId', isBuilding: true},
+					{fields: {serviceBuildId: 1}});
 		});
 	});
 
 	describe('onStartBuild()', function () {
 		it('should update current build info and insert new build history at the 0 index', function () {
-			spyOn(Collections.BuildTypes, 'findOne').and.callFake(function () {
+			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
 				return {
 					_id: 'Coolio',
 					builds: [{
@@ -102,9 +102,9 @@ describe('Controllers.BuildTypes', function () {
 				}
 			});
 
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Collections.Builds, 'update');
 
-			Controllers.BuildTypes.onStartBuild('Sweet1', 'MyBuildTypeHere', {
+			Controllers.Builds.onStartBuild('Sweet1', 'MyBuildTypeHere', {
 				json: {
 					id: 668,
 					number: '194',
@@ -115,12 +115,12 @@ describe('Controllers.BuildTypes', function () {
 				}
 			}, 1);
 
-			expect(Collections.BuildTypes.findOne).toHaveBeenCalledWith({
+			expect(Collections.Builds.findOne).toHaveBeenCalledWith({
 				serverId: 'Sweet1',
-				buildTypeId: 'MyBuildTypeHere'
+				serviceBuildId: 'MyBuildTypeHere'
 			}, {fields: {builds: 1}});
 
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith({_id: 'Coolio'},
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'Coolio'},
 					{
 						$set: {
 							isBuilding: true, currentBuild: {pctComplete: 1, href: '/httpAuth/app/rest/builds/id:668'},
@@ -150,7 +150,7 @@ describe('Controllers.BuildTypes', function () {
 		});
 
 		it('should remove the last build history if we are at 10', function () {
-			spyOn(Collections.BuildTypes, 'findOne').and.callFake(function () {
+			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
 				return {
 					_id: 'WowBigOne',
 					builds: [{
@@ -217,9 +217,9 @@ describe('Controllers.BuildTypes', function () {
 				}
 			});
 
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Collections.Builds, 'update');
 
-			Controllers.BuildTypes.onStartBuild('WowBigOne', 'YesYesIKnow', {
+			Controllers.Builds.onStartBuild('WowBigOne', 'YesYesIKnow', {
 				json: {
 					id: 700,
 					number: '210',
@@ -229,7 +229,7 @@ describe('Controllers.BuildTypes', function () {
 				}
 			}, 1);
 
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith({_id: 'WowBigOne'},
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'WowBigOne'},
 					{
 						$set: {
 							isBuilding: true, currentBuild: {pctComplete: 1, href: '/httpAuth/app/rest/builds/id:700'},
@@ -302,12 +302,12 @@ describe('Controllers.BuildTypes', function () {
 
 	describe('onUpdateBuildHistory()', function () {
 		it('should update the BuildTypes history', function () {
-			spyOn(Collections.BuildTypes, 'update');
+			spyOn(Collections.Builds, 'update');
 
-			Controllers.BuildTypes.onUpdateBuildHistory('NowNowNow', 'Something Here', true, false, []);
+			Controllers.Builds.onUpdateBuildHistory('NowNowNow', 'Something Here', true, false, []);
 
-			expect(Collections.BuildTypes.update).toHaveBeenCalledWith(
-					{serverId: 'NowNowNow', buildTypeId: 'Something Here'},
+			expect(Collections.Builds.update).toHaveBeenCalledWith(
+					{serverId: 'NowNowNow', serviceBuildId: 'Something Here'},
 					{$set: {isLastBuildSuccess: true, isBuilding: false, builds: []}},
 					{multi: false}
 			);

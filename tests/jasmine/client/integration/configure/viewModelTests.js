@@ -34,7 +34,7 @@ describe('ViewModels.Configure', function () {
 
 				expect(myBuildItem).not.toBeFalsy();
 				expect(myBuildItem.userId).toBe(userId);
-				expect(myBuildItem.buildTypeId).toBe('SomeBuildTypeId884');
+				expect(myBuildItem.buildId).toBe('SomeBuildTypeId884');
 				expect(myBuildItem.shortName).toBe('mySweetShortName');
 
 				firstShortNameTestId = myBuildItem._id;
@@ -44,7 +44,7 @@ describe('ViewModels.Configure', function () {
 
 		it('should not create a new record for a different user.', function (done) {
 			Collections.MyBuildDisplay.insert({
-				userId: 'someOneElse', buildTypeId: 'HereKittyKitty', isDisplayed: false, shortName: 'SomethingClever'
+				userId: 'someOneElse', buildId: 'HereKittyKitty', isDisplayed: false, shortName: 'SomethingClever'
 			}, function (err, id) {
 
 				var myBuildItem = Collections.MyBuildDisplay.findOne({_id: id});
@@ -63,7 +63,7 @@ describe('ViewModels.Configure', function () {
 
 				expect(myBuildItem).not.toBeFalsy();
 				expect(myBuildItem.userId).toBe(userId);
-				expect(myBuildItem.buildTypeId).toBe('SomeBuildTypeId884');
+				expect(myBuildItem.buildId).toBe('SomeBuildTypeId884');
 				expect(myBuildItem.shortName).toBe('MyNewNameHEre');
 
 				done();

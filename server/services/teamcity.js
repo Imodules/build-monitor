@@ -85,12 +85,12 @@ Services.TeamCity.prototype = {
 				return cb(self.server._id, false);
 			}
 
-			var currentActive = Controllers.BuildTypes.onGetActiveServerBuilds(self.server._id);
+			var currentActive = Controllers.Builds.onGetActiveServerBuilds(self.server._id);
 			for (var i = 0; i < builds.data.count; i++) {
 				var build = builds.data.build[i];
 
 				if (!_.find(currentActive, function (c) {
-							return c.buildTypeId === build.buildTypeId
+							return c.serviceBuildId === build.buildTypeId
 						})) {
 
 					var bh = new Models.BuildHistory({
@@ -101,7 +101,7 @@ Services.TeamCity.prototype = {
 						href: build.href
 					});
 
-					Controllers.BuildTypes.onStartBuild(
+					Controllers.Builds.onStartBuild(
 							self.server._id, build.buildTypeId, bh, build.percentageComplete
 					);
 				}
@@ -145,7 +145,7 @@ Services.TeamCity.prototype = {
 				buildHistories.push(bh);
 			}
 
-			Controllers.BuildTypes.onUpdateBuildHistory(
+			Controllers.Builds.onUpdateBuildHistory(
 					self.server._id,
 					buildTypeId,
 					isSuccess,

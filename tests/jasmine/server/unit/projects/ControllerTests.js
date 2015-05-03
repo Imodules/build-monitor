@@ -93,16 +93,16 @@ describe('Controller.Servers', function () {
 			spyOn(s, 'isBlank').and.callFake(function () {
 				return false;
 			});
-			spyOn(Collections.BuildTypes, 'upsert').and.callFake(function () {
+			spyOn(Collections.Builds, 'upsert').and.callFake(function () {
 				return true;
 			});
 
 			Controllers.Projects.onAddBuild('SrvId', 'ProjId', 'BtId', 'My Cool Name BTO', 'http://example.com/mbp/btype');
 
-			expect(Collections.BuildTypes.upsert).toHaveBeenCalledWith({
+			expect(Collections.Builds.upsert).toHaveBeenCalledWith({
 						serverId: 'SrvId',
 						projectId: 'ProjId',
-						buildTypeId: 'BtId'
+						serviceBuildId: 'BtId'
 					},
 					{
 						$set: {

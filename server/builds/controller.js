@@ -3,7 +3,7 @@
  */
 
 'use strict';
-Controllers.BuildTypes = (function () {
+Controllers.Builds = (function () {
 	// TODO: Too many parameters. Fix.
 	function UpdateBuildStatus(id, href, isLastBuildSuccess, isCurrentSuccess, isBuilding, percentageComplete, statusText) {
 		var upd = {currentBuild: {href: href, pctComplete: percentageComplete, statusText: statusText}};
@@ -20,21 +20,21 @@ Controllers.BuildTypes = (function () {
 			upd['builds.0.isSuccess'] = isCurrentSuccess;
 		}
 
-		Collections.BuildTypes.update({_id: id},
+		Collections.Builds.update({_id: id},
 				{$set: upd},
 				{multi: false});
 	}
 
 	function GetActiveServerBuilds(serverId) {
-		return Collections.BuildTypes.find(
+		return Collections.Builds.find(
 				{serverId: serverId, isBuilding: true},
-				{fields: {buildTypeId: 1}}
+				{fields: {serviceBuildId: 1}}
 		).fetch();
 	}
 
-	function StartBuild(serverId, buildTypeId, bhItem, percentComplete) {
+	function StartBuild(serverId, serviceBuildId, bhItem, percentComplete) {
 		var bh = bhItem.json,
-				bt = Collections.BuildTypes.findOne({serverId: serverId, buildTypeId: buildTypeId},
+				bt = Collections.Builds.findOne({serverId: serverId, serviceBuildId: serviceBuildId},
 						{fields: {builds: 1}});
 
 		bt.builds.splice(0, 0, bh);
@@ -42,19 +42,19 @@ Controllers.BuildTypes = (function () {
 			bt.builds.pop();
 		}
 
-		Collections.BuildTypes.update({_id: bt._id},
+		Collections.Builds.update({_id: bt._id},
 				{$set: {
 					isBuilding: true, currentBuild: {pctComplete: percentComplete, href: bh.href}, builds: bt.builds
 				}},
 				{multi: false});
 	}
 
-	function UpdateBuildHistory(serverId, buildTypeId, isLastSuccess, isBuilding, buildHistories) {
+	function UpdateBuildHistory(serverId, serviceBuildId, isLastSuccess, isBuilding, buildHistories) {
 		var historyJson = _.map(buildHistories, function (hist) {
 			return hist.json;
 		});
 
-		Collections.BuildTypes.update({serverId: serverId, buildTypeId: buildTypeId},
+		Collections.Builds.update({serverId: serverId, serviceBuildId: serviceBuildId},
 				{$set: {isLastBuildSuccess: isLastSuccess, isBuilding: isBuilding, builds: historyJson}},
 				{multi: false});
 	}

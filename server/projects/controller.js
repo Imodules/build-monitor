@@ -18,16 +18,16 @@ Controllers.Projects = (function () {
 		var service = Services.Factory.getService(server);
 
 		// Call populate our projects.
-		service.refreshFromServer(AddProject, AddBuildType);
+		service.refreshFromServer(AddProject, AddBuild);
 
 		return true;
 	}
 
-	function AddBuildType(serverId, projectId, buildTypeId, name, url) {
-		return Collections.BuildTypes.upsert({
+	function AddBuild(serverId, projectId, serviceBuildId, name, url) {
+		return Collections.Builds.upsert({
 			serverId: serverId,
 			projectId: projectId,
-			buildTypeId: buildTypeId
+			serviceBuildId: serviceBuildId
 		}, {
 			$set: {
 				name: name,
@@ -52,6 +52,6 @@ Controllers.Projects = (function () {
 	return {
 		onRefreshProjects: RefreshProjects,
 		onAddProject: AddProject,
-		onAddBuild: AddBuildType
+		onAddBuild: AddBuild
 	};
 })();

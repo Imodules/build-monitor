@@ -5,7 +5,7 @@
 'use strict';
 Template.home.helpers({
 	buildItems: function () {
-		return Collections.BuildTypes.find({}, {sort: {shortName: 1}});
+		return Collections.Builds.find({}, {sort: {shortName: 1}});
 	}
 });
 
