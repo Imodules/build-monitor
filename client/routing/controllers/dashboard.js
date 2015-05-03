@@ -8,7 +8,7 @@ Controllers.Route.Dashboard = Controllers.Route.Base.extend({
 	waitOn: function () {
 		return [
 			Meteor.subscribe('displayedProjects'),
-			Meteor.subscribe('displayedBuildTypes')
+			Meteor.subscribe('displayedBuilds')
 		];
 	},
 

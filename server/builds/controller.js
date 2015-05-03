@@ -59,10 +59,32 @@ Controllers.Builds = (function () {
 				{multi: false});
 	}
 
+	function MyBuildDisplayHasChanged(buildId, isDisplayed) {
+		var build = Collections.Builds.findOne({_id: buildId});
+		if (!build) {
+			console.log('MyBuildDisplayHasChanged(): Couldn not find build: ' + buildId);
+			return;
+		}
+
+		if (!build.isDisplayed && isDisplayed) {
+			Collections.Builds.update({_id: buildId}, {$set: {isDisplayed: true}});
+			var server = Collections.Servers.findOne({_id: build.serverId}),
+					service = Services.Factory.getService(server);
+			service.refreshBuildHistory(build.serviceBuildId, 10);
+		} else if(build.isDisplayed && !isDisplayed) {
+			var count = Controllers.MyBuildDisplay.onGetBuildDisplayCount(buildId);
+			// It will still find at least 1 here because the caller has not updated theirs yet.
+			if (count <= 1) {
+				Collections.Builds.update({_id: buildId}, {$set: {isDisplayed: false}});
+			}
+		}
+	}
+
 	return {
 		onUpdateBuildStatus: UpdateBuildStatus,
 		onGetActiveServerBuilds: GetActiveServerBuilds,
 		onStartBuild: StartBuild,
-		onUpdateBuildHistory: UpdateBuildHistory
+		onUpdateBuildHistory: UpdateBuildHistory,
+		onMyBuildDisplayHasChanged: MyBuildDisplayHasChanged
 	};
 })();

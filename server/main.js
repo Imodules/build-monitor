@@ -16,12 +16,15 @@ Controllers.Server = (function () {
 			currentBuildServerTimerHandles = [];
 
 	function StartRunningBuildsTimer(serverId) {
-		console.log('Starting running build timer for server: ' + serverId);
-		var id = Meteor.setInterval(function () {
-			Controllers.Server.onRunningBuildQueryInterval(serverId);
-		}, CURRENT_BUILD_STATUS_QUERY_MS);
+		if (!process.env.IS_MIRROR) {
+			console.log('Starting running build timer for server: ' + serverId);
 
-		currentBuildServerTimerHandles.push({serverId: serverId, timerId: id});
+			var id = Meteor.setInterval(function () {
+				Controllers.Server.onRunningBuildQueryInterval(serverId);
+			}, CURRENT_BUILD_STATUS_QUERY_MS);
+
+			currentBuildServerTimerHandles.push({serverId: serverId, timerId: id});
+		}
 	}
 
 	function StopRunningBuildsTimer(serverId) {
@@ -83,7 +86,9 @@ Controllers.Server = (function () {
 			buildQueryHandle = false;
 		}
 
-		buildQueryHandle = Meteor.setInterval(BuildQueryInterval, RUNNING_BUILD_QUERY_MS);
+		if (!process.env.IS_MIRROR) {
+			buildQueryHandle = Meteor.setInterval(BuildQueryInterval, RUNNING_BUILD_QUERY_MS);
+		}
 	}
 
 	function RefreshActiveBuilds() {

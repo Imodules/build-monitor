@@ -313,4 +313,86 @@ describe('Controllers.BuildTypes', function () {
 			);
 		});
 	});
+
+	describe('onMyBuildDisplayHasChanged()', function () {
+		it('should update the isDisplayed of the build if it changed and call the refreshBuildHistory service', function () {
+			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
+				return {isDisplayed: false, serverId: 'c00lServerId', serviceBuildId: 'tcBuildId_89484'};
+			});
+			spyOn(Collections.Servers, 'findOne').and.callFake(function () {
+				return {_id: 'c00lServerId', type: 'teamcity', url: 'http://example.com/one/two'};
+			});
+			spyOn(Collections.Builds, 'update');
+			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount');
+			spyOn(Services.TeamCity.prototype, 'refreshBuildHistory');
+
+			Controllers.Builds.onMyBuildDisplayHasChanged('848484', true);
+
+			expect(Collections.Builds.findOne).toHaveBeenCalledWith({_id: '848484'});
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '848484'}, {$set: {isDisplayed: true}});
+			expect(Controllers.MyBuildDisplay.onGetBuildDisplayCount).not.toHaveBeenCalled();
+			expect(Collections.Servers.findOne).toHaveBeenCalledWith({_id: 'c00lServerId'});
+			expect(Services.TeamCity.prototype.refreshBuildHistory).toHaveBeenCalledWith('tcBuildId_89484', 10);
+		});
+
+		it('should not call update if it has not changed from true', function () {
+			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
+				return {isDisplayed: true, serverId: 'aa44dd', serviceBuildId: 'tcBuildId_adsf'};
+			});
+			spyOn(Collections.Builds, 'update');
+			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount');
+			spyOn(Services.TeamCity.prototype, 'refreshBuildHistory');
+
+			Controllers.Builds.onMyBuildDisplayHasChanged('adsf55ddd', true);
+
+			expect(Collections.Builds.findOne).toHaveBeenCalledWith({_id: 'adsf55ddd'});
+			expect(Collections.Builds.update).not.toHaveBeenCalled();
+			expect(Controllers.MyBuildDisplay.onGetBuildDisplayCount).not.toHaveBeenCalled();
+			expect(Services.TeamCity.prototype.refreshBuildHistory).not.toHaveBeenCalled();
+		});
+
+		it('should not call update if it has not changed from false', function () {
+			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
+				return {isDisplayed: false, serverId: 'aa44dd', serviceBuildId: 'tcBuildId_adsf'};
+			});
+			spyOn(Collections.Builds, 'update');
+			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount');
+			spyOn(Services.TeamCity.prototype, 'refreshBuildHistory');
+
+			Controllers.Builds.onMyBuildDisplayHasChanged('adsf55adfddd', false);
+
+			expect(Collections.Builds.findOne).toHaveBeenCalledWith({_id: 'adsf55adfddd'});
+			expect(Collections.Builds.update).not.toHaveBeenCalled();
+			expect(Controllers.MyBuildDisplay.onGetBuildDisplayCount).not.toHaveBeenCalled();
+			expect(Services.TeamCity.prototype.refreshBuildHistory).not.toHaveBeenCalled();
+		});
+
+		it('should update to false from true', function () {
+			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
+				return {isDisplayed: true, serverId: '585dd22ee', serviceBuildId: 'tcBuildId_445ttbb'};
+			});
+			spyOn(Collections.Builds, 'update');
+			spyOn(Services.TeamCity.prototype, 'refreshBuildHistory');
+			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount').and.callFake(function() { return 1; });
+
+			Controllers.Builds.onMyBuildDisplayHasChanged('adsf55adfddd', false);
+
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'adsf55adfddd'}, {$set: {isDisplayed: false}});
+			expect(Services.TeamCity.prototype.refreshBuildHistory).not.toHaveBeenCalled();
+		});
+
+		it('should not update to false if there is still more than 1 person displaying this build', function () {
+			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
+				return {isDisplayed: true, serverId: 'aa44dd2f', serviceBuildId: 'tcBuildId_adsf2f'};
+			});
+			spyOn(Collections.Builds, 'update');
+			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount').and.callFake(function() { return 2; });
+			spyOn(Services.TeamCity.prototype, 'refreshBuildHistory');
+
+			Controllers.Builds.onMyBuildDisplayHasChanged('00dd00ee', false);
+
+			expect(Collections.Builds.update).not.toHaveBeenCalled();
+			expect(Services.TeamCity.prototype.refreshBuildHistory).not.toHaveBeenCalled();
+		});
+	});
 });

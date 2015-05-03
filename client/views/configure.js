@@ -90,7 +90,6 @@ Template.cfgProjectRow.helpers({
 
 Template.cfgBuildTypeRow.helpers({
 	myBuildDisplayItem: function () {
-		console.log(this);
 		var myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: Meteor.userId(), buildId: this._id});
 		if (!myBuildDisplayItem) {
 			return {

@@ -7,9 +7,8 @@ Meteor.publish('builds', function () {
 });
 
 Meteor.publish('displayedBuilds', function () {
-	var myBuilds = Collections.MyBuildDisplay.find({userId: this.userId}, {fields: {buildId: 1}});
-	// TODO: Need to flatten this to an array then only get those builds I'm interested in.
-	console.log(myBuilds);
+	var myBuilds = Collections.MyBuildDisplay.find({userId: this.userId, isDisplayed: true}, {fields: {buildId: 1}}).fetch(),
+			myBuildIds = _.pluck(myBuilds, 'buildId');
 
-	return Collections.Builds.find({isDisplayed: true});
+	return Collections.Builds.find({_id: {$in: myBuildIds}});
 });

@@ -11,11 +11,12 @@ Template.home.helpers({
 
 Template.buildItem.helpers({
 	myBigName: function () {
-		if (s.isBlank(this.shortName)) {
+		var myItem = Collections.MyBuildDisplay.findOne({buildId: this._id});
+		if (!myItem || s.isBlank(myItem.shortName)) {
 			return this.name;
 		}
 
-		return this.shortName;
+		return myItem.shortName;
 	},
 
 	isBuildingClass: function () {
@@ -24,12 +25,7 @@ Template.buildItem.helpers({
 
 	buildStateClass: function () {
 		return this.isLastBuildSuccess ? 'success' : 'error';
-	},
-
-	//builds: function () {
-	//	// fa fa-cog fa-spin
-	//	return [0, 1, 2, 3, 4, 5, 6, 7, 8 , 9]
-	//}
+	}
 });
 
 Template.buildHistory.helpers({
