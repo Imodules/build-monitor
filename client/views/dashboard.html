@@ -12,12 +12,20 @@
 			<div class="bi-title">{{myBigName}}</div>
 			<div class="bi-sub-title">{{name}}</div>
 
-			{{#if isBuilding}}
-				<div class="bsCurrent">
-					{{currentBuild.statusText}} ({{currentBuild.pctComplete}}%)
-				</div>
-			{{/if}}
+			<h4>
+				{{#each builds}}
+					<div class="sucLabel"><i class="fa fa-remove"></i></div>
+				{{/each}}
+				<div class="clearfix"></div>
+			</h4>
 
+				<div class="bsCurrent">
+			{{#if isBuilding}}
+					{{currentBuild.statusText}} ({{currentBuild.pctComplete}}%)
+				{{else}}
+				  20m 10s
+			{{/if}}
+				</div>
 		</div>
 	</div>
 </template>

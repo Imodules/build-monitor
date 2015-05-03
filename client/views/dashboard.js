@@ -24,6 +24,11 @@ Template.buildItem.helpers({
 
 	buildStateClass: function () {
 		return this.isLastBuildSuccess ? 'success' : 'error';
+	},
+
+	builds: function () {
+		// fa fa-cog fa-spin
+		return [0, 1, 2, 3, 4, 5, 6, 7, 8 , 9]
 	}
 });
 
