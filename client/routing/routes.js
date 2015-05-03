@@ -17,5 +17,5 @@ Router.route('/', { name: 'dashboard', controller: Controllers.Route.Dashboard }
 Router.route('/servers', { name: 'servers', controller: Controllers.Route.Servers });
 
 Router.route('/login', { name: 'login', controller: Controllers.Route.Login });
-Router.route('/profile', { name: 'profile', controller: Controllers.Route.Profile });
+Router.route('/users', { name: 'users', controller: Controllers.Route.Users });
 Router.route('/configure', { name: 'configure', controller: Controllers.Route.Configure });

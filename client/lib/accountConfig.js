@@ -28,19 +28,5 @@ AccountsTemplates.configure({
 
 	// Redirects
 	homeRoutePath: '/',
-	redirectTimeout: 4000,
-
-	onSubmitHook: function(error, state){
-		if (!error) {
-			if (state === "signIn") {
-				// Successfully logged in
-				// Redirect to home.
-				Router.go('/');
-			}
-			if (state === "signUp") {
-				// Successfully registered
-				Router.go('/profile');
-			}
-		}
-	}
+	redirectTimeout: 4000
 });

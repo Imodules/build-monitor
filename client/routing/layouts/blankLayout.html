@@ -13,12 +13,12 @@
 					<li role="presentation" class="{{isActiveRoute regex='^servers$'}}">
 						<a href="{{pathFor route='servers'}}"><i class="fa fa-server"></i> Servers</a>
 					</li>
+						<li role="presentation" class="{{isActiveRoute regex='^users'}}">
+							<a href="{{pathFor route='users'}}"><i class="fa fa-user"></i> Users</a>
+						</li>
 					{{/if}}
 					<li role="presentation" class="{{isActiveRoute regex='^configure$'}}">
 						<a href="{{pathFor route='configure'}}"><i class="fa fa-cog"></i> Configure</a>
-					</li>
-					<li role="presentation" class="{{isActiveRoute regex='^profile$'}}">
-						<a href="{{pathFor route='profile'}}"><i class="fa fa-user"></i> Profile</a>
 					</li>
 				</ul>
 			</div>

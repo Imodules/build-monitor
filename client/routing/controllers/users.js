@@ -3,7 +3,7 @@
  */
 
 'use strict';
-Controllers.Route.Profile = Controllers.Route.Base.extend({
+Controllers.Route.Users = Controllers.Route.Base.extend({
     waitOn: function () {
 
     },
@@ -13,6 +13,6 @@ Controllers.Route.Profile = Controllers.Route.Base.extend({
     },
 
     action: function () {
-        this.render('profile');
+        this.render('users');
     }
 });
