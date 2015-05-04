@@ -37,6 +37,10 @@ Controllers.Builds = (function () {
 				bt = Collections.Builds.findOne({serverId: serverId, serviceBuildId: serviceBuildId},
 						{fields: {builds: 1}});
 
+		if (!bt.builds) {
+			bt.builds = [];
+		}
+
 		bt.builds.splice(0, 0, bh);
 		while (bt.builds.length > 10) {
 			bt.builds.pop();

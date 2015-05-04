@@ -81,6 +81,48 @@ describe('Controllers.Builds', function () {
 	});
 
 	describe('onStartBuild()', function () {
+
+		it('should update current build info and insert new build history at the 0 index even if the builds array does not exist', function () {
+			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
+				return {
+					_id: 'Coolio'
+				};
+			});
+
+			spyOn(Collections.Builds, 'update');
+
+			Controllers.Builds.onStartBuild('Sweet1', 'MyBuildTypeHere', {
+				json: {
+					id: 668,
+					number: '194',
+					isSuccess: true,
+					isBuilding: true,
+					href: '/httpAuth/app/rest/builds/id:668'
+
+				}
+			}, 1);
+
+			expect(Collections.Builds.findOne).toHaveBeenCalledWith({
+				serverId: 'Sweet1',
+				serviceBuildId: 'MyBuildTypeHere'
+			}, {fields: {builds: 1}});
+
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'Coolio'},
+					{
+						$set: {
+							isBuilding: true, currentBuild: {pctComplete: 1, href: '/httpAuth/app/rest/builds/id:668'},
+							builds: [{
+								id: 668,
+								number: '194',
+								isSuccess: true,
+								isBuilding: true,
+								href: '/httpAuth/app/rest/builds/id:668'
+							}]
+						}
+					}, {multi: false}
+			);
+		});
+
 		it('should update current build info and insert new build history at the 0 index', function () {
 			spyOn(Collections.Builds, 'findOne').and.callFake(function () {
 				return {
@@ -99,7 +141,7 @@ describe('Controllers.Builds', function () {
 						isBuilding: false,
 						href: '/httpAuth/app/rest/builds/id:661'
 					}]
-				}
+				};
 			});
 
 			spyOn(Collections.Builds, 'update');
