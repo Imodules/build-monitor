@@ -80,11 +80,23 @@ Controllers.Builds = (function () {
 		}
 	}
 
+	function RemoveByServerId(serverId) {
+		var builds = Collections.Builds.find({serverId: serverId}, {fields: {_id: 1}}).fetch();
+
+		builds.forEach(function (build) {
+			Controllers.MyBuildDisplay.onRemoveByBuildId(build._id);
+		});
+
+		console.log('Removing Builds');
+		Collections.Builds.remove({serverId: serverId});
+	}
+
 	return {
 		onUpdateBuildStatus: UpdateBuildStatus,
 		onGetActiveServerBuilds: GetActiveServerBuilds,
 		onStartBuild: StartBuild,
 		onUpdateBuildHistory: UpdateBuildHistory,
-		onMyBuildDisplayHasChanged: MyBuildDisplayHasChanged
+		onMyBuildDisplayHasChanged: MyBuildDisplayHasChanged,
+		onRemoveByServerId: RemoveByServerId
 	};
 })();

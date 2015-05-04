@@ -57,8 +57,17 @@ Controllers.Servers = (function () {
 		});
 	}
 
+	function DeleteServer(id) {
+		_validateUser();
+
+		Controllers.Projects.onRemoveByServerId(id);
+		Controllers.Builds.onRemoveByServerId(id);
+		Collections.Servers.remove({_id: id});
+	}
+
 	return {
 		onInsertServer: InsertServer,
-		onUpdateServer: UpdateServer
+		onUpdateServer: UpdateServer,
+		onDeleteServer: DeleteServer
 	};
 })();

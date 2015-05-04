@@ -49,9 +49,14 @@ Controllers.Projects = (function () {
 		}, {multi: false});
 	}
 
+	function RemoveByServerId(serverId) {
+		Collections.Projects.remove({serverId: serverId});
+	}
+
 	return {
-		onRefreshProjects: RefreshProjects,
+		onRefresh: RefreshProjects,
 		onAddProject: AddProject,
-		onAddBuild: AddBuild
+		onAddBuild: AddBuild,
+		onRemoveByServerId: RemoveByServerId
 	};
 })();

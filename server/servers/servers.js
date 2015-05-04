@@ -7,7 +7,6 @@ Collections.Servers.allow({
 	insert: function () {
 		return false;
 	},
-
 	update: function () {
 		return false;
 	},
@@ -18,5 +17,6 @@ Collections.Servers.allow({
 
 Meteor.methods({
 	insertServer: Controllers.Servers.onInsertServer,
-	updateServer: Controllers.Servers.onUpdateServer
+	updateServer: Controllers.Servers.onUpdateServer,
+	deleteServer: Controllers.Servers.onDeleteServer
 });

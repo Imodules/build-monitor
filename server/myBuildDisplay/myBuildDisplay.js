@@ -4,6 +4,19 @@
 
 'use strict';
 Controllers.MyBuildDisplayAllow = (function () {
+	function Insert(userId, doc) {
+		if (userId !== Meteor.userId()) {
+			return false;
+		}
+
+		console.log(doc);
+		if (doc.isDisplayed === true) {
+			Controllers.Builds.onMyBuildDisplayHasChanged(doc.buildId, doc.isDisplayed);
+		}
+
+		return true;
+	}
+
 	function Update(userId, doc, fieldNames, modifier) {
 		if (userId !== Meteor.userId()) {
 			return false;
@@ -19,15 +32,13 @@ Controllers.MyBuildDisplayAllow = (function () {
 	}
 
 	return {
+		onInsert: Insert,
 		onUpdate: Update
 	}
 })();
 
 Collections.MyBuildDisplay.allow({
-	insert: function (userId, doc) {
-		return userId === Meteor.userId();
-	},
-
+	insert: Controllers.MyBuildDisplayAllow.onInsert,
 	update: Controllers.MyBuildDisplayAllow.onUpdate,
 
 	remove: function () {

@@ -3,7 +3,7 @@
  */
 
 'use strict';
-describe('Controllers.BuildTypes', function () {
+describe('Controllers.Builds', function () {
 	describe('onUpdateBuildStatus()', function () {
 		beforeEach(function () {
 			spyOn(Collections.Builds, 'update');
@@ -393,6 +393,30 @@ describe('Controllers.BuildTypes', function () {
 
 			expect(Collections.Builds.update).not.toHaveBeenCalled();
 			expect(Services.TeamCity.prototype.refreshBuildHistory).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('onRemoveByServerId()', function () {
+		it('should remove all MyBuildDisplays and all builds by serverId', function () {
+			spyOn(Controllers.MyBuildDisplay, 'onRemoveByBuildId');
+			spyOn(Collections.Builds, 'remove');
+			spyOn(Collections.Builds, 'find').and.callFake(function () {
+				return {
+					fetch: function () {
+						return [
+							{_id: 'bid_1'}, {_id: 'bid_2'}
+						];
+					}
+				};
+			});
+
+			Controllers.Builds.onRemoveByServerId('36DD');
+
+			expect(Collections.Builds.find).toHaveBeenCalledWith({serverId: '36DD'}, {fields: {_id: 1}});
+			expect(Controllers.MyBuildDisplay.onRemoveByBuildId.calls.count()).toBe(2);
+			expect(Controllers.MyBuildDisplay.onRemoveByBuildId).toHaveBeenCalledWith('bid_1');
+			expect(Controllers.MyBuildDisplay.onRemoveByBuildId).toHaveBeenCalledWith('bid_2');
+			expect(Collections.Builds.remove).toHaveBeenCalledWith({serverId: '36DD'});
 		});
 	});
 });

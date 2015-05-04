@@ -4,7 +4,8 @@
 
 'use strict';
 var s = {
-	isBlank: function () {}
+	isBlank: function () {
+	}
 };
 
 describe('Controllers.Servers', function () {
@@ -27,6 +28,12 @@ describe('Controllers.Servers', function () {
 		it('onUpdateServer() should throw if the user is not an admin', function () {
 			expect(function () {
 				Controllers.Servers.onUpdateServer('2', 'New server', 'http://newhost:80', 'tcUser', 'tcPass');
+			}).toThrow();
+		});
+
+		it('onDeleteServer() should throw if the user is not and admin', function () {
+			expect(function () {
+				Controllers.Servers.onDeleteServer('112');
 			}).toThrow();
 		});
 	});
@@ -56,16 +63,27 @@ describe('Controllers.Servers', function () {
 		});
 
 
-
 		it('should call insert', function () {
-			spyOn(Collections.Servers, 'findOne').and.callFake(function () { return null; });
-			spyOn(Collections.Servers, 'insert').and.callFake(function () { return '1'; });
+			spyOn(Collections.Servers, 'findOne').and.callFake(function () {
+				return null;
+			});
+			spyOn(Collections.Servers, 'insert').and.callFake(function () {
+				return '1';
+			});
 
-			spyOn(s, 'isBlank').and.callFake(function () { return true; });
+			spyOn(s, 'isBlank').and.callFake(function () {
+				return true;
+			});
 
 			Controllers.Servers.onInsertServer('Server Name', 'http://lhost2:80');
 
-			expect(Collections.Servers.insert).toHaveBeenCalledWith({ name: 'Server Name', type: 'teamcity', url: 'http://lhost2:80', user: false, password: false});
+			expect(Collections.Servers.insert).toHaveBeenCalledWith({
+				name: 'Server Name',
+				type: 'teamcity',
+				url: 'http://lhost2:80',
+				user: false,
+				password: false
+			});
 		});
 	});
 
@@ -99,14 +117,50 @@ describe('Controllers.Servers', function () {
 		});
 
 		it('should call update if a current record exists', function () {
-			spyOn(s, 'isBlank').and.callFake(function () { return false; });
+			spyOn(s, 'isBlank').and.callFake(function () {
+				return false;
+			});
 
-			spyOn(Collections.Servers, 'update').and.callFake(function () { return true; });
+			spyOn(Collections.Servers, 'update').and.callFake(function () {
+				return true;
+			});
 
 			Controllers.Servers.onUpdateServer('2', 'New server', 'http://newhost:80', 'tcUser', 'tcPass');
 
-			expect(Collections.Servers.update).toHaveBeenCalledWith({_id: '2'}, {$set: {name: 'New server', type: 'teamcity',url: 'http://newhost:80', user: 'tcUser', password: 'tcPass'}});
+			expect(Collections.Servers.update).toHaveBeenCalledWith({_id: '2'}, {
+				$set: {
+					name: 'New server',
+					type: 'teamcity',
+					url: 'http://newhost:80',
+					user: 'tcUser',
+					password: 'tcPass'
+				}
+			});
 		});
 
+	});
+
+	describe('onDeleteServer()', function () {
+		beforeEach(function () {
+			spyOn(Meteor, 'user').and.callFake(function () {
+				return {
+					_id: 'abc',
+					username: 'coooooool',
+					isAdmin: true
+				}
+			});
+		});
+
+		it('should remove all builds, buildDisplays and the server', function () {
+			spyOn(Controllers.Builds, 'onRemoveByServerId');
+			spyOn(Collections.Servers, 'remove');
+			spyOn(Controllers.Projects, 'onRemoveByServerId');
+
+			Controllers.Servers.onDeleteServer('abiie');
+
+			expect(Controllers.Builds.onRemoveByServerId).toHaveBeenCalledWith('abiie');
+			expect(Controllers.Projects.onRemoveByServerId).toHaveBeenCalledWith('abiie');
+			expect(Collections.Servers.remove).toHaveBeenCalledWith({_id: 'abiie'});
+		});
 	});
 });

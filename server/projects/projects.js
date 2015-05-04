@@ -4,5 +4,5 @@
 
 'use strict';
 Meteor.methods({
-	refreshProjects: Controllers.Projects.onRefreshProjects
+	refreshProjects: Controllers.Projects.onRefresh
 });

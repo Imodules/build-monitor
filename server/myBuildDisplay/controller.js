@@ -8,7 +8,12 @@ Controllers.MyBuildDisplay = (function () {
 		return Collections.Builds.find({_id: buildId}, {fields: {_id: 1}}).count();
 	}
 
+	function RemoveByBuildId(buildId) {
+		Collections.MyBuildDisplay.remove({buildId: buildId});
+	}
+
 	return {
-		onGetBuildDisplayCount: GetBuildDisplayCount
+		onGetBuildDisplayCount: GetBuildDisplayCount,
+		onRemoveByBuildId: RemoveByBuildId
 	}
 })();

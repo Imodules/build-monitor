@@ -17,7 +17,7 @@ describe('Controller.Servers', function () {
 			});
 
 			expect(function () {
-				Controllers.Projects.onRefreshProjects('abc123');
+				Controllers.Projects.onRefresh('abc123');
 			}).toThrow('Invalid server type: _invalid_');
 		});
 
@@ -33,7 +33,7 @@ describe('Controller.Servers', function () {
 			spyOn(Services.TeamCity.prototype, 'refreshFromServer').and.callFake(function () {
 			});
 
-			Controllers.Projects.onRefreshProjects('abc123');
+			Controllers.Projects.onRefresh('abc123');
 
 			expect(Collections.Servers.findOne).toHaveBeenCalledWith({_id: 'abc123'});
 			expect(Services.TeamCity.prototype.refreshFromServer).toHaveBeenCalled();

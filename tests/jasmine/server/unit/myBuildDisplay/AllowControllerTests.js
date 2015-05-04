@@ -4,6 +4,31 @@
 
 'use strict';
 describe('Controllers.MyBuildDisplayAllow', function () {
+	describe('onInsert()', function () {
+		beforeEach(function () {
+			spyOn(Meteor, 'userId').and.callFake(function () {
+				return 'MEUser32Again';
+			});
+		});
+
+		it('should return false if it is not my user updating', function () {
+			var isAllowed = Controllers.MyBuildDisplayAllow.onInsert('notMe');
+			expect(isAllowed).toBeFalsy();
+		});
+
+		it('should notify the controller that isDisplayed was set to true', function () {
+			spyOn(Controllers.Builds, 'onMyBuildDisplayHasChanged');
+
+			Controllers.MyBuildDisplayAllow.onInsert('MEUser32Again', {
+				buildId: 'MyDOCID',
+				shortName: 'shortABC',
+				isDisplayed: true
+			});
+
+			expect(Controllers.Builds.onMyBuildDisplayHasChanged).toHaveBeenCalledWith('MyDOCID', true);
+		});
+	});
+
 	describe('onUpdate()', function () {
 		beforeEach(function () {
 			spyOn(Meteor, 'userId').and.callFake(function () {

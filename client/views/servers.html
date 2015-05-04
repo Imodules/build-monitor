@@ -2,67 +2,72 @@
 	<div class="page-header">
 		<h1><i class="fa fa-server"></i> Servers</h1>
 	</div>
-	<form>
-		{{> serverInput}}
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="form-group">
-					<button type="submit" class="btn btn-success add"><i class="fa fa-plus"></i> Add</button>
-				</div>
-			</div>
-		</div>
-	</form>
+
 	<table id="serverList" class="table table-striped">
 		<thead>
 			<tr>
-				<th>Type</th>
+				<th></th>
 				<th>Name</th>
 				<th>Url</th>
 				<th>Username</th>
-				<th></th>
+				<th>Password</th>
 			</tr>
 		</thead>
 		<tbody>
 			{{#each servers}}
-				<tr>
-					<td>{{type}}</td>
-					<td>{{name}}</td>
-					<td>{{url}}</td>
-					<td>{{user}}</td>
-					<td><button type="button" class="btn btn-default refresh">Refresh</button></td>
-				</tr>
+				{{> serverRow}}
 			{{/each}}
+			{{#unless isEdit}}
+				{{> serverInput}}
+			{{/unless}}
 		</tbody>
 	</table>
 </template>
 
+<template name="serverRow">
+	{{#if iAmEditing}}
+		{{> serverInput}}
+	{{else}}
+		<tr>
+		{{#if amIDeleting}}
+			<td colspan="5">
+				<div class="pull-left" style="margin-right: 40px;">
+					<button type="button" class="btn btn-danger btn-sm delYes">Yes</button>&nbsp;&nbsp;
+					<button type="button" class="btn btn-default btn-sm delNo">No</button>
+				</div>
+				<p class="text-danger">
+					Are you sure you want to delete server <strong>{{name}}</strong> ({{url}})?
+					<br /><em>This will remove all data for this server.</em>
+				</p>
+			</td>
+		{{else}}
+			<td>
+				<button type="button" class="btn btn-default btn-sm refresh"><i class="fa fa-refresh"></i></button>
+				<button type="button" class="btn btn-info btn-sm edit"><i class="fa fa-edit"></i></button>
+				<button type="button" class="btn btn-danger btn-sm delete"><i class="fa fa-remove"></i></button>
+			</td>
+			<td>{{name}}</td>
+			<td>{{url}}</td>
+			<td>{{user}}</td>
+			<td>{{maskedPassword}}</td>
+		{{/if}}
+		</tr>
+	{{/if}}
+</template>
+
 <template name="serverInput">
-	<div class="row">
-		<div class="col-xs-12 col-md-4">
-			<div class="form-group">
-				<label for="name">Name</label>
-				<input type="text" class="form-control" id="name" placeholder="A name for this server">
-			</div>
-		</div>
-
-		<div class="col-xs-12 col-md-4">
-			<div class="form-group">
-				<label for="url">Teamcity Url</label>
-				<input type="url" class="form-control" id="url" placeholder="Teamcity Url">
-			</div>
-		</div>
-		<div class="col-xs-12 col-md-2">
-			<div class="form-group">
-				<label for="user">Username</label>
-				<input type="text" class="form-control" id="user" placeholder="Username for this server">
-			</div>
-		</div>
-
-		<div class="col-xs-12 col-md-2">
-			<div class="form-group">
-				<label for="pass">Passord</label>
-				<input type="password" class="form-control" id="pass" placeholder="Password for this server">
-			</div>
-		</div>
-	</div>
+	<tr>
+		<td>
+			{{#if isEdit}}
+				<button type="button" class="btn btn-success btn-sm save"><i class="fa fa-save"></i> Save</button>
+				<button type="button" class="btn btn-link btn-sm cancel"><i class="fa fa-remove"></i> Cancel</button>
+				{{else}}
+				<button type="button" class="btn btn-success btn-sm add"><i class="fa fa-plus"></i> Add</button>
+			{{/if}}
+		</td>
+		<td><input type="text" class="form-control" id="name" placeholder="A name for this server" value="{{name}}"></td>
+		<td><input type="url" class="form-control" id="url" placeholder="Teamcity Url" value="{{url}}"></td>
+		<td><input type="text" class="form-control" id="user" placeholder="Username for this server" value="{{user}}"></td>
+		<td><input type="password" class="form-control" id="pass" placeholder="Password for this server" value="{{password}}"></td>
+	</tr>
 </template>
