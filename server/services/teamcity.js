@@ -93,6 +93,7 @@ Services.TeamCity.prototype = {
 							return c.serviceBuildId === build.buildTypeId;
 						})) {
 
+					// TODO:
 					var bh = new Models.BuildHistory({
 						id: build.id,
 						number: build.number,

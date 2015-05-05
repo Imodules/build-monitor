@@ -28,12 +28,14 @@
 					{{currentBuild.statusText}} ({{currentBuild.pctComplete}}%)
 				</div>
 			{{else}}
-				<div class="bsLast">
-					{{livestamp lastFinishDate}}
-				</div>
-				<div class="bsTotal">
-					{{buildTime}}
-				</div>
+				{{#with lastBuild}}
+					<div class="bsLast">
+						{{livestamp finishDate}}
+					</div>
+					<div class="bsTotal">
+						{{buildTime startDate finishDate}}
+					</div>
+				{{/with}}
 			{{/if}}
 
 		</div>

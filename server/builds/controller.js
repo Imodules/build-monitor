@@ -10,8 +10,7 @@ Controllers.Builds = (function () {
 			currentBuild: {
 				href: href,
 				pctComplete: percentageComplete,
-				statusText: statusText,
-				started: startDateTime
+				statusText: statusText
 			}
 		};
 
@@ -26,11 +25,9 @@ Controllers.Builds = (function () {
 			upd.isLastBuildSuccess = isCurrentSuccess;
 			upd['builds.0.isSuccess'] = isCurrentSuccess;
 
-			// TODO: THese dates are in 3 places, clean that up.
-			upd.currentBuild.finished = finishDateTime;
-			upd['builds.0.finished'] = finishDateTime;
+			upd['builds.0.finishDate'] = finishDateTime;
 
-			upd['builds.0.started'] = startDateTime;
+			upd['builds.0.startDate'] = startDateTime;
 		}
 
 		Collections.Builds.update({_id: id},
@@ -69,13 +66,6 @@ Controllers.Builds = (function () {
 	}
 
 	function UpdateBuildHistory(serverId, serviceBuildId, isLastSuccess, isBuilding, buildHistories) {
-		var lastStartDate, lastFinishDate;
-
-		if (buildHistories.length > 0) {
-			lastStartDate = buildHistories[0].startDate;
-			lastFinishDate = buildHistories[0].finishDate;
-		}
-
 		var historyJson = _.map(buildHistories, function (hist) {
 			return hist.json;
 		});
@@ -85,8 +75,6 @@ Controllers.Builds = (function () {
 					$set: {
 						isLastBuildSuccess: isLastSuccess,
 						isBuilding: isBuilding,
-						lastStartDate: lastStartDate,
-						lastFinishDate: lastFinishDate,
 						builds: historyJson
 					}
 				},

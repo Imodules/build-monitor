@@ -91,7 +91,7 @@
   // true: Tolerate possibly unsafe line breakings
   "laxcomma": true,
   // true: Tolerate comma-first style coding
-  "loopfunc": false,
+  "loopfunc": true,
   // true: Tolerate functions being defined in loops
   "multistr": false,
   // true: Tolerate multi-line strings

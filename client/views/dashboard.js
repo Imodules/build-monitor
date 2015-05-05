@@ -27,10 +27,16 @@ Template.buildItem.helpers({
 		return this.isLastBuildSuccess ? 'success' : 'error';
 	},
 
-	buildTime: function () {
-		var td = moment.duration(moment(this.lastFinishDate).diff(this.lastStartDate));
+	lastBuild: function () {
+		if (!this.builds || this.builds.length <= 0) {
+			return null;
+		}
 
-		//return td.humanize();
+		return this.builds[0];
+	},
+
+	buildTime: function (start, end) {
+		var td = moment.duration(moment(end).diff(start));
 		return numeral(td.asSeconds()).format('00:00:00');
 	}
 });
