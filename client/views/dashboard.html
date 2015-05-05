@@ -22,11 +22,20 @@
 				<div class="clearfix"></div>
 			</h4>
 
-				<div class="bsCurrent">
+
 			{{#if isBuilding}}
+				<div class="bsCurrent">
 					{{currentBuild.statusText}} ({{currentBuild.pctComplete}}%)
-			{{/if}}
 				</div>
+			{{else}}
+				<div class="bsLast">
+					{{livestamp lastFinishDate}}
+				</div>
+				<div class="bsTotal">
+					{{buildTime}}
+				</div>
+			{{/if}}
+
 		</div>
 	</div>
 </template>

@@ -25,6 +25,13 @@ Template.buildItem.helpers({
 
 	buildStateClass: function () {
 		return this.isLastBuildSuccess ? 'success' : 'error';
+	},
+
+	buildTime: function () {
+		var td = moment.duration(moment(this.lastFinishDate).diff(this.lastStartDate));
+
+		//return td.humanize();
+		return numeral(td.asSeconds()).format('00:00:00');
 	}
 });
 

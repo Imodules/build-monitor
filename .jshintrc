@@ -220,7 +220,8 @@
 	"jBox": false,
 	"math": false,
 	"Sortable": false,
-	"s": false
+	"s": false,
+    "numeral": false
 	// Underscore.string
   }
 }

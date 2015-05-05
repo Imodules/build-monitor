@@ -22,3 +22,5 @@ pstuart2:test-bootstrap
 underscore
 http
 momentjs:moment
+copleykj:livestamp
+numeral:numeral
