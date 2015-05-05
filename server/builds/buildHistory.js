@@ -42,6 +42,20 @@ Models.BuildHistory.prototype = {
 	},
 	set href(value) {
 		this.json.href = value;
+	},
+
+	get startDate() {
+		return this.json.startDate;
+	},
+	set startDate(value) {
+		this.json.startDate = value;
+	},
+
+	get finishDate() {
+		return this.json.finishDate;
+	},
+	set finishDate(value) {
+		this.json.finishDate = value;
 	}
 	//endregion
 

@@ -90,7 +90,7 @@ Services.TeamCity.prototype = {
 				var build = builds.data.build[i];
 
 				if (!_.find(currentActive, function (c) {
-							return c.serviceBuildId === build.buildTypeId
+							return c.serviceBuildId === build.buildTypeId;
 						})) {
 
 					var bh = new Models.BuildHistory({
@@ -113,8 +113,8 @@ Services.TeamCity.prototype = {
 
 	refreshBuildHistory: function (buildTypeId, numberOfHistoricBuilds) {
 		var self = this;
-		self._call('/app/rest/buildTypes/id:' + buildTypeId
-				+ '/builds?locator=running:any&count=' + numberOfHistoricBuilds, function (err, builds) {
+		self._call('/app/rest/buildTypes/id:' + buildTypeId +
+				'/builds?locator=running:any&count=' + numberOfHistoricBuilds, function (err, builds) {
 			if (err) {
 				throw err;
 			}
@@ -145,12 +145,21 @@ Services.TeamCity.prototype = {
 				buildHistories.push(bh);
 			}
 
-			Controllers.Builds.onUpdateBuildHistory(
-					self.server._id,
-					buildTypeId,
-					isSuccess,
-					isBuilding,
-					buildHistories);
+			self._call(builds.data.build[0].href, function (err, lastBuild) {
+				if (err) {
+					throw err;
+				}
+
+				buildHistories[0].startDate = moment(lastBuild.data.startDate, 'YYYYMMDDTHHmmssZ').toDate();
+				buildHistories[0].finishDate = moment(lastBuild.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
+
+				Controllers.Builds.onUpdateBuildHistory(
+						self.server._id,
+						buildTypeId,
+						isSuccess,
+						isBuilding,
+						buildHistories);
+			});
 		});
 	},
 
@@ -206,9 +215,20 @@ Services.TeamCity.prototype = {
 				throw new Meteor.Error(500, 'Failed to call server: ' + tcBuild.statusCode);
 			}
 
+			var startDate = null;
+			if (tcBuild.data.startDate) {
+				startDate = new moment(tcBuild.data.startDate, 'YYYYMMDDTHHmmssZ').toDate();
+			}
+
+			var finishedDate = null;
+			if (tcBuild.data.finishDate) {
+				finishedDate = new moment(tcBuild.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
+			}
+
+
 			cb(build._id, build.currentBuild.href, build.isLastBuildSuccess,
 					tcBuild.data.status === 'SUCCESS', tcBuild.data.state === 'running',
-					tcBuild.data.percentageComplete, tcBuild.data.statusText);
+					tcBuild.data.percentageComplete, tcBuild.data.statusText, startDate, finishedDate);
 		});
 	}
 	//endregion

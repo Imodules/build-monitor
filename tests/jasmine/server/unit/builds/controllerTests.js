@@ -10,24 +10,38 @@ describe('Controllers.Builds', function () {
 		});
 
 		it('should update the build in the database with the current build information', function () {
-			Controllers.Builds.onUpdateBuildStatus('btId69', 'somewhere', true, true, true, 20, 'Still running bro');
+			var startDate = new moment('20150503T225519-0500', 'YYYYMMDDTHHmmssZ').toDate(),
+					finishedDate = new moment('20150503T235519-0500', 'YYYYMMDDTHHmmssZ').toDate();
+
+			Controllers.Builds.onUpdateBuildStatus('btId69', 'somewhere', true, true, true, 20, 'Still running bro', startDate, finishedDate);
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId69'},
-					{$set: {currentBuild: {href: 'somewhere', pctComplete: 20, statusText: 'Still running bro'}}},
+					{
+						$set: {
+							currentBuild: {
+								href: 'somewhere',
+								pctComplete: 20,
+								statusText: 'Still running bro',
+								started: startDate
+							}
+						}
+					},
 					{multi: false}
 			);
 		});
 
 		it('should change isLastBuildSuccess to false if it is currently true and this build is failing', function () {
-			Controllers.Builds.onUpdateBuildStatus('btId70', 'righthere', true, false, true, 20, 'Still running bro');
+			var startDate = new moment('20150503T225519-0500', 'YYYYMMDDTHHmmssZ').toDate();
+
+			Controllers.Builds.onUpdateBuildStatus('btId70', 'righthere', true, false, true, 20, 'Still running bro', startDate);
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
 					{
 						$set: {
 							isLastBuildSuccess: false,
-							currentBuild: {href: 'righthere', pctComplete: 20, statusText: 'Still running bro'}
+							currentBuild: {href: 'righthere', pctComplete: 20, statusText: 'Still running bro', started: startDate}
 						}
 					},
 					{multi: false}
@@ -35,17 +49,22 @@ describe('Controllers.Builds', function () {
 		});
 
 		it('should not change isLastBuildSuccess to true if is currently false and the new build is a success and it is still running', function () {
-			Controllers.Builds.onUpdateBuildStatus('btId70', 'gogogog', false, true, true, 50, 'Cool Step 1/3');
+			var startDate = new moment('20150503T225519-0500', 'YYYYMMDDTHHmmssZ').toDate();
+
+			Controllers.Builds.onUpdateBuildStatus('btId70', 'gogogog', false, true, true, 50, 'Cool Step 1/3', startDate);
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
-					{$set: {currentBuild: {href: 'gogogog', pctComplete: 50, statusText: 'Cool Step 1/3'}}},
+					{$set: {currentBuild: {href: 'gogogog', pctComplete: 50, statusText: 'Cool Step 1/3', started: startDate}}},
 					{multi: false}
 			);
 		});
 
 		it('should change isLastBuildSuccess to true if it was false and the current build succeeded and it is complete', function () {
-			Controllers.Builds.onUpdateBuildStatus('btId70', 'yupyup', false, true, false, 100, 'Done');
+			var startDate = new moment('20150503T225519-0500', 'YYYYMMDDTHHmmssZ').toDate(),
+					finishedDate = new moment('20150503T235519-0500', 'YYYYMMDDTHHmmssZ').toDate();
+
+			Controllers.Builds.onUpdateBuildStatus('btId70', 'yupyup', false, true, false, 100, 'Done', startDate, finishedDate);
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
@@ -53,9 +72,17 @@ describe('Controllers.Builds', function () {
 						$set: {
 							isLastBuildSuccess: true,
 							isBuilding: false,
-							currentBuild: {href: 'yupyup', pctComplete: 100, statusText: 'Done'},
+							currentBuild: {
+								href: 'yupyup',
+								pctComplete: 100,
+								statusText: 'Done',
+								started: startDate,
+								finished: finishedDate
+							},
 							'builds.0.isBuilding': false,
-							'builds.0.isSuccess': true
+							'builds.0.isSuccess': true,
+							'builds.0.started': startDate,
+							'builds.0.finished': finishedDate
 						}
 					},
 					{multi: false}
@@ -346,11 +373,33 @@ describe('Controllers.Builds', function () {
 		it('should update the BuildTypes history', function () {
 			spyOn(Collections.Builds, 'update');
 
-			Controllers.Builds.onUpdateBuildHistory('NowNowNow', 'Something Here', true, false, []);
+			var startDate = moment().subtract(2, 'h').toDate(),
+					finishDate = moment().toDate();
+
+			var buildHistories = [];
+			buildHistories.push(new Models.BuildHistory({
+				id: 881,
+				number: '909',
+				isSuccess: false,
+				isBuilding: false,
+				href: '/httpAuth/app/rest/builds/id:881',
+				startDate: startDate,
+				finishDate: finishDate
+			}));
+
+			Controllers.Builds.onUpdateBuildHistory('NowNowNow', 'Something Here', true, false, buildHistories);
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{serverId: 'NowNowNow', serviceBuildId: 'Something Here'},
-					{$set: {isLastBuildSuccess: true, isBuilding: false, builds: []}},
+					{
+						$set: {
+							isLastBuildSuccess: true,
+							isBuilding: false,
+							lastStartDate: startDate,
+							lastFinishDate: finishDate,
+							builds: [buildHistories[0].json]
+						}
+					},
 					{multi: false}
 			);
 		});
@@ -415,7 +464,9 @@ describe('Controllers.Builds', function () {
 			});
 			spyOn(Collections.Builds, 'update');
 			spyOn(Services.TeamCity.prototype, 'refreshBuildHistory');
-			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount').and.callFake(function() { return 1; });
+			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount').and.callFake(function () {
+				return 1;
+			});
 
 			Controllers.Builds.onMyBuildDisplayHasChanged('adsf55adfddd', false);
 
@@ -428,7 +479,9 @@ describe('Controllers.Builds', function () {
 				return {isDisplayed: true, serverId: 'aa44dd2f', serviceBuildId: 'tcBuildId_adsf2f'};
 			});
 			spyOn(Collections.Builds, 'update');
-			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount').and.callFake(function() { return 2; });
+			spyOn(Controllers.MyBuildDisplay, 'onGetBuildDisplayCount').and.callFake(function () {
+				return 2;
+			});
 			spyOn(Services.TeamCity.prototype, 'refreshBuildHistory');
 
 			Controllers.Builds.onMyBuildDisplayHasChanged('00dd00ee', false);

@@ -5,8 +5,15 @@
 'use strict';
 Controllers.Builds = (function () {
 	// TODO: Too many parameters. Fix.
-	function UpdateBuildStatus(id, href, isLastBuildSuccess, isCurrentSuccess, isBuilding, percentageComplete, statusText) {
-		var upd = {currentBuild: {href: href, pctComplete: percentageComplete, statusText: statusText}};
+	function UpdateBuildStatus(id, href, isLastBuildSuccess, isCurrentSuccess, isBuilding, percentageComplete, statusText, startDateTime, finishDateTime) {
+		var upd = {
+			currentBuild: {
+				href: href,
+				pctComplete: percentageComplete,
+				statusText: statusText,
+				started: startDateTime
+			}
+		};
 
 		if (isLastBuildSuccess && !isCurrentSuccess) {
 			upd.isLastBuildSuccess = false;
@@ -18,6 +25,11 @@ Controllers.Builds = (function () {
 
 			upd.isLastBuildSuccess = isCurrentSuccess;
 			upd['builds.0.isSuccess'] = isCurrentSuccess;
+
+			upd.currentBuild.finished = finishDateTime;
+			upd['builds.0.finished'] = finishDateTime;
+
+			upd['builds.0.started'] = startDateTime;
 		}
 
 		Collections.Builds.update({_id: id},
@@ -47,19 +59,36 @@ Controllers.Builds = (function () {
 		}
 
 		Collections.Builds.update({_id: bt._id},
-				{$set: {
-					isBuilding: true, currentBuild: {pctComplete: percentComplete, href: bh.href}, builds: bt.builds
-				}},
+				{
+					$set: {
+						isBuilding: true, currentBuild: {pctComplete: percentComplete, href: bh.href}, builds: bt.builds
+					}
+				},
 				{multi: false});
 	}
 
 	function UpdateBuildHistory(serverId, serviceBuildId, isLastSuccess, isBuilding, buildHistories) {
+		var lastStartDate, lastFinishDate;
+
+		if (buildHistories.length > 0) {
+			lastStartDate = buildHistories[0].startDate;
+			lastFinishDate = buildHistories[0].finishDate;
+		}
+
 		var historyJson = _.map(buildHistories, function (hist) {
 			return hist.json;
 		});
 
 		Collections.Builds.update({serverId: serverId, serviceBuildId: serviceBuildId},
-				{$set: {isLastBuildSuccess: isLastSuccess, isBuilding: isBuilding, builds: historyJson}},
+				{
+					$set: {
+						isLastBuildSuccess: isLastSuccess,
+						isBuilding: isBuilding,
+						lastStartDate: lastStartDate,
+						lastFinishDate: lastFinishDate,
+						builds: historyJson
+					}
+				},
 				{multi: false});
 	}
 
@@ -75,7 +104,7 @@ Controllers.Builds = (function () {
 			var server = Collections.Servers.findOne({_id: build.serverId}),
 					service = Services.Factory.getService(server);
 			service.refreshBuildHistory(build.serviceBuildId, 10);
-		} else if(build.isDisplayed && !isDisplayed) {
+		} else if (build.isDisplayed && !isDisplayed) {
 			var count = Controllers.MyBuildDisplay.onGetBuildDisplayCount(buildId);
 			// It will still find at least 1 here because the caller has not updated theirs yet.
 			if (count <= 1) {

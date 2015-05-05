@@ -87,23 +87,23 @@ var tcRunningBuilds = {
 var tcLast2BuildsFailure = {
 	statusCode: 200,
 	data: {
-		"count": 2,
-		"build": [
+		'count': 2,
+		'build': [
 			{
-				"id": 665,
-				"buildTypeId": "MBP_UnitTestAndBundle",
-				"number": "193",
-				"status": "FAILURE",
-				"state": "finished",
-				"href": "/httpAuth/app/rest/builds/id:665"
+				'id': 665,
+				'buildTypeId': 'MBP_UnitTestAndBundle',
+				'number': '193',
+				'status': 'FAILURE',
+				'state': 'finished',
+				'href': '/httpAuth/app/rest/builds/id:665'
 			},
 			{
-				"id": 661,
-				"buildTypeId": "MBP_UnitTestAndBundle",
-				"number": "192",
-				"status": "SUCCESS",
-				"state": "finished",
-				"href": "/httpAuth/app/rest/builds/id:661"
+				'id': 661,
+				'buildTypeId': 'MBP_UnitTestAndBundle',
+				'number': '192',
+				'status': 'SUCCESS',
+				'state': 'finished',
+				'href': '/httpAuth/app/rest/builds/id:661'
 			}
 		]
 	}
@@ -112,23 +112,23 @@ var tcLast2BuildsFailure = {
 var tcLast2BuildsRunningAndFailure = {
 	statusCode: 200,
 	data: {
-		"count": 2,
-		"build": [
+		'count': 2,
+		'build': [
 			{
-				"id": 665,
-				"buildTypeId": "MBP_UnitTestAndBundle",
-				"number": "193",
-				"status": "SUCCESS",
-				"state": "running",
-				"href": "/httpAuth/app/rest/builds/id:665"
+				'id': 665,
+				'buildTypeId': 'MBP_UnitTestAndBundle',
+				'number': '193',
+				'status': 'SUCCESS',
+				'state': 'running',
+				'href': '/httpAuth/app/rest/builds/id:665'
 			},
 			{
-				"id": 661,
-				"buildTypeId": "MBP_UnitTestAndBundle",
-				"number": "192",
-				"status": "FAILURE",
-				"state": "finished",
-				"href": "/httpAuth/app/rest/builds/id:661"
+				'id': 661,
+				'buildTypeId': 'MBP_UnitTestAndBundle',
+				'number': '192',
+				'status': 'FAILURE',
+				'state': 'finished',
+				'href': '/httpAuth/app/rest/builds/id:661'
 			}
 		]
 	}
@@ -137,15 +137,15 @@ var tcLast2BuildsRunningAndFailure = {
 var tcLast1BuildSuccess = {
 	statusCode: 200,
 	data: {
-		"count": 1,
-		"build": [
+		'count': 1,
+		'build': [
 			{
-				"id": 665,
-				"buildTypeId": "MBP_UnitTestAndBundle",
-				"number": "193",
-				"status": "SUCCESS",
-				"state": "finished",
-				"href": "/httpAuth/app/rest/builds/id:665"
+				'id': 665,
+				'buildTypeId': 'MBP_UnitTestAndBundle',
+				'number': '193',
+				'status': 'SUCCESS',
+				'state': 'finished',
+				'href': '/httpAuth/app/rest/builds/id:665'
 			}
 		]
 	}
@@ -154,57 +154,116 @@ var tcLast1BuildSuccess = {
 var tcRunningBuildDetail = {
 	statusCode: 200,
 	data: {
-		"id": 687,
-		"buildTypeId": "MBP_UnitTestAndBundle",
-		"number": "204",
-		"status": "SUCCESS",
-		"state": "running",
-		"running": true,
-		"percentageComplete": 30,
-		"href": "/httpAuth/app/rest/builds/id:687",
-		"statusText": "Step 1/3",
-		"buildType": {
-			"id": "MBP_UnitTestAndBundle",
-			"name": "Unit Test and Bundle",
-			"description": "Runs the velocity unit tests then bundles the package.",
-			"projectName": "My Brew Planner",
-			"projectId": "MBP",
-			"href": "/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle"
+		'id': 687,
+		'buildTypeId': 'MBP_UnitTestAndBundle',
+		'number': '204',
+		'status': 'SUCCESS',
+		'state': 'running',
+		'running': true,
+		'percentageComplete': 30,
+		'href': '/httpAuth/app/rest/builds/id:687',
+		'statusText': 'Step 1/3',
+		'buildType': {
+			'id': 'MBP_UnitTestAndBundle',
+			'name': 'Unit Test and Bundle',
+			'description': 'Runs the velocity unit tests then bundles the package.',
+			'projectName': 'My Brew Planner',
+			'projectId': 'MBP',
+			'href': '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
 		},
-		"running-info": {
-			"percentageComplete": 30,
-			"elapsedSeconds": 33,
-			"estimatedTotalSeconds": 119,
-			"currentStageText": "Step 1/3: http GET https://registry.npmjs.org/lodash.keys",
-			"outdated": false,
-			"probablyHanging": false
+		'running-info': {
+			'percentageComplete': 30,
+			'elapsedSeconds': 33,
+			'estimatedTotalSeconds': 119,
+			'currentStageText': 'Step 1/3: http GET https://registry.npmjs.org/lodash.keys',
+			'outdated': false,
+			'probablyHanging': false
 		},
-		"queuedDate": "20150501T212011-0500",
-		"startDate": "20150501T212013-0500",
-		"triggered": {
-			"type": "user",
-			"date": "20150501T212011-0500",
-			"user": {
-				"username": "pstuart",
-				"name": "Paul Stuart",
-				"id": 1,
-				"href": "/httpAuth/app/rest/users/id:1"
+		'queuedDate': '20150501T212011-0500',
+		'startDate': '20150501T212013-0500',
+		'triggered': {
+			'type': 'user',
+			'date': '20150501T212011-0500',
+			'user': {
+				'username': 'pstuart',
+				'name': 'Paul Stuart',
+				'id': 1,
+				'href': '/httpAuth/app/rest/users/id:1'
 			}
 		},
-		"lastChanges": {
-			"count": 1,
-			"change": [
+		'lastChanges': {
+			'count': 1,
+			'change': [
 				{
-					"id": 207,
-					"version": "5f027107650bc25a6a01c924fb6fd0ab09dce567",
-					"username": "pstuart2",
-					"date": "20150422T223606-0500",
-					"href": "/httpAuth/app/rest/changes/id:207"
+					'id': 207,
+					'version': '5f027107650bc25a6a01c924fb6fd0ab09dce567',
+					'username': 'pstuart2',
+					'date': '20150422T223606-0500',
+					'href': '/httpAuth/app/rest/changes/id:207'
 				}
 			]
 		},
-		"statistics": {
-			"href": "/httpAuth/app/rest/builds/id:687/statistics"
+		'statistics': {
+			'href': '/httpAuth/app/rest/builds/id:687/statistics'
+		}
+	}
+};
+
+var tcFinishedBuildDetail = {
+	statusCode: 200,
+	data: {
+		'id': 687,
+		'buildTypeId': 'MBP_UnitTestAndBundle',
+		'number': '204',
+		'status': 'SUCCESS',
+		'state': 'finished',
+		'running': true,
+		'percentageComplete': 30,
+		'href': '/httpAuth/app/rest/builds/id:687',
+		'statusText': 'Step 1/3',
+		'buildType': {
+			'id': 'MBP_UnitTestAndBundle',
+			'name': 'Unit Test and Bundle',
+			'description': 'Runs the velocity unit tests then bundles the package.',
+			'projectName': 'My Brew Planner',
+			'projectId': 'MBP',
+			'href': '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
+		},
+		'running-info(DONT_KNOW_IF_THIS_WOULD_BE_HERE)': {
+			'percentageComplete': 30,
+			'elapsedSeconds': 33,
+			'estimatedTotalSeconds': 119,
+			'currentStageText': 'Step 1/3: http GET https://registry.npmjs.org/lodash.keys',
+			'outdated': false,
+			'probablyHanging': false
+		},
+		'queuedDate': '20150501T212011-0500',
+		'startDate': '20150501T212013-0500',
+		'finishDate': '20150501T213013-0500',
+		'triggered': {
+			'type': 'user',
+			'date': '20150501T212011-0500',
+			'user': {
+				'username': 'pstuart',
+				'name': 'Paul Stuart',
+				'id': 1,
+				'href': '/httpAuth/app/rest/users/id:1'
+			}
+		},
+		'lastChanges': {
+			'count': 1,
+			'change': [
+				{
+					'id': 207,
+					'version': '5f027107650bc25a6a01c924fb6fd0ab09dce567',
+					'username': 'pstuart2',
+					'date': '20150422T223606-0500',
+					'href': '/httpAuth/app/rest/changes/id:207'
+				}
+			]
+		},
+		'statistics': {
+			'href': '/httpAuth/app/rest/builds/id:687/statistics'
 		}
 	}
 };
@@ -272,7 +331,7 @@ describe('Services.TeamCity', function () {
 					fetch: function () {
 						return [];
 					}
-				}
+				};
 			});
 
 			var runningBuildCallback = jasmine.createSpy('spy');
@@ -368,16 +427,25 @@ describe('Services.TeamCity', function () {
 	describe('refreshBuildHistory()', function () {
 		it('should get the last 2 builds, successful running and failed complete and update the build status to failure', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-				cb(null, tcLast2BuildsRunningAndFailure);
+				if (url === 'http://example.com/bs3/httpAuth/app/rest/builds/id:665') {
+					cb(null, tcFinishedBuildDetail);
+				} else {
+					cb(null, tcLast2BuildsRunningAndFailure);
+				}
 			});
 
 			spyOn(Controllers.Builds, 'onUpdateBuildHistory');
+
+			var startDate = moment(tcFinishedBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
+					finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
 
 			var tc = new Services.TeamCity({
 				_id: 'srvId3',
 				url: 'http://example.com/bs3'
 			});
 			tc.refreshBuildHistory('MBP_UnitTestAndBundle', 2);
+
+			expect(HTTP.get.calls.count()).toBe(2);
 
 			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle/builds?locator=running:any&count=2', {
 				timeOut: 30000,
@@ -386,6 +454,14 @@ describe('Services.TeamCity', function () {
 				}
 			}, jasmine.any(Function));
 
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/httpAuth/app/rest/builds/id:665', {
+				timeOut: 30000,
+				headers: {
+					'Accept': 'application/json'
+				}
+			}, jasmine.any(Function));
+
+
 			expect(Controllers.Builds.onUpdateBuildHistory).toHaveBeenCalledWith(
 					'srvId3', 'MBP_UnitTestAndBundle', false, true, [{
 						json: {
@@ -393,7 +469,9 @@ describe('Services.TeamCity', function () {
 							number: '193',
 							isSuccess: true,
 							isBuilding: true,
-							href: '/httpAuth/app/rest/builds/id:665'
+							href: '/httpAuth/app/rest/builds/id:665',
+							startDate: startDate,
+							finishDate: finishDate
 						}
 					}, {
 						json: {
@@ -409,10 +487,17 @@ describe('Services.TeamCity', function () {
 
 		it('should get the last 2 builds and update the build status to success', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-				cb(null, tcLast1BuildSuccess);
+				if (url === 'http://example.com/bs3/httpAuth/app/rest/builds/id:665') {
+					cb(null, tcFinishedBuildDetail);
+				} else {
+					cb(null, tcLast1BuildSuccess);
+				}
 			});
 
 			spyOn(Controllers.Builds, 'onUpdateBuildHistory');
+
+			var startDate = moment(tcFinishedBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
+					finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
 
 			var tc = new Services.TeamCity({
 				_id: 'srvId3',
@@ -434,7 +519,9 @@ describe('Services.TeamCity', function () {
 							number: '193',
 							isSuccess: true,
 							isBuilding: false,
-							href: '/httpAuth/app/rest/builds/id:665'
+							href: '/httpAuth/app/rest/builds/id:665',
+							startDate: startDate,
+							finishDate: finishDate
 						}
 					}]
 			);
@@ -442,10 +529,17 @@ describe('Services.TeamCity', function () {
 
 		it('should get the last X builds and update the build status to failure', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-				cb(null, tcLast2BuildsFailure);
+				if (url === 'http://example.com/bs3/httpAuth/app/rest/builds/id:665') {
+					cb(null, tcFinishedBuildDetail);
+				} else {
+					cb(null, tcLast2BuildsFailure);
+				}
 			});
 
 			spyOn(Controllers.Builds, 'onUpdateBuildHistory');
+
+			var startDate = moment(tcFinishedBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
+					finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
 
 			var tc = new Services.TeamCity({
 				_id: 'srvId3',
@@ -467,7 +561,9 @@ describe('Services.TeamCity', function () {
 							number: '193',
 							isSuccess: false,
 							isBuilding: false,
-							href: '/httpAuth/app/rest/builds/id:665'
+							href: '/httpAuth/app/rest/builds/id:665',
+							startDate: startDate,
+							finishDate: finishDate
 						}
 					}, {
 						json: {
@@ -509,7 +605,41 @@ describe('Services.TeamCity', function () {
 				}
 			}, jasmine.any(Function));
 
-			expect(cbSpy).toHaveBeenCalledWith('MyBuildId', '/build/server/detailed/stuff/id:113', true, true, true, 30, 'Step 1/3');
+			var startDate = moment(tcRunningBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate();
+			expect(cbSpy).toHaveBeenCalledWith('MyBuildId', '/build/server/detailed/stuff/id:113', true, true, true, 30, 'Step 1/3', startDate, null);
+		});
+
+		it('should pass the finished date for a finished build', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				cb(null, tcFinishedBuildDetail);
+			});
+
+			spyOn(Collections.Builds, 'update');
+
+			var cbSpy = jasmine.createSpy('spy');
+
+			var tc = new Services.TeamCity({
+				_id: 'srvId3',
+				url: 'http://example.com/severserver'
+			});
+
+			tc.getCurrentBuildStatus({
+				_id: 'MyBuildId',
+				currentBuild: {href: '/build/server/detailed/stuff/id:113'},
+				isLastBuildSuccess: true
+			}, cbSpy);
+
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/severserver/guestAuth/build/server/detailed/stuff/id:113', {
+				timeOut: 30000,
+				headers: {
+					'Accept': 'application/json'
+				}
+			}, jasmine.any(Function));
+
+			var startDate = moment(tcRunningBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
+					finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
+			expect(cbSpy).toHaveBeenCalledWith('MyBuildId', '/build/server/detailed/stuff/id:113', true, true, false, 30, 'Step 1/3',
+					startDate, finishDate);
 		});
 	});
 });
