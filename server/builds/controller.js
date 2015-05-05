@@ -26,6 +26,7 @@ Controllers.Builds = (function () {
 			upd.isLastBuildSuccess = isCurrentSuccess;
 			upd['builds.0.isSuccess'] = isCurrentSuccess;
 
+			// TODO: THese dates are in 3 places, clean that up.
 			upd.currentBuild.finished = finishDateTime;
 			upd['builds.0.finished'] = finishDateTime;
 
