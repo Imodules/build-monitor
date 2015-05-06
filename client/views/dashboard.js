@@ -37,7 +37,7 @@ Template.buildItem.helpers({
 
 	buildTime: function (start, end) {
 		var td = moment.duration(moment(end).diff(start));
-		return numeral(td.asSeconds()).format('00:00:00');
+		return s.lpad(td.minutes(), 2, '0') + ':' + s.lpad(td.seconds(), 2, '0');
 	}
 });
 
