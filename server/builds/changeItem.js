@@ -9,7 +9,7 @@ Models.ChangeItem = function (doc) {
 		href: doc.href,
 		username: s.strRightBack(doc.username, '\\'),
 		comment: doc.comment,
-		fileCount: doc.files.length
+		fileCount: doc.files.file.length
 	};
 };
 

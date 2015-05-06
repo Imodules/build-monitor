@@ -3,11 +3,6 @@
  */
 
 'use strict';
-var s = {
-	isBlank: function () {
-	}
-};
-
 describe('Controllers.Servers', function () {
 	describe('Non Admin user', function () {
 		beforeEach(function () {
@@ -15,7 +10,7 @@ describe('Controllers.Servers', function () {
 				return {
 					_id: 'abc',
 					username: 'coooooool'
-				}
+				};
 			});
 		});
 
