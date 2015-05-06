@@ -9,7 +9,6 @@ Controllers.MyBuildDisplayAllow = (function () {
 			return false;
 		}
 
-		console.log(doc);
 		if (doc.isDisplayed === true) {
 			Controllers.Builds.onMyBuildDisplayHasChanged(doc.buildId, doc.isDisplayed);
 		}
@@ -34,7 +33,7 @@ Controllers.MyBuildDisplayAllow = (function () {
 	return {
 		onInsert: Insert,
 		onUpdate: Update
-	}
+	};
 })();
 
 Collections.MyBuildDisplay.allow({
