@@ -25,9 +25,8 @@ Controllers.Builds = (function () {
 			upd.isLastBuildSuccess = isCurrentSuccess;
 			upd['builds.0.isSuccess'] = isCurrentSuccess;
 
-			upd['builds.0.finishDate'] = finishDateTime;
-
 			upd['builds.0.startDate'] = startDateTime;
+			upd['builds.0.finishDate'] = finishDateTime;
 		}
 
 		Collections.Builds.update({_id: id},

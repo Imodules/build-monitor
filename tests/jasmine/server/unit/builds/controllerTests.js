@@ -22,8 +22,7 @@ describe('Controllers.Builds', function () {
 							currentBuild: {
 								href: 'somewhere',
 								pctComplete: 20,
-								statusText: 'Still running bro',
-								started: startDate
+								statusText: 'Still running bro'
 							}
 						}
 					},
@@ -41,7 +40,7 @@ describe('Controllers.Builds', function () {
 					{
 						$set: {
 							isLastBuildSuccess: false,
-							currentBuild: {href: 'righthere', pctComplete: 20, statusText: 'Still running bro', started: startDate}
+							currentBuild: {href: 'righthere', pctComplete: 20, statusText: 'Still running bro'}
 						}
 					},
 					{multi: false}
@@ -55,7 +54,7 @@ describe('Controllers.Builds', function () {
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
-					{$set: {currentBuild: {href: 'gogogog', pctComplete: 50, statusText: 'Cool Step 1/3', started: startDate}}},
+					{$set: {currentBuild: {href: 'gogogog', pctComplete: 50, statusText: 'Cool Step 1/3'}}},
 					{multi: false}
 			);
 		});
@@ -75,14 +74,12 @@ describe('Controllers.Builds', function () {
 							currentBuild: {
 								href: 'yupyup',
 								pctComplete: 100,
-								statusText: 'Done',
-								started: startDate,
-								finished: finishedDate
+								statusText: 'Done'
 							},
 							'builds.0.isBuilding': false,
 							'builds.0.isSuccess': true,
-							'builds.0.started': startDate,
-							'builds.0.finished': finishedDate
+							'builds.0.startDate': startDate,
+							'builds.0.finishDate': finishedDate
 						}
 					},
 					{multi: false}
@@ -395,8 +392,6 @@ describe('Controllers.Builds', function () {
 						$set: {
 							isLastBuildSuccess: true,
 							isBuilding: false,
-							lastStartDate: startDate,
-							lastFinishDate: finishDate,
 							builds: [buildHistories[0].json]
 						}
 					},
