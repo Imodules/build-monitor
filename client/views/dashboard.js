@@ -48,5 +48,9 @@ Template.buildHistory.helpers({
 		}
 
 		return this.isSuccess ? 'fa-check' : 'fa-remove';
+	},
+
+	bhClass: function () {
+		return this.isSuccess ? 'bh-succ' : 'bh-fail';
 	}
 });

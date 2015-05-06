@@ -212,6 +212,12 @@ Services.TeamCity.prototype = {
 	getCurrentBuildStatus: function (build, cb) {
 		var self = this;
 
+		if (!build.currentBuild || !build.currentBuild.href) {
+			console.log('ERROR: Missing href in tc.getCurrentBuildStatus');
+			console.log(build);
+			return;
+		}
+
 		self._call(build.currentBuild.href, function (err, tcBuild) {
 			if (err) {
 				throw err;
