@@ -3,14 +3,24 @@
  */
 
 'use strict';
+/**
+ *
+ * @param {{id: number|string, href: string, username: string, comment: string, files: {file: []} }} doc
+ * @constructor
+ */
 Models.ChangeItem = function (doc) {
 	this.json = {
 		id: doc.id,
 		href: doc.href,
-		username: s.strRightBack(doc.username, '\\'),
 		comment: doc.comment,
 		fileCount: doc.files.file.length
 	};
+
+	if (s.include(doc.username, '\\')) {
+		this.json.username = s.strRightBack(doc.username, '\\');
+	} else if (s.include(doc.username, '<')) {
+		this.json.username = s.trim(s.strLeftBack(doc.username, '<'));
+	}
 };
 
 Models.ChangeItem.prototype = {
