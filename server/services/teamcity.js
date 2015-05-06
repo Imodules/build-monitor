@@ -232,9 +232,17 @@ Services.TeamCity.prototype = {
 			}
 
 
-			cb(build._id, build.currentBuild.href, build.isLastBuildSuccess,
-					tcBuild.data.status === 'SUCCESS', tcBuild.data.state === 'running',
-					tcBuild.data.percentageComplete, tcBuild.data.statusText, startDate, finishedDate);
+			cb({
+				id: build._id,
+				href: build.currentBuild.href,
+				isLastBuildSuccess: build.isLastBuildSuccess,
+				isCurrentSuccess: tcBuild.data.status === 'SUCCESS',
+				isBuilding: tcBuild.data.state === 'running',
+				percentageComplete: tcBuild.data.percentageComplete,
+				statusText: tcBuild.data.statusText,
+				startDateTime: startDate,
+				finishDateTime: finishedDate
+			});
 		});
 	}
 	//endregion

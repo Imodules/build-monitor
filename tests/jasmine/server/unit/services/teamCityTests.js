@@ -608,7 +608,17 @@ describe('Services.TeamCity', function () {
 			}, jasmine.any(Function));
 
 			var startDate = moment(tcRunningBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate();
-			expect(cbSpy).toHaveBeenCalledWith('MyBuildId', '/build/server/detailed/stuff/id:113', true, true, true, 30, 'Step 1/3', startDate, null);
+			expect(cbSpy).toHaveBeenCalledWith({
+				id: 'MyBuildId',
+				href: '/build/server/detailed/stuff/id:113',
+				isLastBuildSuccess: true,
+				isCurrentSuccess: true,
+				isBuilding: true,
+				percentageComplete: 30,
+				statusText: 'Step 1/3',
+				startDateTime: startDate,
+				finishDateTime: null
+			});
 		});
 
 		it('should pass the finished date for a finished build', function () {
@@ -640,8 +650,17 @@ describe('Services.TeamCity', function () {
 
 			var startDate = moment(tcRunningBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
 					finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
-			expect(cbSpy).toHaveBeenCalledWith('MyBuildId', '/build/server/detailed/stuff/id:113', true, true, false, 30, 'Step 1/3',
-					startDate, finishDate);
+			expect(cbSpy).toHaveBeenCalledWith({
+				id: 'MyBuildId',
+				href: '/build/server/detailed/stuff/id:113',
+				isLastBuildSuccess: true,
+				isCurrentSuccess: true,
+				isBuilding: false,
+				percentageComplete: 30,
+				statusText: 'Step 1/3',
+				startDateTime: startDate,
+				finishDateTime: finishDate
+			});
 		});
 	});
 })
