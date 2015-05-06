@@ -353,15 +353,17 @@ describe('Services.TeamCity', function () {
 			expect(runningBuildCallback.calls.count()).toBe(1);
 			expect(runningBuildCallback.calls.allArgs()).toEqual([['srvId2', true]]);
 
-			expect(Controllers.Builds.onStartBuild).toHaveBeenCalledWith('srvId2', 'UpdateSite_AmazonWebServices_UpdateAwsMissouri', {
-				json: {
+			expect(Controllers.Builds.onStartBuild).toHaveBeenCalledWith({
+				serverId: 'srvId2',
+				serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri',
+				bhItem: new Models.BuildHistory({
 					id: 112427,
 					number: '131',
 					isSuccess: true,
 					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/id:112427'
-				}
-			}, 3);
+				}), percentComplete: 3
+			});
 		});
 
 		it('should not re-update builds that it has already started', function () {
@@ -642,4 +644,5 @@ describe('Services.TeamCity', function () {
 					startDate, finishDate);
 		});
 	});
-});
+})
+;

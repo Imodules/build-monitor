@@ -103,7 +103,12 @@ Services.TeamCity.prototype = {
 					});
 
 					Controllers.Builds.onStartBuild(
-							self.server._id, build.buildTypeId, bh, build.percentageComplete
+							{
+								serverId: self.server._id,
+								serviceBuildId: build.buildTypeId,
+								bhItem: bh,
+								percentComplete: build.percentageComplete
+							}
 					);
 				}
 			}
