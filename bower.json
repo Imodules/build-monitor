@@ -1,0 +1,21 @@
+{
+  "name": "build-monitor",
+  "main": "main.js",
+  "version": "0.1.0",
+  "authors": [
+    "Paul Stuart <pstuart2@gmail.com>"
+  ],
+  "license": "Private",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore.string": "~3.0.3"
+  }
+}

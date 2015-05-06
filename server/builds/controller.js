@@ -4,32 +4,40 @@
 
 'use strict';
 Controllers.Builds = (function () {
-	// TODO: Too many parameters. Fix.
-	function UpdateBuildStatus(id, href, isLastBuildSuccess, isCurrentSuccess, isBuilding, percentageComplete, statusText, startDateTime, finishDateTime) {
+
+	/**
+	 *
+	 * @param {{id: string, href: string,
+	 * isLastBuildSuccess: boolean, isCurrentSuccess: boolean, isBuilding: boolean,
+	 * percentageComplete: number, statusText: string, startDateTime: Date, finishDateTime: Date
+	 * }} json
+	 * @constructor
+	 */
+	function UpdateBuildStatus(json) {
 		var upd = {
 			currentBuild: {
-				href: href,
-				pctComplete: percentageComplete,
-				statusText: statusText
+				href: json.href,
+				pctComplete: json.percentageComplete,
+				statusText: json.statusText
 			}
 		};
 
-		if (isLastBuildSuccess && !isCurrentSuccess) {
+		if (json.isLastBuildSuccess && !json.isCurrentSuccess) {
 			upd.isLastBuildSuccess = false;
 		}
 
-		if (!isBuilding) {
+		if (!json.isBuilding) {
 			upd.isBuilding = false;
 			upd['builds.0.isBuilding'] = false;
 
-			upd.isLastBuildSuccess = isCurrentSuccess;
-			upd['builds.0.isSuccess'] = isCurrentSuccess;
+			upd.isLastBuildSuccess = json.isCurrentSuccess;
+			upd['builds.0.isSuccess'] = json.isCurrentSuccess;
 
-			upd['builds.0.startDate'] = startDateTime;
-			upd['builds.0.finishDate'] = finishDateTime;
+			upd['builds.0.startDate'] = json.startDateTime;
+			upd['builds.0.finishDate'] = json.finishDateTime;
 		}
 
-		Collections.Builds.update({_id: id},
+		Collections.Builds.update({_id: json.id},
 				{$set: upd},
 				{multi: false});
 	}
@@ -41,9 +49,13 @@ Controllers.Builds = (function () {
 		).fetch();
 	}
 
-	function StartBuild(serverId, serviceBuildId, bhItem, percentComplete) {
-		var bh = bhItem.json,
-				bt = Collections.Builds.findOne({serverId: serverId, serviceBuildId: serviceBuildId},
+	/**
+	 *
+	 * @param {{serverId: string, serviceBuildId: string, bhItem: Models.BuildHistory, percentComplete: Number}} json
+	 */
+	function StartBuild(json) {
+		var bh = json.bhItem.json,
+				bt = Collections.Builds.findOne({serverId: json.serverId, serviceBuildId: json.serviceBuildId},
 						{fields: {builds: 1}});
 
 		if (!bt.builds) {
@@ -58,7 +70,7 @@ Controllers.Builds = (function () {
 		Collections.Builds.update({_id: bt._id},
 				{
 					$set: {
-						isBuilding: true, currentBuild: {pctComplete: percentComplete, href: bh.href}, builds: bt.builds
+						isBuilding: true, currentBuild: {pctComplete: json.percentComplete, href: bh.href}, builds: bt.builds
 					}
 				},
 				{multi: false});

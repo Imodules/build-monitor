@@ -2,3 +2,5 @@
 .meteor/meteorite
 .idea/workspace.xml
 /.project
+**/bower_components/**
+**/node_modules/**

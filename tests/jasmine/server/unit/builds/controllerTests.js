@@ -13,7 +13,11 @@ describe('Controllers.Builds', function () {
 			var startDate = new moment('20150503T225519-0500', 'YYYYMMDDTHHmmssZ').toDate(),
 					finishedDate = new moment('20150503T235519-0500', 'YYYYMMDDTHHmmssZ').toDate();
 
-			Controllers.Builds.onUpdateBuildStatus('btId69', 'somewhere', true, true, true, 20, 'Still running bro', startDate, finishedDate);
+			Controllers.Builds.onUpdateBuildStatus({
+				id: 'btId69', href: 'somewhere', isLastBuildSuccess: true,
+				isCurrentSuccess: true, isBuilding: true, percentageComplete: 20,
+				statusText: 'Still running bro', startDateTime: startDate, finishDateTime: finishedDate
+			});
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId69'},
@@ -33,7 +37,11 @@ describe('Controllers.Builds', function () {
 		it('should change isLastBuildSuccess to false if it is currently true and this build is failing', function () {
 			var startDate = new moment('20150503T225519-0500', 'YYYYMMDDTHHmmssZ').toDate();
 
-			Controllers.Builds.onUpdateBuildStatus('btId70', 'righthere', true, false, true, 20, 'Still running bro', startDate);
+			Controllers.Builds.onUpdateBuildStatus({
+				id: 'btId70', href: 'righthere', isLastBuildSuccess: true,
+				isCurrentSuccess: false, isBuilding: true, percentageComplete: 20,
+				statusText: 'Still running bro', startDateTime: startDate, finishDateTime: null
+			});
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
@@ -50,7 +58,11 @@ describe('Controllers.Builds', function () {
 		it('should not change isLastBuildSuccess to true if is currently false and the new build is a success and it is still running', function () {
 			var startDate = new moment('20150503T225519-0500', 'YYYYMMDDTHHmmssZ').toDate();
 
-			Controllers.Builds.onUpdateBuildStatus('btId70', 'gogogog', false, true, true, 50, 'Cool Step 1/3', startDate);
+			Controllers.Builds.onUpdateBuildStatus({
+				id: 'btId70', href: 'gogogog', isLastBuildSuccess: false,
+				isCurrentSuccess: true, isBuilding: true, percentageComplete: 50,
+				statusText: 'Cool Step 1/3', startDateTime: startDate, finishDateTime: null
+			});
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
@@ -63,7 +75,11 @@ describe('Controllers.Builds', function () {
 			var startDate = new moment('20150503T225519-0500', 'YYYYMMDDTHHmmssZ').toDate(),
 					finishedDate = new moment('20150503T235519-0500', 'YYYYMMDDTHHmmssZ').toDate();
 
-			Controllers.Builds.onUpdateBuildStatus('btId70', 'yupyup', false, true, false, 100, 'Done', startDate, finishedDate);
+			Controllers.Builds.onUpdateBuildStatus({
+				id: 'btId70', href: 'yupyup', isLastBuildSuccess: false,
+				isCurrentSuccess: true, isBuilding: false, percentageComplete: 100,
+				statusText: 'Done', startDateTime: startDate, finishDateTime: finishedDate
+			});
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith(
 					{_id: 'btId70'},
@@ -115,16 +131,15 @@ describe('Controllers.Builds', function () {
 
 			spyOn(Collections.Builds, 'update');
 
-			Controllers.Builds.onStartBuild('Sweet1', 'MyBuildTypeHere', {
-				json: {
+			Controllers.Builds.onStartBuild({
+				serverId: 'Sweet1', serviceBuildId: 'MyBuildTypeHere', bhItem: new Models.BuildHistory({
 					id: 668,
 					number: '194',
 					isSuccess: true,
 					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/id:668'
-
-				}
-			}, 1);
+				}), percentComplete: 1
+			});
 
 			expect(Collections.Builds.findOne).toHaveBeenCalledWith({
 				serverId: 'Sweet1',
@@ -170,16 +185,15 @@ describe('Controllers.Builds', function () {
 
 			spyOn(Collections.Builds, 'update');
 
-			Controllers.Builds.onStartBuild('Sweet1', 'MyBuildTypeHere', {
-				json: {
+			Controllers.Builds.onStartBuild({
+				serverId: 'Sweet1', serviceBuildId: 'MyBuildTypeHere', bhItem: new Models.BuildHistory({
 					id: 668,
 					number: '194',
 					isSuccess: true,
 					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/id:668'
-
-				}
-			}, 1);
+				}), percentComplete: 1
+			});
 
 			expect(Collections.Builds.findOne).toHaveBeenCalledWith({
 				serverId: 'Sweet1',
@@ -285,15 +299,15 @@ describe('Controllers.Builds', function () {
 
 			spyOn(Collections.Builds, 'update');
 
-			Controllers.Builds.onStartBuild('WowBigOne', 'YesYesIKnow', {
-				json: {
+			Controllers.Builds.onStartBuild({
+				serverId: 'WowBigOne', serviceBuildId: 'YesYesIKnow', bhItem: new Models.BuildHistory({
 					id: 700,
 					number: '210',
 					isSuccess: true,
 					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/id:700'
-				}
-			}, 1);
+				}), percentComplete: 1
+			});
 
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'WowBigOne'},
 					{
