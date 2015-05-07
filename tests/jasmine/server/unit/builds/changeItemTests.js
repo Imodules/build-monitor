@@ -64,9 +64,19 @@ var tcPairCommit = {
 
 describe('Models.ChangeItem', function () {
 	describe('constructor()', function () {
+		beforeEach(function () {
+			spyOn(s, 'include').and.callFake(function () {
+				return true;
+			});
+
+			spyOn(s, 'strRightBack').and.callFake(function (str) {
+				return 'CLEAN_' + str;
+			});
+		});
+
 		it('should parse the structure correctly and clean username', function () {
 			var model = new Models.ChangeItem(tcNormalSingleFile);
-			expect(model.username).toBe('rellias');
+			expect(model.username).toBe('CLEAN_local\\rellias');
 			expect(model.id).toBe(217355);
 			expect(model.href).toBe('/httpAuth/app/rest/changes/id:217355');
 			expect(model.comment).toBe('ENC-21065 send grid sub accounts not getting pulled from settings');
@@ -75,7 +85,7 @@ describe('Models.ChangeItem', function () {
 
 		it('should parse a pair commit username', function () {
 			var model = new Models.ChangeItem(tcPairCommit);
-			expect(model.username).toBe('paul & joe');
+			expect(model.username).toBe('CLEAN_paul & joe <paul+joe>');
 			expect(model.fileCount).toBe(2);
 		});
 	});
