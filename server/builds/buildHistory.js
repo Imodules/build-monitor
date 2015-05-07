@@ -56,6 +56,13 @@ Models.BuildHistory.prototype = {
 	},
 	set finishDate(value) {
 		this.json.finishDate = value;
+	},
+
+	get changeUsers() {
+		return this.json.changeUsers;
+	},
+	set changeUsers(value) {
+		this.json.changeUsers = value;
 	}
 	//endregion
 

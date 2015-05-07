@@ -24,6 +24,7 @@ Controllers.Builds = (function () {
 
 		if (json.isLastBuildSuccess && !json.isCurrentSuccess) {
 			upd.isLastBuildSuccess = false;
+			upd['builds.0.isSuccess'] = json.isCurrentSuccess;
 		}
 
 		if (!json.isBuilding) {

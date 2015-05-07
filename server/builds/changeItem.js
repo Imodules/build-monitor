@@ -13,7 +13,7 @@ Models.ChangeItem = function (doc) {
 		id: doc.id,
 		href: doc.href,
 		comment: doc.comment,
-		fileCount: doc.files.file.length
+		fileCount: doc.fileCount ? doc.fileCount : doc.files.file.length
 	};
 
 	if (s.include(doc.username, '\\')) {

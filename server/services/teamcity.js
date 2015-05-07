@@ -93,23 +93,41 @@ Services.TeamCity.prototype = {
 							return c.serviceBuildId === build.buildTypeId;
 						})) {
 
-					// TODO:
-					var bh = new Models.BuildHistory({
-						id: build.id,
-						number: build.number,
-						isSuccess: build.status === 'SUCCESS',
-						isBuilding: build.state === 'running',
-						href: build.href
-					});
+					self._call(build.href, function (err2, buildDetail) {
 
-					Controllers.Builds.onStartBuild(
-							{
-								serverId: self.server._id,
-								serviceBuildId: build.buildTypeId,
-								bhItem: bh,
-								percentComplete: build.percentageComplete
+						if (err2) {
+							throw err2;
+						}
+
+						var changeUsers = [];
+						if(buildDetail.data.lastChanges) {
+							for(var bti = 0; bti < buildDetail.data.lastChanges.count; bti++) {
+								var btCurrent = buildDetail.data.lastChanges.change[bti];
+
+								changeUsers.push(btCurrent.username);
 							}
-					);
+						}
+
+						var bh = new Models.BuildHistory({
+							id: build.id,
+							number: build.number,
+							isSuccess: build.status === 'SUCCESS',
+							isBuilding: build.state === 'running',
+							href: build.href,
+							changeUsers: changeUsers
+						});
+
+						// TODO: Make this a callback.
+						Controllers.Builds.onStartBuild(
+								{
+									serverId: self.server._id,
+									serviceBuildId: build.buildTypeId,
+									bhItem: bh,
+									percentComplete: build.percentageComplete
+								}
+						);
+
+					});
 				}
 			}
 

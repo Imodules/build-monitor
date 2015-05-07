@@ -323,7 +323,12 @@ describe('Services.TeamCity', function () {
 	describe('queryRunningBuilds()', function () {
 		it('should update the BuildTypes collection with the running builds', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-				cb(null, tcRunningBuilds);
+				if (url.indexOf('locator=running:true') >= 0) {
+					cb(null, tcRunningBuilds);
+				} else {
+					cb(null, tcRunningBuildDetail);
+				}
+
 			});
 			spyOn(Controllers.Builds, 'onStartBuild');
 			spyOn(Collections.Builds, 'find').and.callFake(function () {
@@ -343,12 +348,22 @@ describe('Services.TeamCity', function () {
 
 			tc.queryRunningBuilds(runningBuildCallback);
 
+			expect(HTTP.get.calls.count()).toBe(2);
+
 			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/builds?locator=running:true', {
 				timeOut: 30000,
 				headers: {
 					'Accept': 'application/json'
 				}
 			}, jasmine.any(Function));
+
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/httpAuth/app/rest/builds/id:112427', {
+				timeOut: 30000,
+				headers: {
+					'Accept': 'application/json'
+				}
+			}, jasmine.any(Function));
+
 
 			expect(runningBuildCallback.calls.count()).toBe(1);
 			expect(runningBuildCallback.calls.allArgs()).toEqual([['srvId2', true]]);
@@ -361,7 +376,8 @@ describe('Services.TeamCity', function () {
 					number: '131',
 					isSuccess: true,
 					isBuilding: true,
-					href: '/httpAuth/app/rest/builds/id:112427'
+					href: '/httpAuth/app/rest/builds/id:112427',
+					changeUsers: ['pstuart2']
 				}), percentComplete: 3
 			});
 		});

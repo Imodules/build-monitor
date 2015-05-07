@@ -48,6 +48,7 @@ describe('Controllers.Builds', function () {
 					{
 						$set: {
 							isLastBuildSuccess: false,
+							'builds.0.isSuccess': false,
 							currentBuild: {href: 'righthere', pctComplete: 20, statusText: 'Still running bro'}
 						}
 					},
