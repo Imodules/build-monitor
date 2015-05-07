@@ -1,0 +1,25 @@
+{
+	"count": 2,
+	"href": "/httpAuth/app/rest/builds?count=2",
+	"nextHref": "/httpAuth/app/rest/builds?count=2&start=2",
+	"build": [
+		{
+			"id": 112767,
+			"buildTypeId": "UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+			"number": "129",
+			"status": "SUCCESS",
+			"state": "running",
+			"href": "/httpAuth/app/rest/builds/id:112767",
+			"webUrl": "http://int.example.com/viewLog.html?buildId=112767&buildTypeId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway"
+		},
+		{
+			"id": 112766,
+			"buildTypeId": "UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+			"number": "128",
+			"status": "SUCCESS",
+			"state": "running",
+			"href": "/httpAuth/app/rest/builds/id:112766",
+			"webUrl": "http://int.example.com/viewLog.html?buildId=112766&buildTypeId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway"
+		}
+	]
+}

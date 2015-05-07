@@ -1,0 +1,19 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Meteor" type="meteor-app-runner" factoryName="Meteor">
+    <option name="envs">
+      <entry key="JASMINE_CLIENT_INTEGRATION" value="1" />
+      <entry key="JASMINE_CLIENT_UNIT" value="0" />
+      <entry key="JASMINE_SERVER_INTEGRATION" value="1" />
+    </option>
+    <option name="exePath" value="/usr/local/bin/meteor" />
+    <option name="startBrowserSettings">
+      <browser url="http://localhost:3000" />
+    </option>
+    <meteor-runner-state>
+      <startBrowserSettings>
+        <browser url="http://localhost:3000" />
+      </startBrowserSettings>
+    </meteor-runner-state>
+    <method />
+  </configuration>
+</component>
