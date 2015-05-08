@@ -679,5 +679,4 @@ describe('Services.TeamCity', function () {
 			});
 		});
 	});
-})
-;
+});
