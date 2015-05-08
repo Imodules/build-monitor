@@ -4,16 +4,16 @@
 
 'use strict';
 var tcBuildDetail = {
-	"id": 112682,
-	"serviceBuildId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
-	"serviceNumber": "FEATURE-ENC-20657-166",
-	"isSuccess": true,
-	"isRunning": false,
-	"href": "/httpAuth/app/rest/builds/id:112682",
-	"statusText": "Tests passed: 38",
-	"startDate": new Date(2015, 1, 2),
-	"finishDate": new Date(2015, 1, 2, 1),
-	"usernames": ['paul & joe <paul+joe>', 'doman\\myuser']
+	'id': 112682,
+	'serviceBuildId': 'CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava',
+	'serviceNumber': 'FEATURE-ENC-20657-166',
+	'isSuccess': true,
+	'isRunning': false,
+	'href': '/httpAuth/app/rest/builds/id:112682',
+	'statusText': 'Tests passed: 38',
+	'startDate': new Date(2015, 1, 2),
+	'finishDate': new Date(2015, 1, 2, 1),
+	'usernames': ['paul & joe <paul+joe>', 'doman\\myuser']
 };
 
 describe('Models', function () {

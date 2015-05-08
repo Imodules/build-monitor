@@ -21,7 +21,7 @@ describe('Models.Server', function () {
 	});
 
 	describe('refreshActiveBuildData()', function () {
-		it('should', function () {
+		it('should call the refreshBuildData for the builds', function () {
 			spyOn(Controllers.Builds, 'getActiveServerBuilds').and.callFake(function () {
 				return [
 					new Models.Build({
@@ -49,14 +49,30 @@ describe('Models.Server', function () {
 				];
 			});
 
-			spyOn(Models.Build.prototype, 'refreshData');
+			spyOn(Models.Build.prototype, 'refreshBuildData');
 
 			var server = new Models.Server({_id: 'kTugGKGRGJJWKDdb6', type: 'teamcity', url: 'http://someting'});
 			server.refreshActiveBuildData();
 
 			expect(Controllers.Builds.getActiveServerBuilds).toHaveBeenCalledWith('kTugGKGRGJJWKDdb6');
-			expect(Models.Build.prototype.refreshData.calls.count()).toBe(2);
-			expect(Models.Build.prototype.refreshData).toHaveBeenCalledWith(jasmine.any(Services.TeamCity));
+			expect(Models.Build.prototype.refreshBuildData.calls.count()).toBe(2);
+			expect(Models.Build.prototype.refreshBuildData).toHaveBeenCalledWith(jasmine.any(Services.TeamCity));
+		});
+	});
+
+	describe('refreshBuildData()', function () {
+		it('should refreshBuildData for the single build', function () {
+			spyOn(Controllers.Builds, 'getBuild').and.callFake(function () {
+				return new Models.Build({_id: '_ThisIsMe_', url: '/guestAuth/ThisMEUrl'});
+			});
+
+			spyOn(Models.Build.prototype, 'refreshBuildData');
+
+			var server = new Models.Server({_id: 'abddsesdde4444', type: 'teamcity', url: 'http://mewserver/url'});
+			server.refreshBuildData('_ThisIsMe_');
+
+			expect(Controllers.Builds.getBuild).toHaveBeenCalledWith('_ThisIsMe_');
+			expect(Models.Build.prototype.refreshBuildData).toHaveBeenCalledWith(jasmine.any(Services.TeamCity));
 		});
 	});
 

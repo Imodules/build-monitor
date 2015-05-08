@@ -16,50 +16,33 @@ Models.Build.prototype = {
 	get serverId() {
 		return this._doc.serverId;
 	},
-	set serverId(value) {
-		this._doc.serverId = value;
-	},
 
 	get projectId() {
 		return this._doc.projectId;
-	},
-	set projectId(value) {
-		this._doc.projectId = value;
 	},
 
 	get serviceBuildId() {
 		return this._doc.serviceBuildId;
 	},
-	set serviceBuildId(value) {
-		this._doc.serviceBuildId = value;
-	},
 
 	get name() {
 		return this._doc.name;
-	},
-	set name(value) {
-		this._doc.name = value;
 	},
 
 	// TODO: Change this to href for consistency.
 	get url() {
 		return this._doc.url;
 	},
-	set url(value) {
-		this._doc.url = value;
+
+	get displayCounter() {
+		return this._doc.displayCounter;
 	},
 
 	/**
 	 * @returns {boolean}
 	 */
 	get isDisplayed() {
-		return this._doc.isDisplayed;
-	},
-	/**
-	 * @param {boolean} value
-	 */
-	set isDisplayed(value) {
-		this._doc.isDisplayed = value;
+		return this.displayCounter > 0;
 	},
 
 	/**
@@ -68,24 +51,12 @@ Models.Build.prototype = {
 	get isLastBuildSuccess() {
 		return this._doc.isLastBuildSuccess;
 	},
-	/**
-	 * @param {boolean} value
-	 */
-	set isLastBuildSuccess(value) {
-		this._doc.isLastBuildSuccess = value;
-	},
 
 	/**
 	 * @returns {boolean}
 	 */
 	get isBuilding() {
 		return this._doc.isBuilding;
-	},
-	/**
-	 * @param {boolean} value
-	 */
-	set isBuilding(value) {
-		this._doc.isBuilding = value;
 	},
 	//endregion
 
@@ -94,8 +65,24 @@ Models.Build.prototype = {
 		return this._doc;
 	},
 
-	refreshData: function (service) {
+	/**
+	 * Refreshes the build history data for this build.
+	 *
+	 * @param service
+	 */
+	refreshBuildData: function (service) {
+		var self = this;
+		service.getBuildData(self.url, 10, function (buildDetailsArray) {
+			var buildData = _.map(buildDetailsArray, function (bd) { return bd.toJson(); });
+			Collections.Builds.update({_id: self._id}, {$set: {builds: buildData}});
+		});
+	},
 
+	updateIsDisplayed: function (setIsDisplayed) {
+		var inc = setIsDisplayed ? 1 : -1;
+		this._doc.displayCounter += inc;
+
+		Collections.Builds.update({_id: this._id}, {$inc: {displayCounter: inc}});
 	}
 	//endregion
 };

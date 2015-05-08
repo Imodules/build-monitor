@@ -11,12 +11,21 @@ Controllers.Builds = (function () {
 	}
 	//endregion
 
-	function GetActiveServerBuilds(serverId) {
+	function GetBuild(buildId) {
+		return Collections.Builds.findOne({_id: buildId}, {transform: _transform});
+	}
+
+	function GetActiveServerBuilds(server) {
 		return Collections.Builds.find(
-				{serverId: serverId, isBuilding: true},
+				{serverId: server._id, isBuilding: true},
 				{fields: {serviceBuildId: 1}, transform: _transform}
 		);
 	}
+
+
+
+
+
 
 	/**
 	 *
@@ -132,6 +141,7 @@ Controllers.Builds = (function () {
 	}
 
 	return {
+		getBuild: GetBuild,
 		getActiveServerBuilds: GetActiveServerBuilds,
 
 

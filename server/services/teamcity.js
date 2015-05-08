@@ -53,8 +53,79 @@ Services.TeamCity.prototype = {
 		HTTP.get(fullUrl, opt, callback);
 	},
 
+	_call2: function (url, callback) {
+		var opt = this._buildOptions(),
+				fullUrl = this.server.url;
+
+		if (url.indexOf('/httpAuth/') === -1 && url.indexOf('/guestAuth/') === -1) {
+			if (this.hasAuth) {
+				fullUrl += '/httpAuth';
+			} else {
+				fullUrl += '/guestAuth';
+			}
+		}
+
+		fullUrl += url;
+
+		console.log('Calling: ' + fullUrl);
+		HTTP.get(fullUrl, opt, function (err, response) {
+			if(err) {
+				throw err;
+			}
+
+			if (response.statusCode !== 200){
+				throw 'Call was not successful. Status code: ' + response.statusCode;
+			}
+
+			callback(response.data);
+		});
+	},
+
+	_tcDateTimeToDate: function (datetime) {
+		return moment(datetime, 'YYYYMMDDTHHmmssZ').toDate();
+	},
+
 	getBuildData: function (href, historyCount, cb) {
 		var self = this;
+
+		self._call2(href + '/builds?count=' + historyCount, function (data) {
+			var bhArray = [],
+					expectedCount = data.count;
+
+			for(var i=0; i<expectedCount; i++) {
+				var build = data.build[i];
+				self._call2(build.href, function (buildDetail) {
+					var users = [];
+					if (buildDetail.lastChanges) {
+						users = _.map(buildDetail.lastChanges.change, function (change) {
+							return change.username;
+						});
+					}
+
+					console.log(buildDetail);
+
+					var bh = new Models.BuildDetail({
+						id: buildDetail.id,
+						serviceBuildId: buildDetail.buildTypeId,
+						serviceNumber: buildDetail.number,
+						isSuccess: buildDetail.status === 'SUCCESS',
+						isRunning: buildDetail.running === true,
+						href: buildDetail.href,
+						statusText: buildDetail.statusText,
+						startDate: self._tcDateTimeToDate(buildDetail.startDate),
+						finishDate: self._tcDateTimeToDate(buildDetail.finishDate),
+						usernames: users
+					});
+
+					bhArray.push(bh);
+
+					if (bhArray.length === expectedCount) {
+						cb(bhArray);
+					}
+				});
+			}
+
+		});
 	},
 
 

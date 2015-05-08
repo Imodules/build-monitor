@@ -269,6 +269,42 @@ var tcFinishedBuildDetail = {
 };
 
 describe('Services.TeamCity', function () {
+
+	describe('getBuildData', function () {
+		it('should get the data for the build and callback with the build history objects', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				if (url.indexOf('/builds?count=') > 0) {
+					cb(null, tcLast2BuildsRunningAndFailure);
+				} else {
+					cb(null, tcFinishedBuildDetail);
+				}
+			});
+
+			var cbSpy = jasmine.createSpy('spy'),
+					responseData = new Models.BuildDetail({ id: 687, serviceBuildId: 'MBP_UnitTestAndBundle', serviceNumber: '204', isSuccess: true, isRunning: true, href: '/httpAuth/app/rest/builds/id:687', statusText: 'Step 1/3', startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'), finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'), usernames: [ 'pstuart2' ] });
+
+			var tc = new Services.TeamCity({
+				_id: '_getBuildDataTest_',
+				url: 'http://example.com/getBuildDataTest'
+			});
+			tc.getBuildData('/guestAuth/app/rest/buildTypes/id:SomeProjectBuildIdThing', 10, cbSpy);
+
+			expect(HTTP.get.calls.count()).toBe(3);
+			expect(cbSpy.calls.count()).toBe(1);
+			expect(cbSpy).toHaveBeenCalledWith([responseData,responseData]);
+		});
+	});
+
+
+
+
+
+
+
+
+
+
+
 	describe('refreshFromServer()', function () {
 		it('should call HTTP.get', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
