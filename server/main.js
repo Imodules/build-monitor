@@ -49,7 +49,7 @@ Controllers.Server = (function () {
 		}
 	}
 
-	function BuildQueryInterval() {
+	function QueryServersForRunningBuilds() {
 		var servers = Collections.Servers.find();
 		servers.forEach(function (server) {
 			var service = Services.Factory.getService(server);
@@ -87,24 +87,21 @@ Controllers.Server = (function () {
 		}
 
 		if (!process.env.IS_MIRROR) {
-			buildQueryHandle = Meteor.setInterval(BuildQueryInterval, RUNNING_BUILD_QUERY_MS);
+			buildQueryHandle = Meteor.setInterval(QueryServersForRunningBuilds, RUNNING_BUILD_QUERY_MS);
 		}
 	}
 
 	function RefreshActiveBuilds() {
-		var servers = Collections.Servers.find();
+		var servers = Controllers.Servers.getServers();
+
 		servers.forEach(function (server) {
-			var bts = Collections.Builds.find({serverId: server._id, isDisplayed: true});
-			bts.forEach(function (bt) {
-				var service = Services.Factory.getService(server);
-				service.refreshBuildHistory(bt.serviceBuildId, 10);
-			});
+			server.refreshActiveBuildData();
 		});
 	}
 
 	return {
 		onStartUp: Startup,
-		onBuildQueryInterval: BuildQueryInterval,
+		onQueryServersForRunningBuilds: QueryServersForRunningBuilds,
 		onRefreshActiveBuilds: RefreshActiveBuilds,
 		onCheckRunningBuildsTimer: CheckRunningBuildsTimer,
 		onRunningBuildQueryInterval: RunningBuildQueryInterval,

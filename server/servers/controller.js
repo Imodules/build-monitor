@@ -19,6 +19,14 @@ Controllers.Servers = (function () {
 		return {user: user, password: password};
 	}
 
+	function _transform(doc) {
+		return new Models.Server(doc);
+	}
+
+	function GetServers() {
+		return Collections.Servers.find({}, {transform: _transform});
+	}
+
 	function InsertServer(name, url, uname, pword) {
 		_validateUser();
 
@@ -66,6 +74,7 @@ Controllers.Servers = (function () {
 	}
 
 	return {
+		getServers: GetServers,
 		onInsertServer: InsertServer,
 		onUpdateServer: UpdateServer,
 		onDeleteServer: DeleteServer

@@ -53,6 +53,19 @@ Services.TeamCity.prototype = {
 		HTTP.get(fullUrl, opt, callback);
 	},
 
+	getBuildData: function (href, historyCount, cb) {
+		var self = this;
+	},
+
+
+
+
+
+
+
+
+
+
 	_addProject: function (data, method) {
 		return method(
 				this.server._id,
@@ -85,7 +98,7 @@ Services.TeamCity.prototype = {
 				return cb(self.server._id, false);
 			}
 
-			var currentActive = Controllers.Builds.onGetActiveServerBuilds(self.server._id);
+			var currentActive = Controllers.Builds.getActiveServerBuilds(self.server._id);
 			for (var i = 0; i < builds.data.count; i++) {
 				var build = builds.data.build[i];
 

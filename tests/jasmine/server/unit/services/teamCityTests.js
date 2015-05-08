@@ -386,7 +386,7 @@ describe('Services.TeamCity', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
 				cb(null, tcRunningBuilds);
 			});
-			spyOn(Controllers.Builds, 'onGetActiveServerBuilds').and.callFake(function () {
+			spyOn(Controllers.Builds, 'getActiveServerBuilds').and.callFake(function () {
 				return [
 					{serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'}
 				];
@@ -410,7 +410,7 @@ describe('Services.TeamCity', function () {
 
 			expect(runningBuildCallback.calls.count()).toBe(1);
 			expect(runningBuildCallback.calls.allArgs()).toEqual([['srvId2', true]]);
-			expect(Controllers.Builds.onGetActiveServerBuilds).toHaveBeenCalledWith('srvId2');
+			expect(Controllers.Builds.getActiveServerBuilds).toHaveBeenCalledWith('srvId2');
 			expect(Controllers.Builds.onStartBuild).not.toHaveBeenCalled();
 		});
 

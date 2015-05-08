@@ -104,7 +104,7 @@ describe('Controllers.Builds', function () {
 		});
 	});
 
-	describe('onGetActiveServerBuilds()', function () {
+	describe('getActiveServerBuilds()', function () {
 		it('should call Collections.BuildTypes.find', function () {
 			spyOn(Collections.Builds, 'find').and.callFake(function () {
 				return {
@@ -114,10 +114,10 @@ describe('Controllers.Builds', function () {
 				};
 			});
 
-			Controllers.Builds.onGetActiveServerBuilds('MeCo0lId');
+			Controllers.Builds.getActiveServerBuilds('MeCo0lId');
 
 			expect(Collections.Builds.find).toHaveBeenCalledWith({serverId: 'MeCo0lId', isBuilding: true},
-					{fields: {serviceBuildId: 1}});
+					{fields: {serviceBuildId: 1}, transform: jasmine.any(Function)});
 		});
 	});
 

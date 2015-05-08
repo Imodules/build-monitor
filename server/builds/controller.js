@@ -5,6 +5,19 @@
 'use strict';
 Controllers.Builds = (function () {
 
+	//region Private
+	function _transform(doc) {
+		return new Models.Build(doc);
+	}
+	//endregion
+
+	function GetActiveServerBuilds(serverId) {
+		return Collections.Builds.find(
+				{serverId: serverId, isBuilding: true},
+				{fields: {serviceBuildId: 1}, transform: _transform}
+		);
+	}
+
 	/**
 	 *
 	 * @param {{id: string, href: string,
@@ -41,13 +54,6 @@ Controllers.Builds = (function () {
 		Collections.Builds.update({_id: json.id},
 				{$set: upd},
 				{multi: false});
-	}
-
-	function GetActiveServerBuilds(serverId) {
-		return Collections.Builds.find(
-				{serverId: serverId, isBuilding: true},
-				{fields: {serviceBuildId: 1}}
-		).fetch();
 	}
 
 	/**
@@ -126,8 +132,11 @@ Controllers.Builds = (function () {
 	}
 
 	return {
+		getActiveServerBuilds: GetActiveServerBuilds,
+
+
+
 		onUpdateBuildStatus: UpdateBuildStatus,
-		onGetActiveServerBuilds: GetActiveServerBuilds,
 		onStartBuild: StartBuild,
 		onUpdateBuildHistory: UpdateBuildHistory,
 		onMyBuildDisplayHasChanged: MyBuildDisplayHasChanged,

@@ -33,6 +33,16 @@ describe('Controllers.Servers', function () {
 		});
 	});
 
+	describe('getServers()', function () {
+		it('should query the database', function () {
+			spyOn(Collections.Servers, 'find');
+
+			Controllers.Servers.getServers();
+
+			expect(Collections.Servers.find).toHaveBeenCalledWith({}, {transform: jasmine.any(Function)});
+		});
+	});
+
 	describe('onInsertServer()', function () {
 
 		beforeEach(function () {
