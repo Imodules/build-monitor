@@ -23,6 +23,10 @@ Controllers.Servers = (function () {
 		return new Models.Server(doc);
 	}
 
+	function GetServer(serverId) {
+		return Collections.Servers.findOne({_id: serverId}, {transform: _transform});
+	}
+
 	function GetServers() {
 		return Collections.Servers.find({}, {transform: _transform});
 	}
@@ -74,6 +78,7 @@ Controllers.Servers = (function () {
 	}
 
 	return {
+		getServer: GetServer,
 		getServers: GetServers,
 		onInsertServer: InsertServer,
 		onUpdateServer: UpdateServer,

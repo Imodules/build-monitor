@@ -23,45 +23,28 @@ var buildTypes = [
 		"shortName": "MBP-UT&B"
 	}
 ];
-describe('Controllers.Server', function () {
+
+describe('Controllers.Timer', function () {
 	describe('onStartUp()', function () {
 		it('should start the build query interval timer', function () {
 			spyOn(Meteor, 'setInterval').and.callFake(function (cb) {
 				cb();
 			});
 
-			spyOn(Collections.Servers, 'find').and.callFake(function () {
-				return [
-					{_id: 'srvId1', url: 'http://example.com/bs', type: 'teamcity'},
-					{_id: 'srvId2', url: 'http://example.com/bs', type: 'teamcity'}
-				];
-			});
-
-			spyOn(Services.TeamCity.prototype, 'queryRunningBuilds');
-
-			Controllers.Server.onStartUp();
-
-			expect(Meteor.setInterval).toHaveBeenCalledWith(jasmine.any(Function), 20000);
-			expect(Collections.Servers.find).toHaveBeenCalled();
-			expect(Services.TeamCity.prototype.queryRunningBuilds.calls.count()).toBe(2);
-		});
-	});
-
-	describe('onRefreshActiveBuilds()', function () {
-		it('should tell each server to refresh the build history', function () {
 			spyOn(Controllers.Servers, 'getServers').and.callFake(function () {
 				return [
-					new Models.Server({_id: 'srvId1', url: 'http://example.com/bs1', type: 'teamcity'}),
-					new Models.Server({_id: 'srvId2', url: 'http://example.com/bs2', type: 'teamcity'})
+					new Models.Server({_id: 'srvId1', url: 'http://example.com/bs', type: 'teamcity'}),
+					new Models.Server({_id: 'srvId2', url: 'http://example.com/bs', type: 'teamcity'})
 				];
 			});
 
-			spyOn(Models.Server.prototype, 'refreshActiveBuildData');
+			spyOn(Models.Server.prototype, 'queryRunningBuilds');
 
-			Controllers.Server.onRefreshActiveBuilds();
+			Controllers.Timer.onStartUp();
 
+			expect(Meteor.setInterval).toHaveBeenCalledWith(jasmine.any(Function), 20000);
 			expect(Controllers.Servers.getServers).toHaveBeenCalled();
-			expect(Models.Server.prototype.refreshActiveBuildData.calls.count()).toBe(2);
+			expect(Models.Server.prototype.queryRunningBuilds.calls.count()).toBe(2);
 		});
 	});
 
@@ -72,12 +55,12 @@ describe('Controllers.Server', function () {
 				return {obj: 'someid'};
 			});
 
-			spyOn(Controllers.Server, 'onRunningBuildQueryInterval');
+			spyOn(Controllers.Timer, 'onRunningBuildQueryInterval');
 
-			Controllers.Server.onStartRunningBuildsTimer('SweetServerId');
+			Controllers.Timer.onStartRunningBuildsTimer('SweetServerId');
 
 			expect(Meteor.setInterval).toHaveBeenCalledWith(jasmine.any(Function), 5000);
-			expect(Controllers.Server.onRunningBuildQueryInterval).toHaveBeenCalledWith('SweetServerId');
+			expect(Controllers.Timer.onRunningBuildQueryInterval).toHaveBeenCalledWith('SweetServerId');
 		});
 	});
 
@@ -89,12 +72,12 @@ describe('Controllers.Server', function () {
 			});
 			spyOn(_, 'find').and.callFake(function () { return { serverId: 'SweetServerId3', timerId: {obj: 'HelloSweety'}}; });
 
-			spyOn(Controllers.Server, 'onRunningBuildQueryInterval');
+			spyOn(Controllers.Timer, 'onRunningBuildQueryInterval');
 
 			// Testing it this way so we ensure we are adding and remove from the internal array.
-			Controllers.Server.onStartRunningBuildsTimer('SweetServerId3');
+			Controllers.Timer.onStartRunningBuildsTimer('SweetServerId3');
 			expect(Meteor.setInterval).toHaveBeenCalledWith(jasmine.any(Function), 5000);
-			Controllers.Server.onStopRunningBuildsTimer('SweetServerId3');
+			Controllers.Timer.onStopRunningBuildsTimer('SweetServerId3');
 
 			expect(Meteor.clearInterval).toHaveBeenCalledWith({obj: 'HelloSweety'});
 		});
@@ -104,25 +87,25 @@ describe('Controllers.Server', function () {
 		it('should start the timer if we have builds and an existing timer does not exist', function () {
 			spyOn(_, 'find').and.callFake(function () { return undefined; });
 
-			spyOn(Controllers.Server, 'onStartRunningBuildsTimer');
-			spyOn(Controllers.Server, 'onStopRunningBuildsTimer');
+			spyOn(Controllers.Timer, 'onStartRunningBuildsTimer');
+			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
 
-			Controllers.Server.onCheckRunningBuildsTimer('CoolSrvId', true);
+			Controllers.Timer.onCheckRunningBuildsTimer('CoolSrvId', true);
 
-			expect(Controllers.Server.onStopRunningBuildsTimer).not.toHaveBeenCalled();
-			expect(Controllers.Server.onStartRunningBuildsTimer).toHaveBeenCalledWith('CoolSrvId');
+			expect(Controllers.Timer.onStopRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Timer.onStartRunningBuildsTimer).toHaveBeenCalledWith('CoolSrvId');
 		});
 
 		it('should not start the timer if we have builds and an existing timer does exist', function () {
 			spyOn(_, 'find').and.callFake(function () { return { serverId: 'CoolSrvId2', timerId: 'Kids'}; });
 
-			spyOn(Controllers.Server, 'onStartRunningBuildsTimer');
-			spyOn(Controllers.Server, 'onStopRunningBuildsTimer');
+			spyOn(Controllers.Timer, 'onStartRunningBuildsTimer');
+			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
 
-			Controllers.Server.onCheckRunningBuildsTimer('CoolSrvId2', true);
+			Controllers.Timer.onCheckRunningBuildsTimer('CoolSrvId2', true);
 
-			expect(Controllers.Server.onStopRunningBuildsTimer).not.toHaveBeenCalled();
-			expect(Controllers.Server.onStartRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Timer.onStopRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Timer.onStartRunningBuildsTimer).not.toHaveBeenCalled();
 		});
 	});
 
@@ -144,7 +127,7 @@ describe('Controllers.Server', function () {
 
 			spyOn(Services.TeamCity.prototype, 'getCurrentBuildStatus');
 
-			Controllers.Server.onRunningBuildQueryInterval('SeverId');
+			Controllers.Timer.onRunningBuildQueryInterval('SeverId');
 
 			expect(Collections.Builds.find).toHaveBeenCalledWith(
 					{serverId: 'SeverId', isBuilding: true},
@@ -169,12 +152,12 @@ describe('Controllers.Server', function () {
 			});
 
 			spyOn(Services.TeamCity.prototype, 'getCurrentBuildStatus');
-			spyOn(Controllers.Server, 'onStopRunningBuildsTimer');
+			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
 
-			Controllers.Server.onRunningBuildQueryInterval('SeverId');
+			Controllers.Timer.onRunningBuildQueryInterval('SeverId');
 
 			expect(Services.TeamCity.prototype.getCurrentBuildStatus).not.toHaveBeenCalled();
-			expect(Controllers.Server.onStopRunningBuildsTimer).toHaveBeenCalledWith('SeverId');
+			expect(Controllers.Timer.onStopRunningBuildsTimer).toHaveBeenCalledWith('SeverId');
 		});
 	});
 });
