@@ -168,4 +168,8 @@ describe('Controllers.Servers', function () {
 			expect(Collections.Servers.remove).toHaveBeenCalledWith({_id: 'abiie'});
 		});
 	});
+
+	describe('onRefreshProjects()', function () {
+
+	});
 });

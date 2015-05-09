@@ -111,53 +111,15 @@ describe('Controllers.Timer', function () {
 
 	describe('OnRunningBuildQueryInterval()', function () {
 		it('should query for all active builds by server and get updated details', function () {
-			spyOn(Collections.Builds, 'find').and.callFake(function () {
-				return {
-					fetch: function () {
-						return [
-							{_id: 'ab12', currentBuild: {href: '/guestAuth/something/cool/id:456'}, isLastBuildSuccess: true},
-							{_id: 'cd13', currentBuild: {href: '/guestAuth/something/cool/id:897'}, isLastBuildSuccess: false}
-						];
-					}
-				};
-			});
 			spyOn(Collections.Servers, 'findOne').and.callFake(function () {
-				return {_id: 'SeverId', url: 'http://example.com/bs1', type: 'teamcity'};
+				return new Models.Server({_id: 'SeverId', url: 'http://example.com/bs1', type: 'teamcity'});
 			});
 
-			spyOn(Services.TeamCity.prototype, 'getCurrentBuildStatus');
+			spyOn(Models.Server.prototype, 'updateRunningBuilds');
 
 			Controllers.Timer.onRunningBuildQueryInterval('SeverId');
 
-			expect(Collections.Builds.find).toHaveBeenCalledWith(
-					{serverId: 'SeverId', isBuilding: true},
-					{fields: {currentBuild: 1, isLastBuildSuccess: 1}}
-			);
-
-			expect(Services.TeamCity.prototype.getCurrentBuildStatus.calls.count()).toBe(2);
-			expect(Services.TeamCity.prototype.getCurrentBuildStatus).toHaveBeenCalledWith({_id: 'ab12', currentBuild: {href: '/guestAuth/something/cool/id:456'}, isLastBuildSuccess: true}, jasmine.any(Function));
-			expect(Services.TeamCity.prototype.getCurrentBuildStatus).toHaveBeenCalledWith({_id: 'cd13', currentBuild: {href: '/guestAuth/something/cool/id:897'}, isLastBuildSuccess: false}, jasmine.any(Function));
-		});
-
-		it('should stop the timer if no more active builds', function () {
-			spyOn(Collections.Builds, 'find').and.callFake(function () {
-				return {
-					fetch: function () {
-						return [];
-					}
-				};
-			});
-			spyOn(Collections.Servers, 'findOne').and.callFake(function () {
-				return {_id: 'SeverId', url: 'http://example.com/bs1', type: 'teamcity'};
-			});
-
-			spyOn(Services.TeamCity.prototype, 'getCurrentBuildStatus');
-			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
-
-			Controllers.Timer.onRunningBuildQueryInterval('SeverId');
-
-			expect(Services.TeamCity.prototype.getCurrentBuildStatus).not.toHaveBeenCalled();
-			expect(Controllers.Timer.onStopRunningBuildsTimer).toHaveBeenCalledWith('SeverId');
+			expect(Models.Server.prototype.updateRunningBuilds).toHaveBeenCalledWith(jasmine.any(Function));
 		});
 	});
 });

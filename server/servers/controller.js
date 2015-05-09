@@ -77,11 +77,32 @@ Controllers.Servers = (function () {
 		Collections.Servers.remove({_id: id});
 	}
 
+	/**
+	 * @return {boolean}
+	 */
+	function RefreshProjects(serverId) {
+		// Get our server.
+		var server = Collections.Servers.findOne({_id: serverId});
+		if (!server) {
+			throw new Error('Server not found for id: ' + serverId);
+		}
+
+		// Get our service.
+		var service = Services.Factory.getService(server);
+
+		// Call populate our projects.
+		service.refreshFromServer(AddProject, AddBuild);
+
+		return true;
+	}
+
 	return {
 		getServer: GetServer,
 		getServers: GetServers,
 		onInsertServer: InsertServer,
 		onUpdateServer: UpdateServer,
-		onDeleteServer: DeleteServer
+		onDeleteServer: DeleteServer,
+
+		onRefreshProjects: RefreshProjects
 	};
 })();

@@ -55,23 +55,7 @@ Controllers.Timer = (function () {
 		console.log('Running build timer for server: ' + serverId);
 
 		var server = Collections.Servers.findOne({_id: serverId});
-		var service = Services.Factory.getService(server);
-
-		var builds = Collections.Builds.find({serverId: serverId, isBuilding: true}, {
-			fields: {
-				currentBuild: 1,
-				isLastBuildSuccess: 1
-			}
-		}).fetch();
-
-		if (builds.length === 0) {
-			Controllers.Timer.onStopRunningBuildsTimer(serverId);
-			return;
-		}
-
-		builds.forEach(function (build) {
-			service.getCurrentBuildStatus(build, Controllers.Builds.onUpdateBuildStatus);
-		});
+		server.updateRunningBuilds(CheckRunningBuildsTimer);
 	}
 
 	function Startup() {

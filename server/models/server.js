@@ -55,13 +55,12 @@ Models.Server.prototype = {
 		return this._doc;
 	},
 
+
 	/**
-	 * Queries the server for any running builds.
-	 *
-	 * @param {Function} cbTimerUpdate
+	 * Refreshes the projects from the server.
 	 */
-	queryRunningBuilds: function (cbTimerUpdate) {
-		this.service.queryRunningBuilds();
+	refreshProjects: function () {
+
 	},
 
 	/**
@@ -83,6 +82,33 @@ Models.Server.prototype = {
 	refreshBuildData: function (buildId) {
 		var build = Controllers.Builds.getBuild(buildId);
 		build.refreshBuildData(this._service);
+	},
+
+	/**
+	 * Queries the server for any running builds.
+	 *
+	 * @param {Function} cbTimerUpdate
+	 */
+	queryRunningBuilds: function (cbTimerUpdate) {
+		var self = this;
+		this._service.queryRunningBuilds(function (builds) {
+			if (builds.length === 0) {
+				return cbTimerUpdate(self._id, false);
+			}
+
+
+
+			cbTimerUpdate(self._id, true);
+		});
+	},
+
+	/**
+	 * Updates the running builds from the server.
+	 *
+	 * @param cbTimerUpdate
+	 */
+	updateRunningBuilds: function (cbTimerUpdate) {
+
 	}
 	//endregion
 };

@@ -3,6 +3,6 @@
  */
 
 'use strict';
-Meteor.methods({
-	refreshProjects: Controllers.Projects.onRefresh
-});
+//Meteor.methods({
+//
+//});

@@ -15,7 +15,7 @@ describe('Controllers.main', function () {
 
 			spyOn(Models.Server.prototype, 'refreshActiveBuildData');
 
-			Controllers.Server.onRefreshActiveBuilds();
+			Controllers.main.onRefreshActiveBuilds();
 
 			expect(Controllers.Servers.getServers).toHaveBeenCalled();
 			expect(Models.Server.prototype.refreshActiveBuildData.calls.count()).toBe(2);

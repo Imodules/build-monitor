@@ -8,38 +8,6 @@ describe('Controller.Servers', function () {
 		mock(s, 'isBlank');
 	});
 
-	describe('onRefreshProjects()', function () {
-		it('should throw for an unknown server type', function () {
-			spyOn(Collections.Servers, 'findOne').and.callFake(function (q) {
-				return {
-					type: '_invalid_'
-				};
-			});
-
-			expect(function () {
-				Controllers.Projects.onRefresh('abc123');
-			}).toThrow('Invalid server type: _invalid_');
-		});
-
-		it('should get teamcity service and call refresh projects', function () {
-			spyOn(Collections.Servers, 'findOne').and.callFake(function (q) {
-				return {
-					_id: q._id,
-					type: 'teamcity',
-					url: 'http://example.com/bs'
-				};
-			});
-
-			spyOn(Services.TeamCity.prototype, 'refreshFromServer').and.callFake(function () {
-			});
-
-			Controllers.Projects.onRefresh('abc123');
-
-			expect(Collections.Servers.findOne).toHaveBeenCalledWith({_id: 'abc123'});
-			expect(Services.TeamCity.prototype.refreshFromServer).toHaveBeenCalled();
-		});
-	});
-
 	describe('onAddProject()', function () {
 		it('should add a project to the db with a proper id', function () {
 			spyOn(s, 'isBlank').and.callFake(function () {

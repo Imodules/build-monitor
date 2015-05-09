@@ -4,25 +4,6 @@
 
 'use strict';
 Controllers.Projects = (function () {
-	/**
-	 * @return {boolean}
-	 */
-	function RefreshProjects(serverId) {
-		// Get our server.
-		var server = Collections.Servers.findOne({_id: serverId});
-		if (!server) {
-			throw new Error('Server not found for id: ' + serverId);
-		}
-
-		// Get our service.
-		var service = Services.Factory.getService(server);
-
-		// Call populate our projects.
-		service.refreshFromServer(AddProject, AddBuild);
-
-		return true;
-	}
-
 	function AddBuild(serverId, projectId, serviceBuildId, name, url) {
 		return Collections.Builds.upsert({
 			serverId: serverId,
@@ -54,7 +35,6 @@ Controllers.Projects = (function () {
 	}
 
 	return {
-		onRefresh: RefreshProjects,
 		onAddProject: AddProject,
 		onAddBuild: AddBuild,
 		onRemoveByServerId: RemoveByServerId

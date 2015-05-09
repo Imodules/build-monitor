@@ -76,4 +76,51 @@ describe('Models.Server', function () {
 		});
 	});
 
+	describe('queryRunningBuilds()', function () {
+		it('should call the service to get the running builds and tell the timer it has running builds', function () {
+			spyOn(Services.TeamCity.prototype, 'queryRunningBuilds').and.callFake(function (cb) {
+				cb([
+					new Models.BuildSummary({
+						id: 124,
+						serviceBuildId: 'MBP_AcceptanceTest',
+						serviceBuildNumber: '179',
+						isSuccess: true,
+						isRunning: true,
+						href: '/httpAuth/app/rest/builds/id:124'
+					}),
+					new Models.BuildSummary({
+						id: 123,
+						serviceBuildId: 'MBP_UnitTestAndBundle',
+						serviceBuildNumber: '160',
+						isSuccess: true,
+						isRunning: true,
+						href: '/httpAuth/app/rest/builds/id:123'
+					})
+				]);
+			});
+
+			var timerSpy = jasmine.createSpy();
+
+			var server = new Models.Server({_id: 'qrb_id1', type: 'teamcity', url: 'http://mewserver/url'});
+			server.queryRunningBuilds(timerSpy);
+
+			expect(timerSpy.calls.count()).toBe(1);
+			expect(timerSpy).toHaveBeenCalledWith('qrb_id1', true);
+		});
+
+		it('should call the service and update the time that it no longer has running builds', function () {
+			spyOn(Services.TeamCity.prototype, 'queryRunningBuilds').and.callFake(function (cb) {
+				cb([]);
+			});
+
+			var timerSpy = jasmine.createSpy();
+
+			var server = new Models.Server({_id: 'qrb_id2', type: 'teamcity', url: 'http://mewserver/url'});
+			server.queryRunningBuilds(timerSpy);
+
+			expect(timerSpy.calls.count()).toBe(1);
+			expect(timerSpy).toHaveBeenCalledWith('qrb_id2', false);
+		});
+	});
+
 });

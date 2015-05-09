@@ -8,6 +8,7 @@ Controllers.main = (function () {
 
 	function RefreshActiveBuilds() {
 		var servers = Controllers.Servers.getServers();
+
 		servers.forEach(function (server) {
 			server.refreshActiveBuildData();
 		});
