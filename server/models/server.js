@@ -99,7 +99,9 @@ Models.Server.prototype = {
 
 			builds.forEach(function (build) {
 				var bm = Controllers.Builds.getBuildByServiceId(self._id, build.serviceBuildId);
-				bm.startBuild(self._service, build.href);
+				if(!bm.isBuilding) {
+					bm.startBuild(self._service, build.href);
+				}
 			});
 
 			cbTimerUpdate(self._id, true);

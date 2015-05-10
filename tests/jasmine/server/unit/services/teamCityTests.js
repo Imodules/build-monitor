@@ -69,7 +69,7 @@ var tcProject = {
 var tcRunningBuilds = {
 	statusCode: 200,
 	data: {
-		count: 1,
+		count: 2,
 		href: '/httpAuth/app/rest/builds?locator=running:true',
 		build: [{
 			id: 112427,
@@ -80,6 +80,15 @@ var tcRunningBuilds = {
 			running: true,
 			percentageComplete: 3,
 			href: '/httpAuth/app/rest/builds/id:112427'
+		}, {
+			id: 112429,
+			buildTypeId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri',
+			number: '141',
+			status: 'SUCCESS',
+			state: 'running',
+			running: true,
+			percentageComplete: 5,
+			href: '/httpAuth/app/rest/builds/id:112429'
 		}]
 	}
 };
@@ -268,7 +277,7 @@ var tcFinishedBuildDetail = {
 	}
 };
 
-function _tcDateTimeToDate (datetime) {
+function _tcDateTimeToDate(datetime) {
 	return moment(datetime, 'YYYYMMDDTHHmmssZ').toDate();
 }
 
@@ -344,415 +353,41 @@ describe('Services.TeamCity', function () {
 		});
 	});
 
+	describe('queryRunningBuilds()', function () {
+		it('should get the running builds for the server and pass a buildSummary array to the callback', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				cb(null, tcRunningBuilds);
+			});
 
-	//describe('refreshFromServer()', function () {
-	//	it('should call HTTP.get', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			if (url.indexOf('id:MBP') >= 0) {
-	//				cb(null, tcProject);
-	//			} else {
-	//				cb(null, {
-	//					statusCode: 200,
-	//					data: tcProjects
-	//				});
-	//			}
-	//		});
-	//
-	//		var addProjectSpy = jasmine.createSpy('spy'),
-	//				addBuildTypeSpy = jasmine.createSpy('spy');
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId',
-	//			url: 'http://example.com/bs'
-	//		});
-	//
-	//		tc.refreshFromServer(addProjectSpy, addBuildTypeSpy);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/projects', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/projects/id:MBP', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		expect(HTTP.get).not.toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/projects/id:_Root',
-	//				jasmine.any(Object), jasmine.any(Function));
-	//
-	//		expect(addProjectSpy.calls.count()).toBe(1);
-	//		expect(addProjectSpy.calls.allArgs()).toEqual([['srvId', null, 'MBP', 'My Brew Planner', '/guestAuth/app/rest/projects/id:MBP']]);
-	//
-	//		expect(addBuildTypeSpy.calls.count()).toBe(2);
-	//		expect(addBuildTypeSpy.calls.allArgs()).toEqual([
-	//			['srvId', 'MBP', 'MBP_AcceptanceTest', 'Acceptance Test', '/httpAuth/app/rest/buildTypes/id:MBP_AcceptanceTest'],
-	//			['srvId', 'MBP', 'MBP_UnitTestAndBundle', 'Unit Test and Bundle', '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle']
-	//		]);
-	//	});
-	//});
-	//
-	//describe('queryRunningBuilds()', function () {
-	//	it('should update the BuildTypes collection with the running builds', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			if (url.indexOf('locator=running:true') >= 0) {
-	//				cb(null, tcRunningBuilds);
-	//			} else {
-	//				cb(null, tcRunningBuildDetail);
-	//			}
-	//
-	//		});
-	//		spyOn(Controllers.Builds, 'onStartBuild');
-	//		spyOn(Collections.Builds, 'find').and.callFake(function () {
-	//			return {
-	//				fetch: function () {
-	//					return [];
-	//				}
-	//			};
-	//		});
-	//
-	//		var runningBuildCallback = jasmine.createSpy('spy');
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId2',
-	//			url: 'http://example.com/bs'
-	//		});
-	//
-	//		tc.queryRunningBuilds(runningBuildCallback);
-	//
-	//		expect(HTTP.get.calls.count()).toBe(2);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/builds?locator=running:true', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/httpAuth/app/rest/builds/id:112427', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//
-	//		expect(runningBuildCallback.calls.count()).toBe(1);
-	//		expect(runningBuildCallback.calls.allArgs()).toEqual([['srvId2', true]]);
-	//
-	//		expect(Controllers.Builds.onStartBuild).toHaveBeenCalledWith({
-	//			serverId: 'srvId2',
-	//			serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri',
-	//			bhItem: new Models.BuildHistory({
-	//				id: 112427,
-	//				number: '131',
-	//				isSuccess: true,
-	//				isBuilding: true,
-	//				href: '/httpAuth/app/rest/builds/id:112427',
-	//				changeUsers: ['pstuart2']
-	//			}), percentComplete: 3
-	//		});
-	//	});
-	//
-	//	it('should not re-update builds that it has already started', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			cb(null, tcRunningBuilds);
-	//		});
-	//		spyOn(Controllers.Builds, 'getActiveServerBuilds').and.callFake(function () {
-	//			return [
-	//				{serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri'}
-	//			];
-	//		});
-	//		spyOn(Controllers.Builds, 'onStartBuild');
-	//		var runningBuildCallback = jasmine.createSpy('spy');
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId2',
-	//			url: 'http://example.com/bs'
-	//		});
-	//
-	//		tc.queryRunningBuilds(runningBuildCallback);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/builds?locator=running:true', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		expect(runningBuildCallback.calls.count()).toBe(1);
-	//		expect(runningBuildCallback.calls.allArgs()).toEqual([['srvId2', true]]);
-	//		expect(Controllers.Builds.getActiveServerBuilds).toHaveBeenCalledWith('srvId2');
-	//		expect(Controllers.Builds.onStartBuild).not.toHaveBeenCalled();
-	//	});
-	//
-	//	it('sound call the callback with false if no running builds are returned', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			cb(null, {data: {count: 0}});
-	//		});
-	//		spyOn(Collections.Builds, 'find');
-	//
-	//		var runningBuildCallback = jasmine.createSpy('spy');
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId3',
-	//			url: 'http://example.com/bs'
-	//		});
-	//
-	//		tc.queryRunningBuilds(runningBuildCallback);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs/guestAuth/app/rest/builds?locator=running:true', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		expect(runningBuildCallback.calls.count()).toBe(1);
-	//		expect(runningBuildCallback.calls.allArgs()).toEqual([['srvId3', false]]);
-	//		expect(Collections.Builds.find).not.toHaveBeenCalled();
-	//	});
-	//});
-	//
-	//describe('refreshBuildHistory()', function () {
-	//	it('should get the last 2 builds, successful running and failed complete and update the build status to failure', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			if (url === 'http://example.com/bs3/httpAuth/app/rest/builds/id:665') {
-	//				cb(null, tcFinishedBuildDetail);
-	//			} else {
-	//				cb(null, tcLast2BuildsRunningAndFailure);
-	//			}
-	//		});
-	//
-	//		spyOn(Controllers.Builds, 'onUpdateBuildHistory');
-	//
-	//		var startDate = moment(tcFinishedBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
-	//				finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId3',
-	//			url: 'http://example.com/bs3'
-	//		});
-	//		tc.refreshBuildHistory('MBP_UnitTestAndBundle', 2);
-	//
-	//		expect(HTTP.get.calls.count()).toBe(2);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle/builds?locator=running:any&count=2', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/httpAuth/app/rest/builds/id:665', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//
-	//		expect(Controllers.Builds.onUpdateBuildHistory).toHaveBeenCalledWith(
-	//				'srvId3', 'MBP_UnitTestAndBundle', false, true, [{
-	//					json: {
-	//						id: 665,
-	//						number: '193',
-	//						isSuccess: true,
-	//						isBuilding: true,
-	//						href: '/httpAuth/app/rest/builds/id:665',
-	//						startDate: startDate,
-	//						finishDate: finishDate
-	//					}
-	//				}, {
-	//					json: {
-	//						id: 661,
-	//						number: '192',
-	//						isSuccess: false,
-	//						isBuilding: false,
-	//						href: '/httpAuth/app/rest/builds/id:661'
-	//					}
-	//				}]
-	//		);
-	//	});
-	//
-	//	it('should get the last 2 builds and update the build status to success', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			if (url === 'http://example.com/bs3/httpAuth/app/rest/builds/id:665') {
-	//				cb(null, tcFinishedBuildDetail);
-	//			} else {
-	//				cb(null, tcLast1BuildSuccess);
-	//			}
-	//		});
-	//
-	//		spyOn(Controllers.Builds, 'onUpdateBuildHistory');
-	//
-	//		var startDate = moment(tcFinishedBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
-	//				finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId3',
-	//			url: 'http://example.com/bs3'
-	//		});
-	//		tc.refreshBuildHistory('MBP_UnitTestAndBundle', 2);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle/builds?locator=running:any&count=2', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		expect(Controllers.Builds.onUpdateBuildHistory).toHaveBeenCalledWith(
-	//				'srvId3', 'MBP_UnitTestAndBundle', true, false, [{
-	//					json: {
-	//						id: 665,
-	//						number: '193',
-	//						isSuccess: true,
-	//						isBuilding: false,
-	//						href: '/httpAuth/app/rest/builds/id:665',
-	//						startDate: startDate,
-	//						finishDate: finishDate
-	//					}
-	//				}]
-	//		);
-	//	});
-	//
-	//	it('should get the last X builds and update the build status to failure', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			if (url === 'http://example.com/bs3/httpAuth/app/rest/builds/id:665') {
-	//				cb(null, tcFinishedBuildDetail);
-	//			} else {
-	//				cb(null, tcLast2BuildsFailure);
-	//			}
-	//		});
-	//
-	//		spyOn(Controllers.Builds, 'onUpdateBuildHistory');
-	//
-	//		var startDate = moment(tcFinishedBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
-	//				finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId3',
-	//			url: 'http://example.com/bs3'
-	//		});
-	//		tc.refreshBuildHistory('MBP_UnitTestAndBundle', 2);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/bs3/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle/builds?locator=running:any&count=2', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		expect(Controllers.Builds.onUpdateBuildHistory).toHaveBeenCalledWith(
-	//				'srvId3', 'MBP_UnitTestAndBundle', false, false, [{
-	//					json: {
-	//						id: 665,
-	//						number: '193',
-	//						isSuccess: false,
-	//						isBuilding: false,
-	//						href: '/httpAuth/app/rest/builds/id:665',
-	//						startDate: startDate,
-	//						finishDate: finishDate
-	//					}
-	//				}, {
-	//					json: {
-	//						id: 661,
-	//						number: '192',
-	//						isSuccess: true,
-	//						isBuilding: false,
-	//						href: '/httpAuth/app/rest/builds/id:661'
-	//					}
-	//				}]);
-	//	});
-	//});
-	//
-	//describe('getCurrentBuildStatus()', function () {
-	//	it('should get the running build detailed information and call the callback', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			cb(null, tcRunningBuildDetail);
-	//		});
-	//
-	//		spyOn(Collections.Builds, 'update');
-	//
-	//		var cbSpy = jasmine.createSpy('spy');
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId3',
-	//			url: 'http://example.com/severserver'
-	//		});
-	//
-	//		tc.getCurrentBuildStatus({
-	//			_id: 'MyBuildId',
-	//			currentBuild: {href: '/build/server/detailed/stuff/id:113'},
-	//			isLastBuildSuccess: true
-	//		}, cbSpy);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/severserver/guestAuth/build/server/detailed/stuff/id:113', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		var startDate = moment(tcRunningBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate();
-	//		expect(cbSpy).toHaveBeenCalledWith({
-	//			id: 'MyBuildId',
-	//			href: '/build/server/detailed/stuff/id:113',
-	//			isLastBuildSuccess: true,
-	//			isCurrentSuccess: true,
-	//			isBuilding: true,
-	//			percentageComplete: 30,
-	//			statusText: 'Step 1/3',
-	//			startDateTime: startDate,
-	//			finishDateTime: null
-	//		});
-	//	});
-	//
-	//	it('should pass the finished date for a finished build', function () {
-	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-	//			cb(null, tcFinishedBuildDetail);
-	//		});
-	//
-	//		spyOn(Collections.Builds, 'update');
-	//
-	//		var cbSpy = jasmine.createSpy('spy');
-	//
-	//		var tc = new Services.TeamCity({
-	//			_id: 'srvId3',
-	//			url: 'http://example.com/severserver'
-	//		});
-	//
-	//		tc.getCurrentBuildStatus({
-	//			_id: 'MyBuildId',
-	//			currentBuild: {href: '/build/server/detailed/stuff/id:113'},
-	//			isLastBuildSuccess: true
-	//		}, cbSpy);
-	//
-	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/severserver/guestAuth/build/server/detailed/stuff/id:113', {
-	//			timeOut: 30000,
-	//			headers: {
-	//				'Accept': 'application/json'
-	//			}
-	//		}, jasmine.any(Function));
-	//
-	//		var startDate = moment(tcRunningBuildDetail.data.startDate, 'YYYYMMDDTHHmmssZ').toDate(),
-	//				finishDate = moment(tcFinishedBuildDetail.data.finishDate, 'YYYYMMDDTHHmmssZ').toDate();
-	//		expect(cbSpy).toHaveBeenCalledWith({
-	//			id: 'MyBuildId',
-	//			href: '/build/server/detailed/stuff/id:113',
-	//			isLastBuildSuccess: true,
-	//			isCurrentSuccess: true,
-	//			isBuilding: false,
-	//			percentageComplete: 30,
-	//			statusText: 'Step 1/3',
-	//			startDateTime: startDate,
-	//			finishDateTime: finishDate
-	//		});
-	//	});
-	//});
+			var cbSpy = jasmine.createSpy('spy');
+			var tc = new Services.TeamCity({
+				_id: '_getRunningTest_',
+				url: 'http://example.com/running'
+			});
+			tc.queryRunningBuilds(cbSpy);
+
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/running/guestAuth/app/rest/builds?locator=running:true', {
+				timeOut: 30000,
+				headers: {Accept: 'application/json'}
+			}, jasmine.any(Function));
+
+			expect(cbSpy.calls.count()).toBe(1);
+			expect(cbSpy).toHaveBeenCalledWith([new Models.BuildSummary({
+				id: 112427,
+				serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri',
+				serviceNumber: '131',
+				isSuccess: true,
+				isRunning: true,
+				href: '/httpAuth/app/rest/builds/id:112427'
+			}), new Models.BuildSummary({
+				id: 112429,
+				serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri',
+				serviceNumber: '141',
+				isSuccess: true,
+				isRunning: true,
+				href: '/httpAuth/app/rest/builds/id:112429'
+			})]);
+		});
+	});
+
 });

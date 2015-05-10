@@ -133,6 +133,46 @@ describe('Models.Server', function () {
 			expect(timerSpy.calls.count()).toBe(1);
 			expect(timerSpy).toHaveBeenCalledWith('qrb_id2', false);
 		});
+
+		it('should not start a build for one that is already running', function () {
+			spyOn(Services.TeamCity.prototype, 'queryRunningBuilds').and.callFake(function (cb) {
+				cb([
+					new Models.BuildSummary({
+						id: 131,
+						serviceBuildId: 'MBP_AcceptanceTest',
+						serviceBuildNumber: '1120',
+						isSuccess: true,
+						isRunning: true,
+						href: '/httpAuth/app/rest/builds/id:131'
+					}),
+					new Models.BuildSummary({
+						id: 130,
+						serviceBuildId: 'MBP_UnitTestAndBundle',
+						serviceBuildNumber: '1121',
+						isSuccess: true,
+						isRunning: true,
+						href: '/httpAuth/app/rest/builds/id:130'
+					})
+				]);
+			});
+			spyOn(Controllers.Builds, 'getBuildByServiceId').and.callFake(function () {
+				return new Models.Build({_id: '1ThatIsRunning', isBuilding: true});
+			});
+
+			spyOn(Models.Build.prototype, 'startBuild');
+
+			var timerSpy = jasmine.createSpy();
+
+			var server = new Models.Server({_id: 'qrb_rid1', type: 'teamcity', url: 'http://mewserver/url'});
+			server.queryRunningBuilds(timerSpy);
+
+			expect(timerSpy.calls.count()).toBe(1);
+			expect(timerSpy).toHaveBeenCalledWith('qrb_rid1', true);
+
+			expect(Controllers.Builds.getBuildByServiceId).toHaveBeenCalledWith('qrb_rid1', 'MBP_AcceptanceTest');
+			expect(Controllers.Builds.getBuildByServiceId).toHaveBeenCalledWith('qrb_rid1', 'MBP_UnitTestAndBundle');
+			expect(Models.Build.prototype.startBuild).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('updateRunningBuilds()', function () {
