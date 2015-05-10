@@ -63,6 +63,10 @@ Models.Server.prototype = {
 
 	},
 
+	toggleBuildDisplay: function (buildId, isDisplayed) {
+		// TODO: Calls to build.updateIsDisplayed();
+	},
+
 	/**
 	 * Refreshes the build history data for all the active builds.
 	 */

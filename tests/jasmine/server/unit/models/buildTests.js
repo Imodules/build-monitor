@@ -44,11 +44,17 @@ describe('Models.Build', function () {
 		it('should update the isDisplayed and set the counter to 1 if it is not already displayed', function () {
 			spyOn(Collections.Builds, 'update');
 
+			spyOn(Models.Build.prototype, 'refreshBuildData');
+
 			var build = new Models.Build({_id: '_IUKJOIkd', displayCounter: 0});
-			build.updateIsDisplayed(true);
+			build.updateIsDisplayed(new Services.TeamCity({
+				_id: '-updateIsDIsplayed-',
+				url: 'http://example.com/updateIsDisplayed'
+			}), true);
 
 			expect(build.displayCounter).toBe(1);
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_IUKJOIkd'}, {$inc: {displayCounter: 1}});
+			expect(Models.Build.prototype.refreshBuildData).toHaveBeenCalled();
 		});
 
 		it('should only increment the counter if it is already displayed', function () {
@@ -59,6 +65,16 @@ describe('Models.Build', function () {
 
 			expect(build.displayCounter).toBe(2);
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_adfeeasc-dfasdad'}, {$inc: {displayCounter: -1}});
+		});
+
+		it('should not decrement past 0', function () {
+			spyOn(Collections.Builds, 'update');
+
+			var build = new Models.Build({_id: '_adfeeasc-dfasdad', displayCounter: 0});
+			build.updateIsDisplayed(false);
+
+			expect(build.displayCounter).toBe(0);
+			expect(Collections.Builds.update).not.toHaveBeenCalled();
 		});
 	});
 

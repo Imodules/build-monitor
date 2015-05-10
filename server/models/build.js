@@ -164,9 +164,16 @@ Models.Build.prototype = {
 		});
 	},
 
-	// TODO: Need to pass service so I can call refreshBuildData if needed.
-	updateIsDisplayed: function (setIsDisplayed) {
+	updateIsDisplayed: function (service, setIsDisplayed) {
+		if (this.displayCounter === 0 && !setIsDisplayed) {
+			return;
+		}
+
 		var inc = setIsDisplayed ? 1 : -1;
+		if (this.displayCounter <= 0 && setIsDisplayed) {
+			this.refreshBuildData(service);
+		}
+
 		this._doc.displayCounter += inc;
 
 		Collections.Builds.update({_id: this._id}, {$inc: {displayCounter: inc}});
