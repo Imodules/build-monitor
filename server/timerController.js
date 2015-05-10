@@ -51,10 +51,17 @@ Controllers.Timer = (function () {
 	}
 
 
+	/**
+	 * This will be called every CURRENT_BUILD_STATUS_QUERY_MS to update the status
+	 * of the running builds.
+	 *
+	 * @param serverId
+	 * @constructor
+	 */
 	function RunningBuildQueryInterval(serverId) {
 		console.log('Running build timer for server: ' + serverId);
 
-		var server = Collections.Servers.findOne({_id: serverId});
+		var server = Controllers.Servers.getServer(serverId);
 		server.updateRunningBuilds(CheckRunningBuildsTimer);
 	}
 

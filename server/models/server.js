@@ -96,7 +96,10 @@ Models.Server.prototype = {
 				return cbTimerUpdate(self._id, false);
 			}
 
-
+			builds.forEach(function(build) {
+				var bm = Controllers.Builds.getBuildByServiceId(self._id, build.serviceBuildId);
+				bm.startBuild(self._service, build.href);
+			});
 
 			cbTimerUpdate(self._id, true);
 		});

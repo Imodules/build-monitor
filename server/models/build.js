@@ -58,6 +58,13 @@ Models.Build.prototype = {
 	get isBuilding() {
 		return this._doc.isBuilding;
 	},
+
+	get builds() {
+		return this._doc.builds;
+	},
+	set builds(value) {
+		this._doc.builds = value;
+	},
 	//endregion
 
 	//region Methods
@@ -73,11 +80,36 @@ Models.Build.prototype = {
 	refreshBuildData: function (service) {
 		var self = this;
 		service.getBuildData(self.url, 10, function (buildDetailsArray) {
-			var buildData = _.map(buildDetailsArray, function (bd) { return bd.toJson(); });
+			var buildData = _.map(buildDetailsArray, function (bd) {
+				return bd.toJson();
+			});
 			Collections.Builds.update({_id: self._id}, {$set: {builds: buildData}});
 		});
 	},
 
+	/**
+	 * Starts a new build for this buildType.
+	 *
+	 * @param service
+	 * @param href
+	 */
+	startBuild: function (service, href) {
+		var self = this;
+		service.getBuildDetails(href, function (buildDetail) {
+			if (!self.builds) {
+				self.builds = [];
+			}
+
+			self.builds.splice(0, 0, buildDetail.toJson());
+			while(self.builds.length > 10) {
+				self.builds.pop();
+			}
+
+			Collections.Builds.update({_id: self._id}, {$set: {isBuilding: true, builds: self.builds}});
+		});
+	},
+
+	// TODO: Need to pass service so I can call refreshBuildData if needed.
 	updateIsDisplayed: function (setIsDisplayed) {
 		var inc = setIsDisplayed ? 1 : -1;
 		this._doc.displayCounter += inc;

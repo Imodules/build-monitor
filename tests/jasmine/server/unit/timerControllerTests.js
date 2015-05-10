@@ -111,7 +111,7 @@ describe('Controllers.Timer', function () {
 
 	describe('OnRunningBuildQueryInterval()', function () {
 		it('should query for all active builds by server and get updated details', function () {
-			spyOn(Collections.Servers, 'findOne').and.callFake(function () {
+			spyOn(Controllers.Servers, 'getServer').and.callFake(function () {
 				return new Models.Server({_id: 'SeverId', url: 'http://example.com/bs1', type: 'teamcity'});
 			});
 
@@ -119,6 +119,7 @@ describe('Controllers.Timer', function () {
 
 			Controllers.Timer.onRunningBuildQueryInterval('SeverId');
 
+			expect(Controllers.Servers.getServer).toHaveBeenCalledWith('SeverId');
 			expect(Models.Server.prototype.updateRunningBuilds).toHaveBeenCalledWith(jasmine.any(Function));
 		});
 	});

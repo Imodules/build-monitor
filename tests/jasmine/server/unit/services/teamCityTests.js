@@ -268,6 +268,10 @@ var tcFinishedBuildDetail = {
 	}
 };
 
+function _tcDateTimeToDate (datetime) {
+	return moment(datetime, 'YYYYMMDDTHHmmssZ').toDate();
+}
+
 describe('Services.TeamCity', function () {
 
 	describe('getBuildData', function () {
@@ -281,7 +285,18 @@ describe('Services.TeamCity', function () {
 			});
 
 			var cbSpy = jasmine.createSpy('spy'),
-					responseData = new Models.BuildDetail({ id: 687, serviceBuildId: 'MBP_UnitTestAndBundle', serviceNumber: '204', isSuccess: true, isRunning: true, href: '/httpAuth/app/rest/builds/id:687', statusText: 'Step 1/3', startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'), finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'), usernames: [ 'pstuart2' ] });
+					responseData = new Models.BuildDetail({
+						id: 687,
+						serviceBuildId: 'MBP_UnitTestAndBundle',
+						serviceNumber: '204',
+						isSuccess: true,
+						isRunning: true,
+						href: '/httpAuth/app/rest/builds/id:687',
+						statusText: 'Step 1/3',
+						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
+						finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'),
+						usernames: ['pstuart2']
+					});
 
 			var tc = new Services.TeamCity({
 				_id: '_getBuildDataTest_',
@@ -291,18 +306,41 @@ describe('Services.TeamCity', function () {
 
 			expect(HTTP.get.calls.count()).toBe(3);
 			expect(cbSpy.calls.count()).toBe(1);
-			expect(cbSpy).toHaveBeenCalledWith([responseData,responseData]);
+			expect(cbSpy).toHaveBeenCalledWith([responseData, responseData]);
 		});
 	});
 
+	describe('getBuildDetails()', function () {
+		it('should get the data for the build and callback with the build history object', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				cb(null, tcRunningBuildDetail);
+			});
 
+			var cbSpy = jasmine.createSpy('spy'),
+					responseData = new Models.BuildDetail({
+						id: 687,
+						serviceBuildId: 'MBP_UnitTestAndBundle',
+						serviceNumber: '204',
+						isSuccess: true,
+						isRunning: true,
+						href: '/httpAuth/app/rest/builds/id:687',
+						statusText: 'Step 1/3',
+						startDate: _tcDateTimeToDate(tcRunningBuildDetail.data.startDate),
+						finishDate: _tcDateTimeToDate(tcRunningBuildDetail.data.finishDate),
+						usernames: ['pstuart2']
+					});
 
+			var tc = new Services.TeamCity({
+				_id: '_getBuildDataTest_',
+				url: 'http://example.com/getBuildDetails'
+			});
+			tc.getBuildDetails('/guestAuth/app/rest/buildTypes/id:SomeProjectBuildIdThing', cbSpy);
 
-
-
-
-
-
+			expect(HTTP.get.calls.count()).toBe(1);
+			expect(cbSpy.calls.count()).toBe(1);
+			expect(cbSpy).toHaveBeenCalledWith(responseData);
+		});
+	});
 
 
 	//describe('refreshFromServer()', function () {

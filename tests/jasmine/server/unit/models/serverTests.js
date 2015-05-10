@@ -98,6 +98,11 @@ describe('Models.Server', function () {
 					})
 				]);
 			});
+			spyOn(Controllers.Builds, 'getBuildByServiceId').and.callFake(function () {
+				return new Models.Build({});
+			});
+
+			spyOn(Models.Build.prototype, 'startBuild');
 
 			var timerSpy = jasmine.createSpy();
 
@@ -106,6 +111,11 @@ describe('Models.Server', function () {
 
 			expect(timerSpy.calls.count()).toBe(1);
 			expect(timerSpy).toHaveBeenCalledWith('qrb_id1', true);
+
+			expect(Controllers.Builds.getBuildByServiceId).toHaveBeenCalledWith('qrb_id1', 'MBP_AcceptanceTest');
+			expect(Controllers.Builds.getBuildByServiceId).toHaveBeenCalledWith('qrb_id1', 'MBP_UnitTestAndBundle');
+			expect(Models.Build.prototype.startBuild).toHaveBeenCalledWith(jasmine.any(Services.TeamCity), '/httpAuth/app/rest/builds/id:124');
+			expect(Models.Build.prototype.startBuild).toHaveBeenCalledWith(jasmine.any(Services.TeamCity), '/httpAuth/app/rest/builds/id:123');
 		});
 
 		it('should call the service and update the time that it no longer has running builds', function () {

@@ -76,27 +76,8 @@ Services.TeamCity.prototype = {
 
 			for(var i=0; i<expectedCount; i++) {
 				var build = data.build[i];
-				self._call(build.href, function (buildDetail) {
-					var users = [];
-					if (buildDetail.lastChanges) {
-						users = _.map(buildDetail.lastChanges.change, function (change) {
-							return change.username;
-						});
-					}
 
-					var bh = new Models.BuildDetail({
-						id: buildDetail.id,
-						serviceBuildId: buildDetail.buildTypeId,
-						serviceNumber: buildDetail.number,
-						isSuccess: buildDetail.status === 'SUCCESS',
-						isRunning: buildDetail.running === true,
-						href: buildDetail.href,
-						statusText: buildDetail.statusText,
-						startDate: self._tcDateTimeToDate(buildDetail.startDate),
-						finishDate: self._tcDateTimeToDate(buildDetail.finishDate),
-						usernames: users
-					});
-
+				self.getBuildDetails(build.href, function (bh) {
 					bhArray.push(bh);
 
 					if (bhArray.length === expectedCount) {
@@ -104,7 +85,33 @@ Services.TeamCity.prototype = {
 					}
 				});
 			}
+		});
+	},
 
+	getBuildDetails: function (href, cb) {
+		var self = this;
+		self._call(href, function (buildDetail) {
+			var users = [];
+			if (buildDetail.lastChanges) {
+				users = _.map(buildDetail.lastChanges.change, function (change) {
+					return change.username;
+				});
+			}
+
+			var bh = new Models.BuildDetail({
+				id: buildDetail.id,
+				serviceBuildId: buildDetail.buildTypeId,
+				serviceNumber: buildDetail.number,
+				isSuccess: buildDetail.status === 'SUCCESS',
+				isRunning: buildDetail.running === true,
+				href: buildDetail.href,
+				statusText: buildDetail.statusText,
+				startDate: self._tcDateTimeToDate(buildDetail.startDate),
+				finishDate: self._tcDateTimeToDate(buildDetail.finishDate),
+				usernames: users
+			});
+
+			cb(bh);
 		});
 	},
 
