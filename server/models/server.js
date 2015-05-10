@@ -93,10 +93,11 @@ Models.Server.prototype = {
 		var self = this;
 		this._service.queryRunningBuilds(function (builds) {
 			if (builds.length === 0) {
+				self.updateRunningBuilds();
 				return cbTimerUpdate(self._id, false);
 			}
 
-			builds.forEach(function(build) {
+			builds.forEach(function (build) {
 				var bm = Controllers.Builds.getBuildByServiceId(self._id, build.serviceBuildId);
 				bm.startBuild(self._service, build.href);
 			});
@@ -110,8 +111,12 @@ Models.Server.prototype = {
 	 *
 	 * @param cbTimerUpdate
 	 */
-	updateRunningBuilds: function (cbTimerUpdate) {
-
+	updateRunningBuilds: function () {
+		var self = this,
+				builds = Controllers.Builds.getRunningServerBuilds(self._id);
+		builds.forEach(function (build) {
+			build.updateRunningBuild(self._service);
+		});
 	}
 	//endregion
 };

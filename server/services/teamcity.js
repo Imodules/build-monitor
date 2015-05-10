@@ -105,6 +105,7 @@ Services.TeamCity.prototype = {
 				isSuccess: buildDetail.status === 'SUCCESS',
 				isRunning: buildDetail.running === true,
 				href: buildDetail.href,
+				percentageComplete: buildDetail.percentageComplete,
 				statusText: buildDetail.statusText,
 				startDate: self._tcDateTimeToDate(buildDetail.startDate),
 				finishDate: self._tcDateTimeToDate(buildDetail.finishDate),

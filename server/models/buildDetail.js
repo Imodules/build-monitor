@@ -14,6 +14,7 @@
  * isSuccess: boolean,
  * isRunning: boolean,
  * href: string,
+ * percentageComplete: Number,
  * statusText: string,
  * startDate: Date,
  * finishDate: Date,
@@ -29,6 +30,7 @@ Models.BuildDetail = function (doc) {
 		isSuccess: doc.isSuccess,
 		isRunning: doc.isRunning,
 		href: doc.href,
+		percentageComplete: doc.percentageComplete,
 		statusText: doc.statusText,
 		startDate: doc.startDate,
 		finishDate: doc.finishDate,
@@ -63,6 +65,10 @@ Models.BuildDetail.prototype = {
 
 	get href() {
 		return this.json.href;
+	},
+
+	get percentageComplete() {
+		return this.json.percentageComplete;
 	},
 
 	get statusText() {

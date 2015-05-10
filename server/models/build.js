@@ -73,6 +73,44 @@ Models.Build.prototype = {
 	},
 
 	/**
+	 *
+	 * @param {Models.BuildDetail} buildDetail
+	 * @private
+	 */
+	_updateBuild: function (buildDetail) {
+		var set = {
+			'builds.0.isRunning': buildDetail.isRunning,
+			'builds.0.isSuccess': buildDetail.isSuccess,
+			'builds.0.statusText': buildDetail.statusText,
+			'builds.0.percentageComplete': buildDetail.percentageComplete
+		};
+
+		if (this.isLastBuildSuccess && !buildDetail.isSuccess) {
+			set.isLastBuildSuccess = false;
+		}
+
+		Collections.Builds.update({_id: this._id}, { $set: set });
+	},
+
+	/**
+	 *
+	 * @param {Models.BuildDetail} buildDetail
+	 * @private
+	 */
+	_finishBuild: function (buildDetail) {
+		Collections.Builds.update({_id: this._id}, {
+			$set: {
+				isLastBuildSuccess: buildDetail.isSuccess,
+				isBuilding: false,
+				'builds.0.isRunning': buildDetail.isRunning,
+				'builds.0.isSuccess': buildDetail.isSuccess,
+				'builds.0.statusText': buildDetail.statusText,
+				'builds.0.percentageComplete': buildDetail.percentageComplete
+			}
+		});
+	},
+
+	/**
 	 * Refreshes the build history data for this build.
 	 *
 	 * @param service
@@ -101,11 +139,28 @@ Models.Build.prototype = {
 			}
 
 			self.builds.splice(0, 0, buildDetail.toJson());
-			while(self.builds.length > 10) {
+			while (self.builds.length > 10) {
 				self.builds.pop();
 			}
 
 			Collections.Builds.update({_id: self._id}, {$set: {isBuilding: true, builds: self.builds}});
+		});
+	},
+
+	/**
+	 * Updates the latest build information.
+	 *
+	 * @param service
+	 */
+	updateRunningBuild: function (service) {
+		var self = this,
+				build = self.builds[0];
+		service.getBuildDetails(build.href, function (buildDetail) {
+			if (buildDetail.isRunning) {
+				self._updateBuild(buildDetail);
+			} else {
+				self._finishBuild(buildDetail);
+			}
 		});
 	},
 

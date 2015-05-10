@@ -122,15 +122,62 @@ describe('Models.Server', function () {
 			spyOn(Services.TeamCity.prototype, 'queryRunningBuilds').and.callFake(function (cb) {
 				cb([]);
 			});
+			spyOn(Models.Server.prototype, 'updateRunningBuilds');
 
 			var timerSpy = jasmine.createSpy();
 
 			var server = new Models.Server({_id: 'qrb_id2', type: 'teamcity', url: 'http://mewserver/url'});
 			server.queryRunningBuilds(timerSpy);
 
+			expect(Models.Server.prototype.updateRunningBuilds).toHaveBeenCalled();
 			expect(timerSpy.calls.count()).toBe(1);
 			expect(timerSpy).toHaveBeenCalledWith('qrb_id2', false);
 		});
 	});
 
+	describe('updateRunningBuilds()', function () {
+		it('should query the builds controller for all the running builds, then tell them to update', function () {
+			spyOn(Controllers.Builds, 'getRunningServerBuilds').and.callFake(function () {
+				return [
+					new Models.Build({
+						_id: 'build_1', builds: [{
+							id: 420,
+							serviceBuildId: 'MBP_UTB-1',
+							serviceNumber: '112',
+							isSuccess: true,
+							isRunning: true,
+							href: '/httpAuth/app/rest/builds/id:420',
+							statusText: 'Just keep swimming...',
+							startDate: new Date(2015, 1, 17, 15, 20, 0),
+							finishDate: null,
+							usernames: ['pstuart183']
+						}]
+					}),
+					new Models.Build({
+						_id: 'build_2', builds: [{
+							id: 421,
+							serviceBuildId: 'MBP_UTB-2',
+							serviceNumber: '114',
+							isSuccess: true,
+							isRunning: false,
+							href: '/httpAuth/app/rest/builds/id:421',
+							statusText: 'Success',
+							startDate: new Date(2015, 11, 27, 15, 20, 0),
+							finishDate: new Date(2015, 11, 27, 15, 30, 0),
+							usernames: ['pstuart2']
+						}]
+					})
+				];
+			});
+
+			spyOn(Models.Build.prototype, 'updateRunningBuild');
+
+			var server = new Models.Server({_id: '_$ServerId$_', url: 'http://niner.example.com', type: 'teamcity'});
+			server.updateRunningBuilds();
+
+			expect(Controllers.Builds.getRunningServerBuilds).toHaveBeenCalledWith('_$ServerId$_');
+			expect(Models.Build.prototype.updateRunningBuild.calls.count()).toBe(2);
+			expect(Models.Build.prototype.updateRunningBuild).toHaveBeenCalledWith(jasmine.any(Services.TeamCity));
+		});
+	});
 });
