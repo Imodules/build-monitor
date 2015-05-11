@@ -20,6 +20,16 @@ describe('Models.Server', function () {
 		});
 	});
 
+	describe('toggleBuildDisplay()', function () {
+		it('should get the build and call updateIsDisplayed', function () {
+			spyOn(Controllers.Builds, 'getBuild').and.callFake(function () {
+
+			});
+
+			expect(true).toBe(false);
+		});
+	});
+
 	describe('refreshActiveBuildData()', function () {
 		it('should call the refreshBuildData for the builds', function () {
 			spyOn(Controllers.Builds, 'getActiveServerBuilds').and.callFake(function () {
