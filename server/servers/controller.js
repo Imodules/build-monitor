@@ -27,6 +27,10 @@ Controllers.Servers = (function () {
 		return Collections.Servers.findOne({_id: serverId}, {transform: _transform});
 	}
 
+	function GetServerByName(name) {
+		return Collections.Servers.findOne({name: name}, {transform: _transform});
+	}
+
 	function GetServers() {
 		return Collections.Servers.find({}, {transform: _transform});
 	}
@@ -75,6 +79,7 @@ Controllers.Servers = (function () {
 
 	return {
 		getServer: GetServer,
+		getServerByName: GetServerByName,
 		getServers: GetServers,
 		onSaveServer: SaveServer,
 		onDeleteServer: DeleteServer,

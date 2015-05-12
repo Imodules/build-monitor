@@ -1,0 +1,134 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": "CheckInTriggeredBuilds",
+    "name": "Check In Triggered Builds",
+    "parentProjectId": "_Root",
+    "href": "/guestAuth/app/rest/projects/id:CheckInTriggeredBuilds",
+    "webUrl": "http://bs.example.com/project.html?projectId=CheckInTriggeredBuilds",
+    "parentProject": {
+      "id": "_Root",
+      "name": "<Root project>",
+      "description": "Contains all other projects",
+      "href": "/guestAuth/app/rest/projects/id:_Root",
+      "webUrl": "http://bs.example.com/project.html?projectId=_Root"
+    },
+    "buildTypes": {
+      "count": 3,
+      "buildType": [
+        {
+          "id": "CheckInTriggeredBuilds_Release5390",
+          "name": "Release-53.9.0",
+          "paused": true,
+          "projectName": "Check In Triggered Builds",
+          "projectId": "CheckInTriggeredBuilds",
+          "href": "/guestAuth/app/rest/buildTypes/id:CheckInTriggeredBuilds_Release5390",
+          "webUrl": "http://bs.example.com/viewType.html?buildTypeId=CheckInTriggeredBuilds_Release5390"
+        },
+        {
+          "id": "CheckInTriggeredBuilds_Release5400",
+          "name": "Release-54.0.0",
+          "projectName": "Check In Triggered Builds",
+          "projectId": "CheckInTriggeredBuilds",
+          "href": "/guestAuth/app/rest/buildTypes/id:CheckInTriggeredBuilds_Release5400",
+          "webUrl": "http://bs.example.com/viewType.html?buildTypeId=CheckInTriggeredBuilds_Release5400"
+        },
+        {
+          "id": "CheckInTriggeredBuilds_Release5410",
+          "name": "Release-54.1.0",
+          "projectName": "Check In Triggered Builds",
+          "projectId": "CheckInTriggeredBuilds",
+          "href": "/guestAuth/app/rest/buildTypes/id:CheckInTriggeredBuilds_Release5410",
+          "webUrl": "http://bs.example.com/viewType.html?buildTypeId=CheckInTriggeredBuilds_Release5410"
+        }
+      ]
+    },
+    "templates": {
+      "count": 0,
+      "buildType": []
+    },
+    "parameters": {
+      "count": 10,
+      "href": "/app/rest/projects/id:CheckInTriggeredBuilds/parameters",
+      "property": [
+        {
+          "name": "env.EnableNuGetPackageRestore",
+          "value": "true",
+          "own": true
+        },
+        {
+          "name": "system.BuildInRelease",
+          "value": "false",
+          "own": true
+        },
+        {
+          "name": "system.buildSqlRollFiles",
+          "value": "true",
+          "own": true
+        },
+        {
+          "name": "system.IncludeAll",
+          "value": "false",
+          "own": true
+        },
+        {
+          "name": "system.IncludeMerges",
+          "value": "false",
+          "own": true
+        },
+        {
+          "name": "system.MercurialCurrentBranch",
+          "value": "%vcsroot.branchName%",
+          "own": true
+        },
+        {
+          "name": "system.RunSql",
+          "value": "true",
+          "own": true
+        },
+        {
+          "name": "system.RunSqlCatalogList",
+          "value": "c_bishop_miege;c_carnegie_mellon_university;c_colgate_university;c_michigan_state_university;c_univ_of_minnesota;c_imod_green",
+          "own": true
+        },
+        {
+          "name": "system.SourceControlProvider",
+          "value": "mercurial",
+          "own": true
+        },
+        {
+          "name": "teamcity.ui.runButton.caption",
+          "value": "Build",
+          "own": true
+        }
+      ]
+    },
+    "vcsRoots": {"href": "/guestAuth/app/rest/vcs-roots?locator=project:(id:CheckInTriggeredBuilds)"},
+    "projects": {
+      "count": 3,
+      "project": [
+        {
+          "id": "CheckInTriggeredBuilds_CoreBuilds",
+          "name": "Core Builds",
+          "parentProjectId": "CheckInTriggeredBuilds",
+          "href": "/guestAuth/app/rest/projects/id:CheckInTriggeredBuilds_CoreBuilds",
+          "webUrl": "http://bs.example.com/project.html?projectId=CheckInTriggeredBuilds_CoreBuilds"
+        },
+        {
+          "id": "CheckInTriggeredBuilds_FeatureBuilds",
+          "name": "Feature Builds",
+          "parentProjectId": "CheckInTriggeredBuilds",
+          "href": "/guestAuth/app/rest/projects/id:CheckInTriggeredBuilds_FeatureBuilds",
+          "webUrl": "http://bs.example.com/project.html?projectId=CheckInTriggeredBuilds_FeatureBuilds"
+        },
+        {
+          "id": "CheckInTriggeredBuilds_PivotalBuilds",
+          "name": "Pivotal Builds",
+          "parentProjectId": "CheckInTriggeredBuilds",
+          "href": "/guestAuth/app/rest/projects/id:CheckInTriggeredBuilds_PivotalBuilds",
+          "webUrl": "http://bs.example.com/project.html?projectId=CheckInTriggeredBuilds_PivotalBuilds"
+        }
+      ]
+    }
+  }
+}

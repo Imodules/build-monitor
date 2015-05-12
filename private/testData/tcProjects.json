@@ -1,0 +1,210 @@
+{
+  "statusCode": 200,
+  "data": {
+    "count": 28,
+    "project": [
+      {
+        "id": "_Root",
+        "name": "<Root project>",
+        "description": "Contains all other projects",
+        "href": "/guestAuth/app/rest/projects/id:_Root",
+        "webUrl": "http://bs.example.com/project.html?projectId=_Root"
+      },
+      {
+        "id": "Administrative",
+        "name": "Administrative",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:Administrative",
+        "webUrl": "http://bs.example.com/project.html?projectId=Administrative"
+      },
+      {
+        "id": "AutomatedTesting",
+        "name": "Automated Testing",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:AutomatedTesting",
+        "webUrl": "http://bs.example.com/project.html?projectId=AutomatedTesting"
+      },
+      {
+        "id": "AutomatedTestingManagement_Admin",
+        "name": "Administration",
+        "parentProjectId": "AutomatedTesting",
+        "href": "/guestAuth/app/rest/projects/id:AutomatedTestingManagement_Admin",
+        "webUrl": "http://bs.example.com/project.html?projectId=AutomatedTestingManagement_Admin"
+      },
+      {
+        "id": "AutomatedTesting_AutomatedUiTesting",
+        "name": "Automated UI Testing",
+        "parentProjectId": "AutomatedTesting",
+        "href": "/guestAuth/app/rest/projects/id:AutomatedTesting_AutomatedUiTesting",
+        "webUrl": "http://bs.example.com/project.html?projectId=AutomatedTesting_AutomatedUiTesting"
+      },
+      {
+        "id": "AutomatedUiTesting",
+        "name": "Automated UI Testing",
+        "parentProjectId": "_Root",
+        "description": "by Category",
+        "href": "/guestAuth/app/rest/projects/id:AutomatedUiTesting",
+        "webUrl": "http://bs.example.com/project.html?projectId=AutomatedUiTesting"
+      },
+      {
+        "id": "BetaCheckInTriggeredBuilds",
+        "name": "Beta Check In Triggered Builds",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:BetaCheckInTriggeredBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=BetaCheckInTriggeredBuilds"
+      },
+      {
+        "id": "CheckInTriggeredBuilds",
+        "name": "Check In Triggered Builds",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:CheckInTriggeredBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=CheckInTriggeredBuilds"
+      },
+      {
+        "id": "CheckInTriggeredBuilds_CoreBuilds",
+        "name": "Core Builds",
+        "parentProjectId": "CheckInTriggeredBuilds",
+        "href": "/guestAuth/app/rest/projects/id:CheckInTriggeredBuilds_CoreBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=CheckInTriggeredBuilds_CoreBuilds"
+      },
+      {
+        "id": "CheckInTriggeredBuilds_FeatureBuilds",
+        "name": "Feature Builds",
+        "parentProjectId": "CheckInTriggeredBuilds",
+        "href": "/guestAuth/app/rest/projects/id:CheckInTriggeredBuilds_FeatureBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=CheckInTriggeredBuilds_FeatureBuilds"
+      },
+      {
+        "id": "CheckInTriggeredBuilds_PivotalBuilds",
+        "name": "Pivotal Builds",
+        "parentProjectId": "CheckInTriggeredBuilds",
+        "href": "/guestAuth/app/rest/projects/id:CheckInTriggeredBuilds_PivotalBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=CheckInTriggeredBuilds_PivotalBuilds"
+      },
+      {
+        "id": "DeploymentBuilds",
+        "name": "Deployment Builds",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:DeploymentBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=DeploymentBuilds"
+      },
+      {
+        "id": "DeploymentBuilds_Core",
+        "name": "Core Builds",
+        "parentProjectId": "DeploymentBuilds",
+        "href": "/guestAuth/app/rest/projects/id:DeploymentBuilds_Core",
+        "webUrl": "http://bs.example.com/project.html?projectId=DeploymentBuilds_Core"
+      },
+      {
+        "id": "DeploymentBuilds_FeatureBuilds",
+        "name": "Weekly Builds",
+        "parentProjectId": "DeploymentBuilds",
+        "href": "/guestAuth/app/rest/projects/id:DeploymentBuilds_FeatureBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=DeploymentBuilds_FeatureBuilds"
+      },
+      {
+        "id": "EncompassTools",
+        "name": "Encompass Tools",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:EncompassTools",
+        "webUrl": "http://bs.example.com/project.html?projectId=EncompassTools"
+      },
+      {
+        "id": "FailingAutomatedUiTesting",
+        "name": "Failing Automated UI Testing",
+        "parentProjectId": "_Root",
+        "description": "by Category",
+        "href": "/guestAuth/app/rest/projects/id:FailingAutomatedUiTesting",
+        "webUrl": "http://bs.example.com/project.html?projectId=FailingAutomatedUiTesting"
+      },
+      {
+        "id": "FileServerWebSBuilds",
+        "name": "File Server Builds",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:FileServerWebSBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=FileServerWebSBuilds"
+      },
+      {
+        "id": "UpdateSite_OldBuildsforLocalServers",
+        "name": "OldBuildsforLocalServers (all paused)",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:UpdateSite_OldBuildsforLocalServers",
+        "webUrl": "http://bs.example.com/project.html?projectId=UpdateSite_OldBuildsforLocalServers"
+      },
+      {
+        "id": "RaoulsBuildSandbox",
+        "name": "Raouls Build Sandbox",
+        "parentProjectId": "_Root",
+        "description": "Raouls Build Sandbox",
+        "href": "/guestAuth/app/rest/projects/id:RaoulsBuildSandbox",
+        "webUrl": "http://bs.example.com/project.html?projectId=RaoulsBuildSandbox"
+      },
+      {
+        "id": "RollPackage",
+        "name": "Roll Packages",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:RollPackage",
+        "webUrl": "http://bs.example.com/project.html?projectId=RollPackage"
+      },
+      {
+        "id": "RollPackage_Administration",
+        "name": "Administration",
+        "parentProjectId": "RollPackage",
+        "href": "/guestAuth/app/rest/projects/id:RollPackage_Administration",
+        "webUrl": "http://bs.example.com/project.html?projectId=RollPackage_Administration"
+      },
+      {
+        "id": "UpdateSite",
+        "name": "Update Site",
+        "parentProjectId": "_Root",
+        "href": "/guestAuth/app/rest/projects/id:UpdateSite",
+        "webUrl": "http://bs.example.com/project.html?projectId=UpdateSite"
+      },
+      {
+        "id": "UpdateSite_AmazonWebServices",
+        "name": "AWS - Amazon Web Services",
+        "parentProjectId": "UpdateSite",
+        "href": "/guestAuth/app/rest/projects/id:UpdateSite_AmazonWebServices",
+        "webUrl": "http://bs.example.com/project.html?projectId=UpdateSite_AmazonWebServices"
+      },
+      {
+        "id": "UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+        "name": "Update PWS Email Gateway",
+        "parentProjectId": "UpdateSite_AmazonWebServices",
+        "description": "Push the fleet of email gateway applications to Pivotal Web Services (cloud foundry)",
+        "href": "/guestAuth/app/rest/projects/id:UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+        "webUrl": "http://bs.example.com/project.html?projectId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway"
+      },
+      {
+        "id": "UpdateSite_ArchivedUpdateSites",
+        "name": "Archived Update Sites",
+        "parentProjectId": "UpdateSite",
+        "href": "/guestAuth/app/rest/projects/id:UpdateSite_ArchivedUpdateSites",
+        "webUrl": "http://bs.example.com/project.html?projectId=UpdateSite_ArchivedUpdateSites"
+      },
+      {
+        "id": "UpdateSite_C",
+        "name": "Core Builds",
+        "parentProjectId": "UpdateSite",
+        "description": "Update Site builds that do not change",
+        "href": "/guestAuth/app/rest/projects/id:UpdateSite_C",
+        "webUrl": "http://bs.example.com/project.html?projectId=UpdateSite_C"
+      },
+      {
+        "id": "UpdateSite_Pivotal",
+        "name": "Pivotal",
+        "parentProjectId": "UpdateSite",
+        "href": "/guestAuth/app/rest/projects/id:UpdateSite_Pivotal",
+        "webUrl": "http://bs.example.com/project.html?projectId=UpdateSite_Pivotal"
+      },
+      {
+        "id": "BetaBuilds",
+        "name": "Beta Builds",
+        "parentProjectId": "_Root",
+        "archived": true,
+        "href": "/guestAuth/app/rest/projects/id:BetaBuilds",
+        "webUrl": "http://bs.example.com/project.html?projectId=BetaBuilds"
+      }
+    ]
+  }
+}
