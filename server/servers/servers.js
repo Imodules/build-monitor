@@ -16,8 +16,8 @@ Collections.Servers.allow({
 });
 
 Meteor.methods({
-	insertServer: Controllers.Servers.onInsertServer,
-	updateServer: Controllers.Servers.onUpdateServer,
+	insertServer: Controllers.Servers.onSaveServer,
+	updateServer: Controllers.Servers.onSaveServer,
 	deleteServer: Controllers.Servers.onDeleteServer,
 
 	refreshProjects: Controllers.Servers.onRefresh

@@ -14,15 +14,9 @@ describe('Controllers.Servers', function () {
 			});
 		});
 
-		it('onInsertServer() should throw if the user is not an admin', function () {
+		it('onSaveServer() should throw if the user is not an admin', function () {
 			expect(function () {
-				Controllers.Servers.onInsertServer('Server Name', 'http://lhost2:80');
-			}).toThrow();
-		});
-
-		it('onUpdateServer() should throw if the user is not an admin', function () {
-			expect(function () {
-				Controllers.Servers.onUpdateServer('2', 'New server', 'http://newhost:80', 'tcUser', 'tcPass');
+				Controllers.Servers.onSaveServer('2', 'New server', 'http://newhost:80', 'tcUser', 'tcPass');
 			}).toThrow();
 		});
 
@@ -43,7 +37,7 @@ describe('Controllers.Servers', function () {
 		});
 	});
 
-	describe('onInsertServer()', function () {
+	describe('onSaveServer()', function () {
 
 		beforeEach(function () {
 			spyOn(Meteor, 'user').and.callFake(function () {
@@ -51,19 +45,19 @@ describe('Controllers.Servers', function () {
 					_id: 'abc',
 					username: 'coooooool',
 					isAdmin: true
-				}
+				};
 			});
 		});
 
 		it('should throw if url is not passed', function () {
 			expect(function () {
-				Controllers.Servers.onUpdateServer('name');
+				Controllers.Servers.onSaveServer('abc', 'name');
 			}).toThrow();
 		});
 
 		it('should throw if name is not passed', function () {
 			expect(function () {
-				Controllers.Servers.onUpdateServer(null, 'url');
+				Controllers.Servers.onSaveServer('abc', null, 'url');
 			}).toThrow();
 		});
 
@@ -80,7 +74,7 @@ describe('Controllers.Servers', function () {
 				return true;
 			});
 
-			Controllers.Servers.onInsertServer('Server Name', 'http://lhost2:80');
+			Controllers.Servers.onSaveServer(null, 'Server Name', 'http://lhost2:80');
 
 			expect(Collections.Servers.insert).toHaveBeenCalledWith({
 				name: 'Server Name',
@@ -89,36 +83,6 @@ describe('Controllers.Servers', function () {
 				user: false,
 				password: false
 			});
-		});
-	});
-
-	describe('onUpdateServer()', function () {
-		beforeEach(function () {
-			spyOn(Meteor, 'user').and.callFake(function () {
-				return {
-					_id: 'abc',
-					username: 'coooooool',
-					isAdmin: true
-				}
-			});
-		});
-
-		it('should throw if id is not passed', function () {
-			expect(function () {
-				Controllers.Servers.onUpdateServer(null, 'url');
-			}).toThrow();
-		});
-
-		it('should throw if name is not passed', function () {
-			expect(function () {
-				Controllers.Servers.onUpdateServer('id', null, 'url');
-			}).toThrow();
-		});
-
-		it('should throw if url is not passed', function () {
-			expect(function () {
-				Controllers.Servers.onUpdateServer('id', 'name');
-			}).toThrow();
 		});
 
 		it('should call update if a current record exists', function () {
@@ -130,7 +94,7 @@ describe('Controllers.Servers', function () {
 				return true;
 			});
 
-			Controllers.Servers.onUpdateServer('2', 'New server', 'http://newhost:80', 'tcUser', 'tcPass');
+			Controllers.Servers.onSaveServer('2', 'New server', 'http://newhost:80', 'tcUser', 'tcPass');
 
 			expect(Collections.Servers.update).toHaveBeenCalledWith({_id: '2'}, {
 				$set: {
@@ -142,8 +106,8 @@ describe('Controllers.Servers', function () {
 				}
 			});
 		});
-
 	});
+
 
 	describe('onDeleteServer()', function () {
 		beforeEach(function () {

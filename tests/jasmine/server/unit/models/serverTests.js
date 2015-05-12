@@ -20,6 +20,57 @@ describe('Models.Server', function () {
 		});
 	});
 
+	describe('save()', function () {
+		it('should call insert if this is a new server record', function () {
+			spyOn(Collections.Servers, 'insert').and.callFake(function () {
+				return '_meKnewId_';
+			});
+
+			var server = new Models.Server({
+				name: 'MyNewServer-Cool',
+				type: 'teamcity',
+				url: 'http://server.example.com',
+				user: 'user99',
+				password: 'pass100'
+			});
+			server.save();
+
+			expect(Collections.Servers.insert).toHaveBeenCalledWith({
+				name: 'MyNewServer-Cool',
+				type: 'teamcity',
+				url: 'http://server.example.com',
+				user: 'user99',
+				password: 'pass100'
+			});
+		});
+
+		it('should call update if this server already exists', function () {
+			spyOn(Collections.Servers, 'update');
+			spyOn(Collections.Servers, 'insert');
+
+			var server = new Models.Server({
+				_id: '-coolservid-',
+				type: 'teamcity',
+				name: 'smeNewName',
+				url: 'http://coolurl.example.com',
+				user: 'Cool1',
+				password: 'SwwetPass'
+			});
+			server.save();
+
+			expect(Collections.Servers.insert).not.toHaveBeenCalled();
+			expect(Collections.Servers.update).toHaveBeenCalledWith({_id: '-coolservid-'}, {
+				$set: {
+					name: 'smeNewName',
+					type: 'teamcity',
+					url: 'http://coolurl.example.com',
+					user: 'Cool1',
+					password: 'SwwetPass'
+				}
+			});
+		});
+	});
+
 	describe('refreshProjects()', function () {
 		it('should call the service passing Controllers.Projects.onAddProject', function () {
 			spyOn(Services.TeamCity.prototype, 'getProjects');

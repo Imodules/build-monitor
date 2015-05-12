@@ -4,8 +4,8 @@
 
 'use strict';
 
-describe('Controllers.Server', function () {
-	describe('onStartUp()', function () {
+describe('Controllers.main', function () {
+	describe('onRefreshActiveBuilds()', function () {
 		var serverId,
 				tcRunningBuilds;
 
@@ -14,7 +14,7 @@ describe('Controllers.Server', function () {
 				return { isAdmin: true };
 			});
 
-			serverId = Controllers.Servers.onInsertServer('integration.onstartup', 'http://intstart.example.com', 'integration', 'startup');
+			serverId = Controllers.Servers.onSaveServer(null, 'integration.onstartup', 'http://intstart.example.com', 'integration', 'startup');
 			console.log('serverId: ' + serverId);
 
 			tcRunningBuilds = JSON.parse(Assets.getText('testData/tcRunningBuilds.json'));

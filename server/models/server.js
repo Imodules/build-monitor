@@ -59,6 +59,21 @@ Models.Server.prototype = {
 		return this._doc;
 	},
 
+	save: function (cb) {
+		var updData = {
+			name: this.name,
+			type: 'teamcity',
+			url: this.url,
+			user: this.user,
+			password: this.password
+		};
+
+		if (this._id) {
+			return Collections.Servers.update({_id: this._id}, { $set: updData });
+		}
+
+		return Collections.Servers.insert(updData);
+	},
 
 	/**
 	 * Refreshes the projects from the server.
@@ -108,7 +123,7 @@ Models.Server.prototype = {
 
 			builds.forEach(function (build) {
 				var bm = Controllers.Builds.getBuildByServiceId(self._id, build.serviceBuildId);
-				if(!bm.isBuilding) {
+				if (!bm.isBuilding) {
 					bm.startBuild(self._service, build.href);
 				}
 			});

@@ -31,7 +31,7 @@ Controllers.Servers = (function () {
 		return Collections.Servers.find({}, {transform: _transform});
 	}
 
-	function InsertServer(name, url, uname, pword) {
+	function SaveServer(id, name, url, uname, pword) {
 		_validateUser();
 
 		if (!name || !url) {
@@ -40,33 +40,15 @@ Controllers.Servers = (function () {
 
 		var up = _cleanUnamePWord(uname, pword);
 
-		return Collections.Servers.insert({
+		var server = new Models.Server({
+			_id: id,
 			name: name,
 			type: 'teamcity',
 			url: url,
 			user: up.user,
 			password: up.password
 		});
-	}
-
-	function UpdateServer(id, name, url, uname, pword) {
-		_validateUser();
-
-		if (!id || !name || !url) {
-			throw new Meteor.Error(500, 'Missing required field');
-		}
-
-		var up = _cleanUnamePWord(uname, pword);
-
-		return Collections.Servers.update({_id: id}, {
-			$set: {
-				name: name,
-				type: 'teamcity',
-				url: url,
-				user: up.user,
-				password: up.password
-			}
-		});
+		return server.save();
 	}
 
 	function DeleteServer(id) {
@@ -94,8 +76,7 @@ Controllers.Servers = (function () {
 	return {
 		getServer: GetServer,
 		getServers: GetServers,
-		onInsertServer: InsertServer,
-		onUpdateServer: UpdateServer,
+		onSaveServer: SaveServer,
 		onDeleteServer: DeleteServer,
 
 		onRefreshProjects: RefreshProjects,
