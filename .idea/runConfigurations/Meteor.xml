@@ -1,9 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Meteor" type="meteor-app-runner" factoryName="Meteor">
     <option name="envs">
-      <entry key="JASMINE_CLIENT_INTEGRATION" value="1" />
+      <entry key="JASMINE_CLIENT_INTEGRATION" value="0" />
       <entry key="JASMINE_CLIENT_UNIT" value="0" />
       <entry key="JASMINE_SERVER_INTEGRATION" value="1" />
+      <entry key="JASMINE_SERVER_UNIT" value="1" />
     </option>
     <option name="exePath" value="/usr/local/bin/meteor" />
     <option name="startBrowserSettings">

@@ -15,17 +15,12 @@ Controllers.Builds = (function () {
 		return Collections.Builds.findOne({_id: buildId}, {transform: _transform});
 	}
 
-	function GetActiveServerBuilds(server) {
+	function GetActiveServerBuilds(serverId) {
 		return Collections.Builds.find(
-				{serverId: server._id, isBuilding: true},
+				{serverId: serverId, isBuilding: true},
 				{fields: {serviceBuildId: 1}, transform: _transform}
 		);
 	}
-
-
-
-
-
 
 	/**
 	 *
