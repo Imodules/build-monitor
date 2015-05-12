@@ -170,7 +170,17 @@ describe('Controllers.Servers', function () {
 	});
 
 	describe('onRefreshProjects()', function () {
+		it('should get the server and call refresh projcts', function () {
+			spyOn(Controllers.Servers, 'getServer').and.callFake(function () {
+				return new Models.Server({_id: 'asdf45dd4', url: 'http://somewhere', type: 'teamcity'});
+			});
+			spyOn(Models.Server.prototype, 'refreshProjects');
 
+			Controllers.Servers.onRefreshProjects('_9494-9494_');
+
+			expect(Controllers.Servers.getServer).toHaveBeenCalledWith('_9494-9494_');
+			expect(Models.Server.prototype.refreshProjects).toHaveBeenCalled();
+		});
 	});
 
 	describe('onUpdateBuildDisplay()', function () {

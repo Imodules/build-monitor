@@ -81,19 +81,8 @@ Controllers.Servers = (function () {
 	 * @return {boolean}
 	 */
 	function RefreshProjects(serverId) {
-		//// Get our server.
-		//var server = Collections.Servers.findOne({_id: serverId});
-		//if (!server) {
-		//	throw new Error('Server not found for id: ' + serverId);
-		//}
-		//
-		//// Get our service.
-		//var service = Services.Factory.getService(server);
-		//
-		//// Call populate our projects.
-		//service.refreshFromServer(AddProject, AddBuild);
-		//
-		//return true;
+		var server = Controllers.Servers.getServer(serverId);
+		server.refreshProjects();
 	}
 
 	function UpdateBuildDisplay(buildId, isDisplayed) {

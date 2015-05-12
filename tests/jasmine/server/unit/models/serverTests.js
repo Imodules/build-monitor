@@ -20,6 +20,12 @@ describe('Models.Server', function () {
 		});
 	});
 
+	describe('refreshProjects()', function () {
+		it('should call the service then create the projects and builds', function () {
+
+		});
+	});
+
 	describe('toggleBuildDisplay()', function () {
 		it('should get the build and call updateIsDisplayed', function () {
 			spyOn(Controllers.Builds, 'getBuild').and.callFake(function () {

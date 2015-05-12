@@ -135,7 +135,31 @@ Services.TeamCity.prototype = {
 
 			cb(bsArr);
 		});
-	}
+	},
+
+	getProjectsAndBuilds: function (addProject, addBuildType) {
+		var self = this;
+
+		self._call('/app/rest/projects', function (tcProjects) {
+			for (var i = 0; i < tcProjects.count; i++) {
+				var project = tcProjects.project[i];
+
+				if (project.id === '_Root') {
+					continue;
+				}
+
+				self._addProject(project, addProject);
+
+				self._call(project.href, function (tcProject) {
+					for (var b = 0; b < tcProject.data.buildTypes.count; b++) {
+						var buildType = tcProject.data.buildTypes.buildType[b];
+						self._addBuildType(buildType, addBuildType);
+					}
+				});
+			}
+		});
+
+	},
 
 	//endregion
 };
