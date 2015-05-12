@@ -3,11 +3,16 @@
  */
 
 'use strict';
-Models.Build = function (doc) {
+/**
+ * @param {{_id: string, serverId: string, serviceProjectId: string,
+ * serviceParentProjectId: string, name: string, href: string}} doc
+ * @constructor
+ */
+Models.Project = function (doc) {
 	this._doc = doc;
 };
 
-Models.Build.prototype = {
+Models.Project.prototype = {
 	//region Properties
 	get _id() {
 		return this._doc._id;
@@ -18,11 +23,11 @@ Models.Build.prototype = {
 	},
 
 	get serviceProjectId() {
-		return this._doc.projectId;
+		return this._doc.serviceProjectId;
 	},
 
 	get serviceParentProjectId() {
-		return this._doc.serviceBuildId;
+		return this._doc.serviceParentProjectId;
 	},
 
 	get name() {

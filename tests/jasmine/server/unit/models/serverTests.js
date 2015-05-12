@@ -10,9 +10,9 @@ describe('Models.Server', function () {
 				'_id': 'ptZ6su3X5eugNSm4F',
 				'name': 'IModules Teamcity',
 				'type': 'teamcity',
-				'url': 'http://buildserver2:90',
+				'url': 'http://exampserver:90',
 				'user': 'pstuart',
-				'password': 'beef8stu'
+				'password': 'YouMe2'
 			};
 
 			var server = new Models.Server(jsServer);
@@ -21,8 +21,13 @@ describe('Models.Server', function () {
 	});
 
 	describe('refreshProjects()', function () {
-		it('should call the service then create the projects and builds', function () {
+		it('should call the service passing Controllers.Projects.onAddProject', function () {
+			spyOn(Services.TeamCity.prototype, 'getProjects');
 
+			var server = new Models.Server({_id: 'dd44dddd', type: 'teamcity', url: 'http://url.example.com'});
+			server.refreshProjects();
+
+			expect(Services.TeamCity.prototype.getProjects).toHaveBeenCalledWith(jasmine.any(Function));
 		});
 	});
 

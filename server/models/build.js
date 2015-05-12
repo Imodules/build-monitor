@@ -20,6 +20,9 @@ Models.Build.prototype = {
 	get projectId() {
 		return this._doc.projectId;
 	},
+	set projectId(value) {
+		this._doc.projectId = value;
+	},
 
 	get serviceBuildId() {
 		return this._doc.serviceBuildId;
@@ -30,8 +33,8 @@ Models.Build.prototype = {
 	},
 
 	// TODO: Change this to href for consistency.
-	get url() {
-		return this._doc.url;
+	get href() {
+		return this._doc.href;
 	},
 
 	get displayCounter() {
@@ -117,7 +120,7 @@ Models.Build.prototype = {
 	 */
 	refreshBuildData: function (service) {
 		var self = this;
-		service.getBuildData(self.url, 10, function (buildDetailsArray) {
+		service.getBuildData(self.href, 10, function (buildDetailsArray) {
 			var buildData = _.map(buildDetailsArray, function (bd) {
 				return bd.toJson();
 			});

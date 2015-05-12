@@ -26,7 +26,7 @@ describe('Models.Build', function () {
 
 			spyOn(Collections.Builds, 'update');
 
-			var build = new Models.Build({_id: '_SomeBuildId_', url: '/guestAuth/someid'});
+			var build = new Models.Build({_id: '_SomeBuildId_', href: '/guestAuth/someid'});
 			build.refreshBuildData(new Services.TeamCity({
 				_id: '_getBuildDataTest_',
 				url: 'http://example.com/getBuildDataTest'
@@ -101,7 +101,7 @@ describe('Models.Build', function () {
 			spyOn(Collections.Builds, 'update');
 
 			var build = new Models.Build({
-				_id: '_SomeBuildId331_', url: '/guestAuth/rundmc/bt884', builds: [
+				_id: '_SomeBuildId331_', href: '/guestAuth/rundmc/bt884', builds: [
 					{id: 1, serviceBuildId: 'btNumber1', serviceNumber: 'bt1', isSuccess: true, isRunning: false},
 					{id: 2, serviceBuildId: 'btNumber2', serviceNumber: 'bt2', isSuccess: false, isRunning: false},
 					{id: 3, serviceBuildId: 'btNumber3', serviceNumber: 'bt3', isSuccess: true, isRunning: false},

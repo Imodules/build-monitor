@@ -64,7 +64,7 @@ Models.Server.prototype = {
 	 * Refreshes the projects from the server.
 	 */
 	refreshProjects: function () {
-
+		this.service.getProjects(Controllers.Projects.onAddProject);
 	},
 
 	toggleBuildDisplay: function (buildId, isDisplayed) {

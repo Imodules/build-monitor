@@ -137,7 +137,7 @@ Services.TeamCity.prototype = {
 		});
 	},
 
-	getProjectsAndBuilds: function (addProject, addBuildType) {
+	getProjects: function (cb) {
 		var self = this;
 
 		self._call('/app/rest/projects', function (tcProjects) {
@@ -148,18 +148,36 @@ Services.TeamCity.prototype = {
 					continue;
 				}
 
-				self._addProject(project, addProject);
-
 				self._call(project.href, function (tcProject) {
-					for (var b = 0; b < tcProject.data.buildTypes.count; b++) {
-						var buildType = tcProject.data.buildTypes.buildType[b];
-						self._addBuildType(buildType, addBuildType);
+					var proj = new Models.Project({
+								serverId: self.server._id,
+								serviceProjectId: tcProject.id,
+								serviceParentProjectId: tcProject.parentProjectId === '_Root' ? null : tcProject.parentProjectId,
+								name: tcProject.name,
+								href: tcProject.href
+							}),
+							builds = [];
+
+					if (tcProject.buildTypes && tcProject.buildTypes.count > 0) {
+						for (var ib = 0; ib < tcProject.buildTypes.count; ib++) {
+							var b = tcProject.buildTypes.buildType[ib],
+									build = new Models.Build({
+										serverId: self.server._id,
+										serviceProjectId: b.projectId,
+										serviceBuildId: b.id,
+										name: b.name,
+										href: b.href
+									});
+
+							builds.push(build);
+						}
 					}
+
+					cb(proj, builds);
 				});
 			}
 		});
-
-	},
+	}
 
 	//endregion
 };

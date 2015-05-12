@@ -4,20 +4,29 @@
 
 'use strict';
 var tcProjects = {
-	count: 2,
-	href: '/guestAuth/app/rest/projects',
-	project: [{
-		id: '_Root',
-		name: '<Root project>',
-		description: 'Contains all other projects',
-		href: '/guestAuth/app/rest/projects/id:_Root'
-	}, {
-		id: 'MBP',
-		name: 'My Brew Planner',
-		parentProjectId: '_Root',
-		description: 'This is the main project for My Brew Planner',
-		href: '/guestAuth/app/rest/projects/id:MBP'
-	}]
+	statusCode: 200,
+	data: {
+		count: 3,
+		href: '/guestAuth/app/rest/projects',
+		project: [{
+			id: '_Root',
+			name: '<Root project>',
+			description: 'Contains all other projects',
+			href: '/guestAuth/app/rest/projects/id:_Root'
+		}, {
+			id: 'MBP',
+			name: 'My Brew Planner',
+			parentProjectId: '_Root',
+			description: 'This is the main project for My Brew Planner',
+			href: '/guestAuth/app/rest/projects/id:MBP'
+		}, {
+			id: 'MBP-2',
+			name: 'My Brew Planner-2',
+			parentProjectId: 'MBP',
+			description: 'Just a sub',
+			href: '/guestAuth/app/rest/projects/id:MBP-2'
+		}]
+	}
 };
 
 var tcProject = {
@@ -27,12 +36,12 @@ var tcProject = {
 		name: 'My Brew Planner',
 		parentProjectId: '_Root',
 		description: 'This is the main project for My Brew Planner',
-		href: '/httpAuth/app/rest/projects/id:MBP',
+		href: '/guestAuth/app/rest/projects/id:MBP',
 		parentProject: {
 			id: '_Root',
 			name: '<Root project>',
 			description: 'Contains all other projects',
-			href: '/httpAuth/app/rest/projects/id:_Root'
+			href: '/guestAuth/app/rest/projects/id:_Root'
 		},
 		buildTypes: {
 			count: 2, buildType: [{
@@ -41,7 +50,7 @@ var tcProject = {
 				description: 'Run the acceptance tests',
 				projectName: 'My Brew Planner',
 				projectId: 'MBP',
-				href: '/httpAuth/app/rest/buildTypes/id:MBP_AcceptanceTest'
+				href: '/guestAuth/app/rest/buildTypes/id:MBP_AcceptanceTest'
 			},
 				{
 					id: 'MBP_UnitTestAndBundle',
@@ -49,7 +58,7 @@ var tcProject = {
 					description: 'Runs the velocity unit tests then bundles the package.',
 					projectName: 'My Brew Planner',
 					projectId: 'MBP',
-					href: '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
+					href: '/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
 				}]
 		},
 		templates: {count: 0, buildType: []},
@@ -283,7 +292,17 @@ function _tcDateTimeToDate(datetime) {
 
 describe('Services.TeamCity', function () {
 
-	describe('getBuildData', function () {
+	describe('getBuild()', function () {
+		it('should get the build data and call the callback', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				cb(null, tcLast2BuildsRunningAndFailure);
+			});
+
+			var cbSpy = jasmine.createSpy('spy');
+		});
+	});
+
+	describe('getBuildData()', function () {
 		it('should get the data for the build and callback with the build history objects', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
 				if (url.indexOf('/builds?count=') > 0) {
@@ -386,6 +405,82 @@ describe('Services.TeamCity', function () {
 				isSuccess: true,
 				isRunning: true,
 				href: '/httpAuth/app/rest/builds/id:112429'
+			})]);
+		});
+	});
+
+	describe('getProjects()', function () {
+		it('should call the api and pass a new Models.Project and its builds to the callback', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				if (url.indexOf('app/rest/projects/id:') > 0) {
+					cb(null, tcProject);
+				} else {
+					cb(null, tcProjects);
+				}
+
+			});
+			var cbSpy = jasmine.createSpy('projectSpy');
+
+			var tc = new Services.TeamCity({
+				_id: '_getPRojectsTest_',
+				url: 'http://example.com/getProjects'
+			});
+			tc.getProjects(cbSpy);
+
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/getProjects/guestAuth/app/rest/projects', {
+				timeOut: 30000,
+				headers: {Accept: 'application/json'}
+			}, jasmine.any(Function));
+
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/getProjects/guestAuth/app/rest/projects/id:MBP', {
+				timeOut: 30000,
+				headers: {Accept: 'application/json'}
+			}, jasmine.any(Function));
+
+			expect(HTTP.get).toHaveBeenCalledWith('http://example.com/getProjects/guestAuth/app/rest/projects/id:MBP-2', {
+				timeOut: 30000,
+				headers: {Accept: 'application/json'}
+			}, jasmine.any(Function));
+
+			expect(cbSpy.calls.count()).toBe(2);
+			expect(cbSpy).toHaveBeenCalledWith(new Models.Project({
+				serverId: '_getPRojectsTest_',
+				serviceProjectId: 'MBP',
+				serviceParentProjectId: null,
+				name: 'My Brew Planner',
+				href: '/guestAuth/app/rest/projects/id:MBP'
+			}), [new Models.Build({
+				serverId: '_getPRojectsTest_',
+				serviceProjectId: 'MBP',
+				serviceBuildId: 'MBP_AcceptanceTest',
+				name: 'Acceptance Test',
+				href: '/guestAuth/app/rest/buildTypes/id:MBP_AcceptanceTest'
+			}), new Models.Build({
+				serverId: '_getPRojectsTest_',
+				serviceProjectId: 'MBP',
+				serviceBuildId: 'MBP_UnitTestAndBundle',
+				name: 'Unit Test and Bundle',
+				href: '/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
+			})]);
+
+			expect(cbSpy).toHaveBeenCalledWith(new Models.Project({
+				serverId: '_getPRojectsTest_',
+				serviceProjectId: 'MBP',
+				serviceParentProjectId: null,
+				name: 'My Brew Planner',
+				href: '/guestAuth/app/rest/projects/id:MBP'
+			}), [new Models.Build({
+				serverId: '_getPRojectsTest_',
+				serviceProjectId: 'MBP',
+				serviceBuildId: 'MBP_AcceptanceTest',
+				name: 'Acceptance Test',
+				href: '/guestAuth/app/rest/buildTypes/id:MBP_AcceptanceTest'
+			}), new Models.Build({
+				serverId: '_getPRojectsTest_',
+				serviceProjectId: 'MBP',
+				serviceBuildId: 'MBP_UnitTestAndBundle',
+				name: 'Unit Test and Bundle',
+				href: '/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
 			})]);
 		});
 	});

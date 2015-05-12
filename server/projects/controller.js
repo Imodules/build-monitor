@@ -4,30 +4,47 @@
 
 'use strict';
 Controllers.Projects = (function () {
-	function AddBuild(serverId, projectId, serviceBuildId, name, url) {
+	/**
+	 * @param {Models.Build} build
+	 * @returns {*}
+	 * @constructor
+	 */
+	function AddBuild(build) {
 		return Collections.Builds.upsert({
-			serverId: serverId,
-			projectId: projectId,
-			serviceBuildId: serviceBuildId
+			serverId: build.serverId,
+			projectId: build.projectId,
+			serviceBuildId: build.serviceBuildId
 		}, {
 			$set: {
-				name: name,
-				url: url
+				name: build.name,
+				href: build.href
 			}
-		}, {multi: false});
+		});
 	}
 
-	function AddProject(serverId, parentId, projectId, name, url) {
-		return Collections.Projects.upsert({
-			serverId: serverId,
-			parentId: parentId,
-			projectId: projectId
+	/**
+	 *
+	 * @param {Models.Project} project
+	 * @param {Models.Build} builds[]
+	 * @returns {*}
+	 * @constructor
+	 */
+	function AddProject(project, builds) {
+		var upsId = Collections.Projects.upsert({
+			serverId: project.serverId,
+			serviceParentProjectId: project.serviceParentProjectId,
+			serviceProjectId: project.serviceProjectId
 		}, {
 			$set: {
-				name: name,
-				url: url
+				name: project.name,
+				href: project.href
 			}
-		}, {multi: false});
+		});
+
+		builds.forEach(function (build) {
+			build.projectId = upsId.insertedId;
+			AddBuild(build);
+		});
 	}
 
 	function RemoveByServerId(serverId) {
@@ -36,7 +53,6 @@ Controllers.Projects = (function () {
 
 	return {
 		onAddProject: AddProject,
-		onAddBuild: AddBuild,
 		onRemoveByServerId: RemoveByServerId
 	};
 })();
