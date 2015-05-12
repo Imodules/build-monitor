@@ -10,6 +10,10 @@ Models.Server = function (doc) {
 
 Models.Server.prototype = {
 	//region Properties
+	get service() {
+		return this._service;
+	},
+
 	get _id() {
 		return this._doc._id;
 	},
@@ -64,7 +68,8 @@ Models.Server.prototype = {
 	},
 
 	toggleBuildDisplay: function (buildId, isDisplayed) {
-		// TODO: Calls to build.updateIsDisplayed();
+		var build = Controllers.Builds.getBuild(buildId);
+		build.updateIsDisplayed(this._service, isDisplayed);
 	},
 
 	/**

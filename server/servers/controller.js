@@ -81,19 +81,25 @@ Controllers.Servers = (function () {
 	 * @return {boolean}
 	 */
 	function RefreshProjects(serverId) {
-		// Get our server.
-		var server = Collections.Servers.findOne({_id: serverId});
-		if (!server) {
-			throw new Error('Server not found for id: ' + serverId);
-		}
+		//// Get our server.
+		//var server = Collections.Servers.findOne({_id: serverId});
+		//if (!server) {
+		//	throw new Error('Server not found for id: ' + serverId);
+		//}
+		//
+		//// Get our service.
+		//var service = Services.Factory.getService(server);
+		//
+		//// Call populate our projects.
+		//service.refreshFromServer(AddProject, AddBuild);
+		//
+		//return true;
+	}
 
-		// Get our service.
-		var service = Services.Factory.getService(server);
-
-		// Call populate our projects.
-		service.refreshFromServer(AddProject, AddBuild);
-
-		return true;
+	function UpdateBuildDisplay(buildId, isDisplayed) {
+		var build = Controllers.Builds.getBuild(buildId),
+				server = Controllers.Servers.getServer(build.serverId);
+		build.updateIsDisplayed(server.service, isDisplayed);
 	}
 
 	return {
@@ -103,6 +109,7 @@ Controllers.Servers = (function () {
 		onUpdateServer: UpdateServer,
 		onDeleteServer: DeleteServer,
 
-		onRefreshProjects: RefreshProjects
+		onRefreshProjects: RefreshProjects,
+		onUpdateBuildDisplay: UpdateBuildDisplay
 	};
 })();
