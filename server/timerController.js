@@ -65,6 +65,13 @@ Controllers.Timer = (function () {
 		server.updateRunningBuilds(CheckRunningBuildsTimer);
 	}
 
+	function PollInterval() {
+		var servers = Controllers.Servers.getServers();
+		servers.forEach(function (server) {
+			server.queryRunningBuilds(CheckRunningBuildsTimer);
+		});
+	}
+
 	function Startup() {
 		if (buildQueryHandle !== false) {
 			Meteor.clearTimeout(buildQueryHandle);
@@ -72,12 +79,7 @@ Controllers.Timer = (function () {
 		}
 
 		if (!process.env.IS_MIRROR) {
-			buildQueryHandle = Meteor.setInterval(function () {
-				var servers = Controllers.Servers.getServers();
-				servers.forEach(function (server) {
-					server.queryRunningBuilds(CheckRunningBuildsTimer);
-				});
-			}, RUNNING_BUILD_QUERY_MS);
+			buildQueryHandle = Meteor.setInterval(PollInterval, RUNNING_BUILD_QUERY_MS);
 		}
 	}
 
@@ -86,6 +88,7 @@ Controllers.Timer = (function () {
 		onStartRunningBuildsTimer: StartRunningBuildsTimer,
 		onStopRunningBuildsTimer: StopRunningBuildsTimer,
 		onRunningBuildQueryInterval: RunningBuildQueryInterval,
-		onCheckRunningBuildsTimer: CheckRunningBuildsTimer
+		onCheckRunningBuildsTimer: CheckRunningBuildsTimer,
+		onPollInterval: PollInterval
 	};
 })();

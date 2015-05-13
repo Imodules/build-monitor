@@ -81,9 +81,9 @@ Controllers.Servers = (function () {
 		getServer: GetServer,
 		getServerByName: GetServerByName,
 		getServers: GetServers,
+
 		onSaveServer: SaveServer,
 		onDeleteServer: DeleteServer,
-
 		onRefreshProjects: RefreshProjects,
 		onUpdateBuildDisplay: UpdateBuildDisplay
 	};

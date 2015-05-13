@@ -1,0 +1,7 @@
+{
+  "statusCode": 200,
+  "data": {
+    "count": 0,
+    "href": "/guestAuth/app/rest/builds?locator=running:true"
+  }
+}

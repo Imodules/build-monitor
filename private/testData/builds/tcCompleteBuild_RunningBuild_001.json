@@ -1,0 +1,161 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": 112767,
+    "buildTypeId": "RunningBuild_001",
+    "number": "129",
+    "status": "SUCCESS",
+    "state": "finished",
+    "href": "/guestAuth/app/rest/builds/id:112767",
+    "webUrl": "http://bt.example.com/viewLog.html?buildId=112767&buildTypeId=RunningBuild_001",
+    "statusText": "Success",
+    "buildType": {
+      "id": "RunningBuild_001",
+      "name": "Update PWS Email Gateway",
+      "description": "Push the fleet of email gateway applications to Pivotal Web Services (cloud foundry)",
+      "projectName": "Update Site :: Pivotal",
+      "projectId": "UpdateSite_Pivotal",
+      "href": "/guestAuth/app/rest/buildTypes/id:RunningBuild_001",
+      "webUrl": "http://bt.example.com/viewType.html?buildTypeId=RunningBuild_001"
+    },
+    "tags": {"tag": []},
+    "queuedDate": "20150506T175654-0500",
+    "startDate": "20150506T175856-0500",
+    "finishDate": "20150506T180237-0500",
+    "triggered": {
+      "type": "user",
+      "date": "20150506T175654-0500",
+      "user": {
+        "username": "rellias",
+        "name": "Raoul Ellias",
+        "id": 2,
+        "href": "/guestAuth/app/rest/users/id:2"
+      }
+    },
+    "lastChanges": {},
+    "changes": {"href": "/guestAuth/app/rest/changes?locator=build:(id:112767)"},
+    "revisions": {"revision": []},
+    "agent": {
+      "id": 23,
+      "name": "UbuntuVM",
+      "typeId": 23,
+      "href": "/guestAuth/app/rest/agents/id:23"
+    },
+    "artifacts": {"href": "/guestAuth/app/rest/builds/id:112767/artifacts/children"},
+    "relatedIssues": {"href": "/guestAuth/app/rest/builds/id:112767/relatedIssues"},
+    "properties": {
+      "count": 20,
+      "property": [
+        {
+          "name": "system.AppsFolder",
+          "value": ""
+        },
+        {
+          "name": "system.BuildNumber",
+          "value": "%build.number%"
+        },
+        {
+          "name": "system.Codebase1",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase2",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase3",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase4",
+          "value": ""
+        },
+        {
+          "name": "system.HgBranchName1",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName2",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName3",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName4",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchNameAll",
+          "value": ""
+        },
+        {
+          "name": "system.IgnoreIModMasterSQL",
+          "value": "false"
+        },
+        {
+          "name": "system.RunSql",
+          "value": "false"
+        },
+        {
+          "name": "system.RunUpdateXml",
+          "value": "false"
+        },
+        {
+          "name": "system.ServerConfiguration1",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration2",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration3",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration4",
+          "value": ""
+        },
+        {
+          "name": "system.UpdateCodebase",
+          "value": "false"
+        },
+        {
+          "name": "teamcity.ui.runButton.caption",
+          "value": "Update"
+        }
+      ]
+    },
+    "statistics": {"href": "/guestAuth/app/rest/builds/id:112767/statistics"},
+    "snapshot-dependencies": {
+      "count": 1,
+      "build": [
+        {
+          "id": 112765,
+          "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+          "number": "FEATURE-ENC-20657-181",
+          "status": "SUCCESS",
+          "state": "finished",
+          "href": "/guestAuth/app/rest/builds/id:112765",
+          "webUrl": "http://bt.example.com/viewLog.html?buildId=112765&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+        }
+      ]
+    },
+    "artifact-dependencies": {
+      "count": 1,
+      "build": [
+        {
+          "id": 112765,
+          "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+          "number": "FEATURE-ENC-20657-181",
+          "status": "SUCCESS",
+          "state": "finished",
+          "href": "/guestAuth/app/rest/builds/id:112765",
+          "webUrl": "http://bt.example.com/viewLog.html?buildId=112765&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+        }
+      ]
+    }
+  }
+}
