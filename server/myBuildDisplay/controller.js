@@ -15,5 +15,5 @@ Controllers.MyBuildDisplay = (function () {
 	return {
 		onGetBuildDisplayCount: GetBuildDisplayCount,
 		onRemoveByBuildId: RemoveByBuildId
-	}
+	};
 })();
