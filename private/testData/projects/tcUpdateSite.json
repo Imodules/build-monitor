@@ -1,0 +1,183 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": "UpdateSite",
+    "name": "Update Site",
+    "parentProjectId": "_Root",
+    "href": "/guestAuth/app/rest/projects/id:UpdateSite",
+    "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite",
+    "parentProject": {
+      "id": "_Root",
+      "name": "<Root project>",
+      "description": "Contains all other projects",
+      "href": "/guestAuth/app/rest/projects/id:_Root",
+      "webUrl": "http://buildserver2:90/project.html?projectId=_Root"
+    },
+    "buildTypes": {
+      "count": 0,
+      "buildType": []
+    },
+    "templates": {
+      "count": 2,
+      "buildType": [
+        {
+          "id": "btTemplate6",
+          "name": "Update Build",
+          "templateFlag": true,
+          "projectName": "Update Site",
+          "projectId": "UpdateSite",
+          "href": "/guestAuth/app/rest/buildTypes/id:btTemplate6"
+        },
+        {
+          "id": "btTemplate8",
+          "name": "UpdateSiteTemplate",
+          "templateFlag": true,
+          "projectName": "Update Site",
+          "projectId": "UpdateSite",
+          "href": "/guestAuth/app/rest/buildTypes/id:btTemplate8"
+        }
+      ]
+    },
+    "parameters": {
+      "count": 20,
+      "href": "/app/rest/projects/id:UpdateSite/parameters",
+      "property": [
+        {
+          "name": "system.AppsFolder",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.BuildNumber",
+          "value": "%build.number%",
+          "own": true
+        },
+        {
+          "name": "system.Codebase1",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.Codebase2",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.Codebase3",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.Codebase4",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.HgBranchName1",
+          "value": "%system.HgBranchNameAll%",
+          "own": true
+        },
+        {
+          "name": "system.HgBranchName2",
+          "value": "%system.HgBranchNameAll%",
+          "own": true
+        },
+        {
+          "name": "system.HgBranchName3",
+          "value": "%system.HgBranchNameAll%",
+          "own": true
+        },
+        {
+          "name": "system.HgBranchName4",
+          "value": "%system.HgBranchNameAll%",
+          "own": true
+        },
+        {
+          "name": "system.HgBranchNameAll",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.IgnoreIModMasterSQL",
+          "value": "false",
+          "own": true
+        },
+        {
+          "name": "system.RunSql",
+          "value": "false",
+          "own": true
+        },
+        {
+          "name": "system.RunUpdateXml",
+          "value": "false",
+          "own": true
+        },
+        {
+          "name": "system.ServerConfiguration1",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.ServerConfiguration2",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.ServerConfiguration3",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.ServerConfiguration4",
+          "value": "",
+          "own": true
+        },
+        {
+          "name": "system.UpdateCodebase",
+          "value": "false",
+          "own": true
+        },
+        {
+          "name": "teamcity.ui.runButton.caption",
+          "value": "Update",
+          "own": true
+        }
+      ]
+    },
+    "vcsRoots": {"href": "/guestAuth/app/rest/vcs-roots?locator=project:(id:UpdateSite)"},
+    "projects": {
+      "count": 4,
+      "project": [
+        {
+          "id": "UpdateSite_AmazonWebServices",
+          "name": "AWS - Amazon Web Services",
+          "parentProjectId": "UpdateSite",
+          "href": "/guestAuth/app/rest/projects/id:UpdateSite_AmazonWebServices",
+          "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite_AmazonWebServices"
+        },
+        {
+          "id": "UpdateSite_ArchivedUpdateSites",
+          "name": "Archived Update Sites",
+          "parentProjectId": "UpdateSite",
+          "href": "/guestAuth/app/rest/projects/id:UpdateSite_ArchivedUpdateSites",
+          "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite_ArchivedUpdateSites"
+        },
+        {
+          "id": "UpdateSite_C",
+          "name": "Core Builds",
+          "parentProjectId": "UpdateSite",
+          "description": "Update Site builds that do not change",
+          "href": "/guestAuth/app/rest/projects/id:UpdateSite_C",
+          "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite_C"
+        },
+        {
+          "id": "UpdateSite_Pivotal",
+          "name": "Pivotal",
+          "parentProjectId": "UpdateSite",
+          "href": "/guestAuth/app/rest/projects/id:UpdateSite_Pivotal",
+          "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite_Pivotal"
+        }
+      ]
+    }
+  }
+}

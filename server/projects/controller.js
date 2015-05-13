@@ -4,6 +4,18 @@
 
 'use strict';
 Controllers.Projects = (function () {
+	function _transform(doc) {
+		return new Models.Project(doc);
+	}
+
+	function GetAllByServerId(serverId) {
+		return Collections.Projects.find({serverId: serverId}, {transform: _transform});
+	}
+
+	function GetByServiceProjectId(serverId, serviceProjectId) {
+		return Collections.Projects.findOne({serverId: serverId, serviceProjectId: serviceProjectId}, {transform: _transform});
+	}
+
 	/**
 	 * @param {Models.Build} build
 	 * @returns {*}
@@ -52,6 +64,8 @@ Controllers.Projects = (function () {
 	}
 
 	return {
+		getAllByServerId: GetAllByServerId,
+		getByServiceProjectId: GetByServiceProjectId,
 		onAddProject: AddProject,
 		onRemoveByServerId: RemoveByServerId
 	};

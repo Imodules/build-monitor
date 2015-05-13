@@ -1,0 +1,114 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": "UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+    "name": "Update PWS Email Gateway",
+    "parentProjectId": "UpdateSite_AmazonWebServices",
+    "description": "Push the fleet of email gateway applications to Pivotal Web Services (cloud foundry)",
+    "href": "/guestAuth/app/rest/projects/id:UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+    "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+    "parentProject": {
+      "id": "UpdateSite_AmazonWebServices",
+      "name": "AWS - Amazon Web Services",
+      "parentProjectId": "UpdateSite",
+      "href": "/guestAuth/app/rest/projects/id:UpdateSite_AmazonWebServices",
+      "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite_AmazonWebServices"
+    },
+    "buildTypes": {
+      "count": 0,
+      "buildType": []
+    },
+    "templates": {
+      "count": 0,
+      "buildType": []
+    },
+    "parameters": {
+      "count": 20,
+      "href": "/app/rest/projects/id:UpdateSite_AmazonWebServices_UpdatePwsEmailGateway/parameters",
+      "property": [
+        {
+          "name": "system.AppsFolder",
+          "value": ""
+        },
+        {
+          "name": "system.BuildNumber",
+          "value": "%build.number%"
+        },
+        {
+          "name": "system.Codebase1",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase2",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase3",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase4",
+          "value": ""
+        },
+        {
+          "name": "system.HgBranchName1",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName2",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName3",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName4",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchNameAll",
+          "value": ""
+        },
+        {
+          "name": "system.IgnoreIModMasterSQL",
+          "value": "false"
+        },
+        {
+          "name": "system.RunSql",
+          "value": "false"
+        },
+        {
+          "name": "system.RunUpdateXml",
+          "value": "false"
+        },
+        {
+          "name": "system.ServerConfiguration1",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration2",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration3",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration4",
+          "value": ""
+        },
+        {
+          "name": "system.UpdateCodebase",
+          "value": "false"
+        },
+        {
+          "name": "teamcity.ui.runButton.caption",
+          "value": "Update"
+        }
+      ]
+    },
+    "vcsRoots": {"href": "/guestAuth/app/rest/vcs-roots?locator=project:(id:UpdateSite_AmazonWebServices_UpdatePwsEmailGateway)"},
+    "projects": {"count": 0}
+  }
+}

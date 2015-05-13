@@ -5,6 +5,9 @@
 'use strict';
 Models.Build = function (doc) {
 	this._doc = doc;
+	if (!this._doc.displayCounter) {
+		this._doc.displayCounter = 0;
+	}
 };
 
 Models.Build.prototype = {

@@ -1,0 +1,98 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": "DeploymentBuilds",
+    "name": "Deployment Builds",
+    "parentProjectId": "_Root",
+    "href": "/guestAuth/app/rest/projects/id:DeploymentBuilds",
+    "webUrl": "http://buildserver2:90/project.html?projectId=DeploymentBuilds",
+    "parentProject": {
+      "id": "_Root",
+      "name": "<Root project>",
+      "description": "Contains all other projects",
+      "href": "/guestAuth/app/rest/projects/id:_Root",
+      "webUrl": "http://buildserver2:90/project.html?projectId=_Root"
+    },
+    "buildTypes": {
+      "count": 5,
+      "buildType": [
+        {
+          "id": "bt280",
+          "name": "Precompile & Merge Production Roll Package",
+          "projectName": "Deployment Builds",
+          "projectId": "DeploymentBuilds",
+          "href": "/guestAuth/app/rest/buildTypes/id:bt280",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=bt280"
+        },
+        {
+          "id": "bt270",
+          "name": "Precompile & Merge Staging Roll Package",
+          "projectName": "Deployment Builds",
+          "projectId": "DeploymentBuilds",
+          "href": "/guestAuth/app/rest/buildTypes/id:bt270",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=bt270"
+        },
+        {
+          "id": "bt256",
+          "name": "Production Release Build",
+          "projectName": "Deployment Builds",
+          "projectId": "DeploymentBuilds",
+          "href": "/guestAuth/app/rest/buildTypes/id:bt256",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=bt256"
+        },
+        {
+          "id": "bt203",
+          "name": "RecompileWebserver",
+          "paused": true,
+          "projectName": "Deployment Builds",
+          "projectId": "DeploymentBuilds",
+          "href": "/guestAuth/app/rest/buildTypes/id:bt203",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=bt203"
+        },
+        {
+          "id": "bt257",
+          "name": "Staging Release Build",
+          "projectName": "Deployment Builds",
+          "projectId": "DeploymentBuilds",
+          "href": "/guestAuth/app/rest/buildTypes/id:bt257",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=bt257"
+        }
+      ]
+    },
+    "templates": {
+      "count": 0,
+      "buildType": []
+    },
+    "parameters": {
+      "count": 1,
+      "href": "/app/rest/projects/id:DeploymentBuilds/parameters",
+      "property": [
+        {
+          "name": "teamcity.ui.runButton.caption",
+          "value": "Build ",
+          "own": true
+        }
+      ]
+    },
+    "vcsRoots": {"href": "/guestAuth/app/rest/vcs-roots?locator=project:(id:DeploymentBuilds)"},
+    "projects": {
+      "count": 2,
+      "project": [
+        {
+          "id": "DeploymentBuilds_Core",
+          "name": "Core Builds",
+          "parentProjectId": "DeploymentBuilds",
+          "href": "/guestAuth/app/rest/projects/id:DeploymentBuilds_Core",
+          "webUrl": "http://buildserver2:90/project.html?projectId=DeploymentBuilds_Core"
+        },
+        {
+          "id": "DeploymentBuilds_FeatureBuilds",
+          "name": "Weekly Builds",
+          "parentProjectId": "DeploymentBuilds",
+          "href": "/guestAuth/app/rest/projects/id:DeploymentBuilds_FeatureBuilds",
+          "webUrl": "http://buildserver2:90/project.html?projectId=DeploymentBuilds_FeatureBuilds"
+        }
+      ]
+    }
+  }
+}

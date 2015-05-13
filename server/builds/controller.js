@@ -37,6 +37,10 @@ Controllers.Builds = (function () {
 		);
 	}
 
+	function GetAllByProjectId(projectId) {
+		return Collections.Builds.find({projectId: projectId}, {transform: _transform});
+	}
+
 	function RemoveByServerId(serverId) {
 		var builds = Collections.Builds.find({serverId: serverId}, {fields: {_id: 1}}).fetch();
 
@@ -53,6 +57,8 @@ Controllers.Builds = (function () {
 		getActiveServerBuilds: GetActiveServerBuilds,
 		getBuildByServiceId: GetBuildByServiceId,
 		getRunningServerBuilds: GetRunningServerBuilds,
+
+		getAllByProjectId: GetAllByProjectId,
 
 		onRemoveByServerId: RemoveByServerId
 	};

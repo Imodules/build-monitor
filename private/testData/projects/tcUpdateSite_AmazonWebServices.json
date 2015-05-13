@@ -1,0 +1,278 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": "UpdateSite_AmazonWebServices",
+    "name": "AWS - Amazon Web Services",
+    "parentProjectId": "UpdateSite",
+    "href": "/guestAuth/app/rest/projects/id:UpdateSite_AmazonWebServices",
+    "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite_AmazonWebServices",
+    "parentProject": {
+      "id": "UpdateSite",
+      "name": "Update Site",
+      "parentProjectId": "_Root",
+      "href": "/guestAuth/app/rest/projects/id:UpdateSite",
+      "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite"
+    },
+    "buildTypes": {
+      "count": 16,
+      "buildType": [
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsAcunetix",
+          "name": "Update AWS Acunetix - Prod",
+          "description": "Updates Acunetix",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsAcunetix",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsAcunetix"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsChiefs",
+          "name": "Update AWS Chiefs - ENC-19241-Roles",
+          "description": "Updates Chiefs",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsChiefs",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsChiefs"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsCurrentWork",
+          "name": "Update AWS Current Work - 53.9",
+          "description": "Updates Current Work",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsCurrentWork",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsCurrentWork"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsCurrentWorkTwo",
+          "name": "Update AWS Current Work Two - 54.0",
+          "description": "Updates Current Work Two",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsCurrentWorkTwo",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsCurrentWorkTwo"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsExplorers",
+          "name": "Update AWS Explorers - Admin UX - 54.0",
+          "description": "Updates Explorers",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsExplorers",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsExplorers"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsKansas",
+          "name": "Update AWS Kansas - 53.9",
+          "description": "Updates Chiefs",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsKansas",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsKansas"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsMavericks",
+          "name": "Update AWS Mavericks - 19897-LimitsRevamp",
+          "description": "Updates Mavericks",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsMavericks",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsMavericks"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsMissouri",
+          "name": "Update AWS Missouri - EM API",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsMissouri",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsMissouri"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsMobile",
+          "name": "Update AWS Mobile (53.9)",
+          "description": "Updates Mavericks",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsMobile",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsMobile"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsOwin",
+          "name": "Update AWS OWIN - EM API",
+          "description": "Update AWS Owin",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsOwin",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsOwin"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsPre",
+          "name": "Update AWS PRE (on 53.8)",
+          "description": "Updates PRE",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsPre",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsPre"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsProduction",
+          "name": "Update AWS Production",
+          "description": "Updates Current Work",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsProduction",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsProduction"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsProductionHotfix",
+          "name": "Update AWS Production Hotfix",
+          "description": "Updates Current Work",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsProductionHotfix",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsProductionHotfix"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsRenegades",
+          "name": "Update AWS Renegades - Prod",
+          "description": "Updates Renegades",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsRenegades",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsRenegades"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsRoyals",
+          "name": "Update AWS Royals - 19207-DirectorySearch",
+          "description": "Updates Royals",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsRoyals",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsRoyals"
+        },
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdateAwsUx",
+          "name": "Update AWS UX",
+          "description": "Updates Renegades",
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsUx",
+          "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsUx"
+        }
+      ]
+    },
+    "templates": {
+      "count": 1,
+      "buildType": [
+        {
+          "id": "UpdateSite_AmazonWebServices_AwsUpdateSite",
+          "name": "AWS Update Site",
+          "templateFlag": true,
+          "projectName": "Update Site :: AWS - Amazon Web Services",
+          "projectId": "UpdateSite_AmazonWebServices",
+          "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_AwsUpdateSite"
+        }
+      ]
+    },
+    "parameters": {
+      "count": 20,
+      "href": "/app/rest/projects/id:UpdateSite_AmazonWebServices/parameters",
+      "property": [
+        {
+          "name": "system.AppsFolder",
+          "value": ""
+        },
+        {
+          "name": "system.BuildNumber",
+          "value": "%build.number%"
+        },
+        {
+          "name": "system.Codebase1",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase2",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase3",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase4",
+          "value": ""
+        },
+        {
+          "name": "system.HgBranchName1",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName2",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName3",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName4",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchNameAll",
+          "value": ""
+        },
+        {
+          "name": "system.IgnoreIModMasterSQL",
+          "value": "false"
+        },
+        {
+          "name": "system.RunSql",
+          "value": "false"
+        },
+        {
+          "name": "system.RunUpdateXml",
+          "value": "false"
+        },
+        {
+          "name": "system.ServerConfiguration1",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration2",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration3",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration4",
+          "value": ""
+        },
+        {
+          "name": "system.UpdateCodebase",
+          "value": "false"
+        },
+        {
+          "name": "teamcity.ui.runButton.caption",
+          "value": "Update"
+        }
+      ]
+    },
+    "vcsRoots": {"href": "/guestAuth/app/rest/vcs-roots?locator=project:(id:UpdateSite_AmazonWebServices)"},
+    "projects": {
+      "count": 1,
+      "project": [
+        {
+          "id": "UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+          "name": "Update PWS Email Gateway",
+          "parentProjectId": "UpdateSite_AmazonWebServices",
+          "description": "Push the fleet of email gateway applications to Pivotal Web Services (cloud foundry)",
+          "href": "/guestAuth/app/rest/projects/id:UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+          "webUrl": "http://buildserver2:90/project.html?projectId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway"
+        }
+      ]
+    }
+  }
+}
