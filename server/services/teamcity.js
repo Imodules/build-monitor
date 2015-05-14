@@ -64,6 +64,7 @@ Services.TeamCity.prototype = {
 	},
 
 	_tcDateTimeToDate: function (datetime) {
+		if (!datetime) { return null; }
 		return moment(datetime, 'YYYYMMDDTHHmmssZ').toDate();
 	},
 
@@ -120,6 +121,10 @@ Services.TeamCity.prototype = {
 		var self = this;
 		self._call('/app/rest/builds?locator=running:true', function (buildSummary) {
 			var bsArr = [];
+
+			if (buildSummary.count === 0) {
+				return cb(bsArr);
+			}
 
 			buildSummary.build.forEach(function (build) {
 				bsArr.push(new Models.BuildSummary({

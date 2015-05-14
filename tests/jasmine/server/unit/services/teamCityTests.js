@@ -287,6 +287,7 @@ var tcFinishedBuildDetail = {
 };
 
 function _tcDateTimeToDate(datetime) {
+	if (!datetime) { return null; }
 	return moment(datetime, 'YYYYMMDDTHHmmssZ').toDate();
 }
 
