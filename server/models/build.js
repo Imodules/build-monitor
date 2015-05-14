@@ -8,6 +8,9 @@ Models.Build = function (doc) {
 	if (!this._doc.displayCounter) {
 		this._doc.displayCounter = 0;
 	}
+	if(this._doc.isLastBuildSuccess === undefined) {
+		this._doc.isLastBuildSuccess = true;
+	}
 };
 
 Models.Build.prototype = {

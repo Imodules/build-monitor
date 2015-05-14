@@ -1,0 +1,133 @@
+{
+	"statusCode": 200,
+	"data": {
+		"id": 112767,
+		"buildTypeId": "RunningBuild_001",
+		"number": "FEATURE-ENC-20657-200",
+		"status": "SUCCESS",
+		"state": "running",
+		"running": true,
+		"percentageComplete": 60,
+		"href": "/guestAuth/app/rest/builds/id:112767",
+		"webUrl": "http://bs.example.com/viewLog.html?buildId=112767&buildTypeId=RunningBuild_001",
+		"statusText": "Moving on out",
+		"buildType": {
+			"id": "RunningBuild_001",
+			"name": "RunningBuild 001",
+			"projectName": "Check In Triggered Builds :: Pivotal Builds",
+			"projectId": "CheckInTriggeredBuilds_PivotalBuilds",
+			"href": "/guestAuth/app/rest/buildTypes/id:RunningBuild_001",
+			"webUrl": "http://bs.example.com/viewType.html?buildTypeId=RunningBuild_001"
+		},
+		"tags": {"tag": []},
+		"running-info": {
+			"percentageComplete": 60,
+			"elapsedSeconds": 500,
+			"estimatedTotalSeconds": 1081,
+			"currentStageText": "Step 1/3: Build.Common.msbuild.teamcity: CompileCode: MSBuild: encompass_all.sln: Build: MSBuild: webservices\\20\\interface\\IMod.Webservices.20.Interface.csproj: ResolveProjectReferences: MSBuild: Framework\\Framework.csproj: _CopyFilesMarkedCopyLocal: Copy: Copying file from \"F:\\BuildAgent2\\work\\KanbanFeature-ENC-20657-Email-Marketing-API\\References\\ExternalReferences\\RequestReduce.pdb\" to \"bin\\RequestReduce.pdb\".",
+			"outdated": false,
+			"probablyHanging": false
+		},
+		"queuedDate": "20150513T222150-0500",
+		"startDate": "20150513T222153-0500",
+		"triggered": {
+			"type": "user",
+			"date": "20150513T212250-0500",
+			"user": {
+				"username": "pstuart",
+				"name": "Paul Stuart",
+				"id": 11,
+				"href": "/guestAuth/app/rest/users/id:11"
+			}
+		},
+		"lastChanges": {
+			"count": 2,
+			"change": [
+				{
+					"id": 218645,
+					"version": "763299c439fa",
+					"username": "local\\pstuart",
+					"date": "20150513T154959-0500",
+					"href": "/guestAuth/app/rest/changes/id:218645",
+					"webLink": "http://bs.example.com/viewModification.html?modId=218645&personal=false"
+				},
+				{
+					"id": 218646,
+					"version": "063299c439fa",
+					"username": "local\\rellias",
+					"date": "20150513T154959-0500",
+					"href": "/guestAuth/app/rest/changes/id:218644",
+					"webLink": "http://bs.example.com/viewModification.html?modId=218644&personal=false"
+				}
+			]
+		},
+		"changes": {"href": "/guestAuth/app/rest/changes?locator=build:(id:112767)"},
+		"revisions": {
+			"revision": [
+				{
+					"version": "763299c439fa",
+					"vcs-root-instance": {
+						"id": "933",
+						"vcs-root-id": "CheckInTriggeredBuilds_FeatureBuilds_MercurialFeatureBranch1",
+						"name": "Mercurial Pivotal Branch",
+						"href": "/guestAuth/app/rest/vcs-root-instances/id:933"
+					}
+				}
+			]
+		},
+		"agent": {
+			"id": 19,
+			"name": "BuildAgent2",
+			"typeId": 19,
+			"href": "/guestAuth/app/rest/agents/id:19"
+		},
+		"artifacts": {"href": "/guestAuth/app/rest/builds/id:112767/artifacts/children"},
+		"relatedIssues": {"href": "/guestAuth/app/rest/builds/id:112767/relatedIssues"},
+		"properties": {
+			"count": 10,
+			"property": [
+				{
+					"name": "env.EnableNuGetPackageRestore",
+					"value": "true"
+				},
+				{
+					"name": "system.BuildInRelease",
+					"value": "false"
+				},
+				{
+					"name": "system.buildSqlRollFiles",
+					"value": "true"
+				},
+				{
+					"name": "system.IncludeAll",
+					"value": "false"
+				},
+				{
+					"name": "system.IncludeMerges",
+					"value": "false"
+				},
+				{
+					"name": "system.MercurialCurrentBranch",
+					"value": "Feature-ENC-20657-Email-Marketing-API"
+				},
+				{
+					"name": "system.RunSql",
+					"value": "true"
+				},
+				{
+					"name": "system.RunSqlCatalogList",
+					"value": "c_bishop_miege;c_carnegie_mellon_university;c_colgate_university;c_michigan_state_university;c_univ_of_minnesota;c_imod_green"
+				},
+				{
+					"name": "system.SourceControlProvider",
+					"value": "mercurial"
+				},
+				{
+					"name": "teamcity.ui.runButton.caption",
+					"value": "Build"
+				}
+			]
+		},
+		"statistics": {"href": "/guestAuth/app/rest/builds/id:112767/statistics"}
+	}
+}

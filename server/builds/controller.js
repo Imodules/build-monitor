@@ -33,7 +33,7 @@ Controllers.Builds = (function () {
 	function GetRunningServerBuilds(serverId) {
 		return Collections.Builds.find(
 				{serverId: serverId, isBuilding: true},
-				{fields: {serviceBuildId: 1}, transform: _transform}
+				{transform: _transform}
 		);
 	}
 

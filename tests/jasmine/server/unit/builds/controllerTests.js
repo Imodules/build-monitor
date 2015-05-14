@@ -33,7 +33,7 @@ describe('Controllers.Builds', function () {
 			Controllers.Builds.getRunningServerBuilds('MeS33tId');
 
 			expect(Collections.Builds.find).toHaveBeenCalledWith({serverId: 'MeS33tId', isBuilding: true},
-					{fields: {serviceBuildId: 1}, transform: jasmine.any(Function)});
+					{transform: jasmine.any(Function)});
 		});
 	});
 });

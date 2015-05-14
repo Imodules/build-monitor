@@ -80,7 +80,7 @@ describe('refreshProjects', function () {
 			expect(build.serverId).toBe(server._id);
 			expect(build.displayCounter).toBe(0);
 			expect(build.isDisplayed).toBe(false);
-			expect(build.isLastBuildSuccess).toBeFalsy();
+			expect(build.isLastBuildSuccess).toBe(true);
 			expect(build.isBuilding).toBeFalsy();
 
 			if (build.serviceBuildId === 'UpdateSite_AmazonWebServices_UpdateAwsMissouri') {
