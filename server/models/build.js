@@ -8,7 +8,7 @@ Models.Build = function (doc) {
 	if (!this._doc.displayCounter) {
 		this._doc.displayCounter = 0;
 	}
-	if(this._doc.isLastBuildSuccess === undefined) {
+	if (this._doc.isLastBuildSuccess === undefined) {
 		this._doc.isLastBuildSuccess = true;
 	}
 };
@@ -98,7 +98,7 @@ Models.Build.prototype = {
 			set.isLastBuildSuccess = false;
 		}
 
-		Collections.Builds.update({_id: this._id}, { $set: set });
+		Collections.Builds.update({_id: this._id}, {$set: set});
 	},
 
 	/**
@@ -127,10 +127,20 @@ Models.Build.prototype = {
 	refreshBuildData: function (service) {
 		var self = this;
 		service.getBuildData(self.href, 10, function (buildDetailsArray) {
+			var isLastBuildSuccess = true;
+			if (buildDetailsArray.length > 0) {
+				if (!buildDetailsArray[0].isSuccess) {
+					isLastBuildSuccess = false;
+				} else if(buildDetailsArray[0].isRunning && buildDetailsArray.length > 1) {
+					isLastBuildSuccess = buildDetailsArray[1].isSuccess;
+				}
+			}
+
 			var buildData = _.map(buildDetailsArray, function (bd) {
 				return bd.toJson();
 			});
-			Collections.Builds.update({_id: self._id}, {$set: {builds: buildData}});
+
+			Collections.Builds.update({_id: self._id}, {$set: {isLastBuildSuccess: isLastBuildSuccess, builds: buildData}});
 		});
 	},
 

@@ -11,7 +11,7 @@ describe('Models.Build', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceNumber: '204',
 						isSuccess: true,
-						isRunning: true,
+						isRunning: false,
 						href: '/httpAuth/app/rest/builds/id:687',
 						statusText: 'Step 1/3',
 						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
@@ -36,7 +36,105 @@ describe('Models.Build', function () {
 			expect(Services.TeamCity.prototype.getBuildData).toHaveBeenCalledWith('/guestAuth/someid', 10, jasmine.any(Function));
 
 			expect(Collections.Builds.update.calls.count()).toBe(1);
-			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_SomeBuildId_'}, {$set: {builds: dbData}});
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_SomeBuildId_'},
+					{$set: {isLastBuildSuccess: true, builds: dbData}}
+			);
+		});
+
+		it('should update isLastBuildSuccess to false if the last build has failed', function () {
+			var responseData0 = new Models.BuildDetail({
+						id: 687,
+						serviceBuildId: 'MBP_UnitTestAndBundle',
+						serviceNumber: '204',
+						isSuccess: false,
+						isRunning: false,
+						href: '/httpAuth/app/rest/builds/id:687',
+						statusText: 'Step 1/3',
+						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
+						finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'),
+						usernames: ['pstuart2']
+					}),
+					responseData1 = new Models.BuildDetail({
+						id: 686,
+						serviceBuildId: 'MBP_UnitTestAndBundle',
+						serviceNumber: '203',
+						isSuccess: true,
+						isRunning: false,
+						href: '/httpAuth/app/rest/builds/id:687',
+						statusText: 'Step 1/3',
+						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
+						finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'),
+						usernames: ['pstuart2']
+					}),
+					dbData = [responseData0.toJson(), responseData1.toJson()];
+
+			spyOn(Services.TeamCity.prototype, 'getBuildData').and.callFake(function (href, historyCount, cb) {
+				cb([responseData0, responseData1]);
+			});
+
+			spyOn(Collections.Builds, 'update');
+
+			var build = new Models.Build({_id: '_SomeBuildId_', href: '/guestAuth/someid'});
+			build.refreshBuildData(new Services.TeamCity({
+				_id: '_getBuildDataTest_',
+				url: 'http://example.com/getBuildDataTest'
+			}));
+
+			expect(Services.TeamCity.prototype.getBuildData.calls.count()).toBe(1);
+			expect(Services.TeamCity.prototype.getBuildData).toHaveBeenCalledWith('/guestAuth/someid', 10, jasmine.any(Function));
+
+			expect(Collections.Builds.update.calls.count()).toBe(1);
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_SomeBuildId_'},
+					{$set: {isLastBuildSuccess: false, builds: dbData}}
+			);
+		});
+
+		it('should update isLastBuildSuccess to false if the last build is still running and the previous build failed', function () {
+			var responseData0 = new Models.BuildDetail({
+						id: 687,
+						serviceBuildId: 'MBP_UnitTestAndBundle',
+						serviceNumber: '204',
+						isSuccess: true,
+						isRunning: true,
+						href: '/httpAuth/app/rest/builds/id:687',
+						statusText: 'Step 1/3',
+						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
+						finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'),
+						usernames: ['pstuart2']
+					}),
+					responseData1 = new Models.BuildDetail({
+						id: 686,
+						serviceBuildId: 'MBP_UnitTestAndBundle',
+						serviceNumber: '203',
+						isSuccess: false,
+						isRunning: false,
+						href: '/httpAuth/app/rest/builds/id:687',
+						statusText: 'Step 1/3',
+						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
+						finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'),
+						usernames: ['pstuart2']
+					}),
+					dbData = [responseData0.toJson(), responseData1.toJson()];
+
+			spyOn(Services.TeamCity.prototype, 'getBuildData').and.callFake(function (href, historyCount, cb) {
+				cb([responseData0, responseData1]);
+			});
+
+			spyOn(Collections.Builds, 'update');
+
+			var build = new Models.Build({_id: '_SomeBuildId_', href: '/guestAuth/someid'});
+			build.refreshBuildData(new Services.TeamCity({
+				_id: '_getBuildDataTest_',
+				url: 'http://example.com/getBuildDataTest'
+			}));
+
+			expect(Services.TeamCity.prototype.getBuildData.calls.count()).toBe(1);
+			expect(Services.TeamCity.prototype.getBuildData).toHaveBeenCalledWith('/guestAuth/someid', 10, jasmine.any(Function));
+
+			expect(Collections.Builds.update.calls.count()).toBe(1);
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_SomeBuildId_'},
+					{$set: {isLastBuildSuccess: false, builds: dbData}}
+			);
 		});
 	});
 
