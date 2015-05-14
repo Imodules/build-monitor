@@ -22,9 +22,7 @@ Controllers.MyBuildDisplayAllow = (function () {
 		}
 
 		if (modifier.$set) {
-			if (doc.isDisplayed !== modifier.$set.isDisplayed) {
-				Controllers.Servers.onUpdateBuildDisplay(doc.buildId, modifier.$set.isDisplayed);
-			}
+			Controllers.Servers.onUpdateBuildDisplay(doc.buildId, modifier.$set.isDisplayed);
 		}
 
 		return true;

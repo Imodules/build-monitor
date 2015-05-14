@@ -6,10 +6,7 @@
 Controllers.Route.Dashboard = Controllers.Route.Base.extend({
 	layoutTemplate: 'dashboard',
 	waitOn: function () {
-		return [
-			Meteor.subscribe('displayedProjects'),
-			Meteor.subscribe('displayedBuilds')
-		];
+		return Meteor.subscribe('displayedBuilds');
 	},
 
 	action: function () {

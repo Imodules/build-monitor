@@ -19,7 +19,7 @@ Controllers.Builds = (function () {
 	function GetActiveServerBuilds(serverId) {
 		return Collections.Builds.find(
 				{serverId: serverId, displayCounter: {$gt: 0}},
-				{fields: {serviceBuildId: 1}, transform: _transform}
+				{transform: _transform}
 		);
 	}
 

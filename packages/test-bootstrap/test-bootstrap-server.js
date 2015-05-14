@@ -19,17 +19,38 @@ function loadTestDb() {
 	});
 
 	Meteor.users.update({username: 'pstuartTester1'}, {$set: {isAdmin: true}});
+
+	var serverId = 'MyClientTestServer_01',
+			projectId = 'MyClientTestProject_01',
+			buildId = 'MyClientTestBuild_01';
+
+	Collections.Servers.insert({_id: serverId, name: 'Ze Client Integration Test', type: 'teamcity', url: 'http://clitest.example.com'});
+	Collections.Projects.insert({
+		_id: projectId, serverId: serverId, parentId: null, serviceProjectId: 'ClientServicePID',
+		serviceParentProjectId: null, name: 'Client test project', href: '/guestAuth/project/test1'
+	});
+	Collections.Builds.insert({
+		_id: buildId,
+		serverId: serverId,
+		projectId: projectId,
+		serviceBuildId: 'My_Client_Build_Service_id01',
+		name: 'Client test build 01',
+		href: '/guestAuth/build/test1',
+		displayCounter: 0,
+		isLastBuildSuccess: true,
+		isBuilding: false
+	});
 }
 
 if (process.env.IS_MIRROR) {
 	Meteor.methods({
-		'loadFixtures': function(){
+		'loadFixtures': function () {
 			console.log('Loading default fixtures');
 			loadTestDb();
 			console.log('Finished loading default fixtures');
 		},
 
-		'clearDB': function(){
+		'clearDB': function () {
 			console.log('Clear DB');
 
 			var collectionsRemoved = 0;

@@ -2,6 +2,7 @@
  * Created by imod on 4/28/15.
  */
 
+'use strict';
 ViewModels.Configure = (function () {
 	function _upsert(id, shortName, isOn, cb) {
 		var userId = Meteor.userId(),
@@ -75,29 +76,29 @@ Template.cfgProjectRow.rendered = function () {
 
 Template.cfgProjectRow.helpers({
 	childProjectCount: function () {
-		return Collections.Projects.find({parentId: this.projectId}).count();
+		return Collections.Projects.find({parentId: this._id}).count();
 	},
 	childBuildTypeCount: function () {
-		return Collections.Builds.find({projectId: this.projectId}).count();
+		return Collections.Builds.find({projectId: this._id}).count();
 	},
 	hasChildren: function () {
-		return Collections.Projects.find({parentId: this.projectId}).count() > 0
+		return Collections.Projects.find({parentId: this._id}).count() > 0;
 	},
 	myChildren: function () {
-		return Collections.Projects.find({parentId: this.projectId}, {sort: {name: 1}});
+		return Collections.Projects.find({parentId: this._id}, {sort: {name: 1}});
 	},
 	myBuilds: function () {
-		return Collections.Builds.find({projectId: this.projectId}, {sort: {name: 1}});
+		return Collections.Builds.find({projectId: this._id}, {sort: {name: 1}});
 	},
 	enabledBuildCount: function () {
-		return Collections.Builds.find({projectId: this.projectId, isDisplayed: true}).count();
+		return Collections.Builds.find({projectId: this._id, displayCounter: {$gt: 0}}).count();
 	},
 	parentAccordianId: function () {
 		if (this.parentId === null) {
-			return 'accordion'
+			return 'accordion';
 		}
 
-		var parent = Collections.Projects.findOne({projectId: this.parentId});
+		var parent = Collections.Projects.findOne({_id: this.parentId});
 		return 'acc_' + parent._id;
 	}
 });
@@ -111,7 +112,7 @@ Template.cfgBuildTypeRow.helpers({
 		return Session.equals('displayedOnly', true);
 	},
 	parentName: function () {
-		var parent = Collections.Projects.findOne({projectId: this.projectId});
+		var parent = Collections.Projects.findOne({_id: this.projectId});
 		if (parent) {
 			return parent.name;
 		}
@@ -124,7 +125,7 @@ Template.cfgBuildTypeRow.helpers({
 				isDisplayed: false,
 				shortName: null,
 				buildId: this._id
-			}
+			};
 		}
 
 		return myBuildDisplayItem;

@@ -42,6 +42,7 @@ describe('Controller.Projects', function () {
 					},
 					{
 						$set: {
+							parentId: null,
 							name: 'My Brew Planner',
 							href: '/guestAuth/app/rest/projects/id:MBP'
 						}

@@ -42,12 +42,21 @@ Controllers.Projects = (function () {
 	 * @constructor
 	 */
 	function AddProject(project, builds) {
+		var parentId = null;
+		if (project.serviceParentProjectId) {
+			var parentProject = Controllers.Projects.getByServiceProjectId(project.serverId, project.serviceParentProjectId);
+			if (parentProject) {
+				parentId = parentProject._id;
+			}
+		}
+
 		var upsId = Collections.Projects.upsert({
 			serverId: project.serverId,
 			serviceParentProjectId: project.serviceParentProjectId,
 			serviceProjectId: project.serviceProjectId
 		}, {
 			$set: {
+				parentId: parentId,
 				name: project.name,
 				href: project.href
 			}

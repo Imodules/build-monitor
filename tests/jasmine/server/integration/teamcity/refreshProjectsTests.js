@@ -51,6 +51,10 @@ describe('refreshProjects', function () {
 				UpdateSite_AmazonWebServices  = Controllers.Projects.getByServiceProjectId(server._id, 'UpdateSite_AmazonWebServices'),
 				UpdateSite_AmazonWebServices_UpdatePwsEmailGateway  = Controllers.Projects.getByServiceProjectId(server._id, 'UpdateSite_AmazonWebServices_UpdatePwsEmailGateway');
 
+		expect(UpdateSite.parentId).toBe(null);
+		expect(UpdateSite_AmazonWebServices.parentId).toBe(UpdateSite._id);
+		expect(UpdateSite_AmazonWebServices_UpdatePwsEmailGateway.parentId).toBe(UpdateSite_AmazonWebServices._id);
+
 		expect(DeploymentBuilds.serverId).toBe(server._id);
 		expect(DeploymentBuilds.serviceProjectId).toBe('DeploymentBuilds');
 		expect(DeploymentBuilds.serviceParentProjectId).toBe(null);

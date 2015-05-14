@@ -67,6 +67,7 @@ Controllers.Servers = (function () {
 	 * @return {boolean}
 	 */
 	function RefreshProjects(serverId) {
+		console.log('Refreshing projects: ' + serverId);
 		var server = Controllers.Servers.getServer(serverId);
 		server.refreshProjects();
 	}

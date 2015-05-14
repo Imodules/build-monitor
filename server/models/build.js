@@ -189,13 +189,13 @@ Models.Build.prototype = {
 		}
 
 		var inc = setIsDisplayed ? 1 : -1;
-		if (this.displayCounter <= 0 && setIsDisplayed) {
-			this.refreshBuildData(service);
-		}
-
 		this._doc.displayCounter += inc;
 
 		Collections.Builds.update({_id: this._id}, {$inc: {displayCounter: inc}});
+
+		if (this.displayCounter === 1 && setIsDisplayed) {
+			this.refreshBuildData(service);
+		}
 	}
 	//endregion
 };

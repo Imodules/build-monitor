@@ -22,6 +22,10 @@ Models.Project.prototype = {
 		return this._doc.serverId;
 	},
 
+	get parentId() {
+		return this._doc.parentId;
+	},
+
 	get serviceProjectId() {
 		return this._doc.serviceProjectId;
 	},

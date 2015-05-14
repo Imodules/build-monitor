@@ -9,7 +9,7 @@ ViewModels.Servers = (function () {
 			throw new Meteor.Error(500, 'Missing url');
 		}
 
-		Meteor.call('insertServer', name, url, uname, pass, function (err, id) {
+		Meteor.call('insertServer', null, name, url, uname, pass, function (err, id) {
 			if (err) {
 				if (callback) { callback(err); }
 				return;

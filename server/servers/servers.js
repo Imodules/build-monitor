@@ -20,5 +20,5 @@ Meteor.methods({
 	updateServer: Controllers.Servers.onSaveServer,
 	deleteServer: Controllers.Servers.onDeleteServer,
 
-	refreshProjects: Controllers.Servers.onRefresh
+	refreshProjects: Controllers.Servers.onRefreshProjects
 });

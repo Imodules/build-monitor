@@ -24,7 +24,7 @@ describe('Views.Servers', function () {
 
 		it('should be able to add a new server', function (done) {
 			ViewModels.Servers.onAdd('Cool Server Name', 'http://example.com/ViewTest', 'exUser', 'exPass', function () {
-				expect($('#serverList > tbody > tr').length).toBe(2);
+				expect($('#serverList > tbody > tr').length).toBe(3);
 				expect($('#serverList > tbody > tr:nth-child(1) td:nth-child(2)').text()).toBe('Cool Server Name');
 				expect($('#serverList > tbody > tr:nth-child(1) td:nth-child(3)').text()).toBe('http://example.com/ViewTest');
 				expect($('#serverList > tbody > tr:nth-child(1) td:nth-child(4)').text()).toBe('exUser');

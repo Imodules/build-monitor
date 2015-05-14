@@ -17,8 +17,8 @@ Controllers.Route.Servers = Controllers.Route.Base.extend({
 
 	data: function () {
 		return {
-			servers: Collections.Servers.find()
-		}
+			servers: Collections.Servers.find({}, {sort: {name: 1}})
+		};
 	},
 
 	action: function () {
