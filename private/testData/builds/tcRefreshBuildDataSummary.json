@@ -1,0 +1,100 @@
+{
+  "statusCode": 200,
+  "data": {
+    "count": 10,
+    "href": "/guestAuth/app/rest/buildTypes/id:CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava/builds?count=10",
+    "nextHref": "/guestAuth/app/rest/buildTypes/id:CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava/builds?count=10&start=10",
+    "build": [
+      {
+        "id": 113175,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-201",
+        "status": "SUCCESS",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113175",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113175&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113173,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-200",
+        "status": "SUCCESS",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113173",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113173&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113171,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-199",
+        "status": "FAILURE",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113171",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113171&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113170,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-198",
+        "status": "FAILURE",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113170",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113170&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113165,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-197",
+        "status": "SUCCESS",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113165",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113165&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113164,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-196",
+        "status": "SUCCESS",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113164",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113164&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113161,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-195",
+        "status": "SUCCESS",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113161",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113161&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113160,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-194",
+        "status": "SUCCESS",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113160",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113160&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113149,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-193",
+        "status": "SUCCESS",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113149",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113149&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      },
+      {
+        "id": 113145,
+        "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+        "number": "FEATURE-ENC-20657-192",
+        "status": "SUCCESS",
+        "state": "finished",
+        "href": "/guestAuth/app/rest/builds/id:113145",
+        "webUrl": "http://refd.example.com/viewLog.html?buildId=113145&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+      }
+    ]
+  }
+}

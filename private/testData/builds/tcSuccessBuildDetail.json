@@ -1,0 +1,137 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": 113175,
+    "buildTypeId": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+    "number": "FEATURE-ENC-20657-201",
+    "status": "SUCCESS",
+    "state": "finished",
+    "href": "/guestAuth/app/rest/builds/id:113175",
+    "webUrl": "http://refd.example.com/viewLog.html?buildId=113175&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+    "statusText": "Tests passed: 40",
+    "buildType": {
+      "id": "CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+      "name": "Feature-ENC-20657-Email-Marketing-Gateway-Java",
+      "projectName": "Check In Triggered Builds :: Pivotal Builds",
+      "projectId": "CheckInTriggeredBuilds_PivotalBuilds",
+      "href": "/guestAuth/app/rest/buildTypes/id:CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava",
+      "webUrl": "http://refd.example.com/viewType.html?buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+    },
+    "tags": {"tag": []},
+    "queuedDate": "20150513T172116-0500",
+    "startDate": "20150513T172117-0500",
+    "finishDate": "20150513T172410-0500",
+    "triggered": {
+      "type": "vcs",
+      "details": "mercurial",
+      "date": "20150513T172116-0500"
+    },
+    "lastChanges": {
+      "count": 1,
+      "change": [
+        {
+          "id": 218677,
+          "version": "d78fad853ab6",
+          "username": "joe <joe>",
+          "date": "20150513T171946-0500",
+          "href": "/guestAuth/app/rest/changes/id:218677",
+          "webLink": "http://refd.example.com/viewModification.html?modId=218677&personal=false"
+        }
+      ]
+    },
+    "changes": {
+      "count": 1,
+      "href": "/guestAuth/app/rest/changes?locator=build:(id:113175)"
+    },
+    "revisions": {
+      "revision": [
+        {
+          "version": "d78fad853ab6",
+          "vcs-root-instance": {
+            "id": "938",
+            "vcs-root-id": "CheckInTriggeredBuilds_FeatureBuilds_BitBucketEmailGateway",
+            "name": "BitBucket Email Gateway",
+            "href": "/guestAuth/app/rest/vcs-root-instances/id:938"
+          }
+        }
+      ]
+    },
+    "agent": {
+      "id": 23,
+      "name": "UbuntuVM",
+      "typeId": 23,
+      "href": "/guestAuth/app/rest/agents/id:23"
+    },
+    "testOccurrences": {
+      "count": 40,
+      "href": "/guestAuth/app/rest/testOccurrences?locator=build:(id:113175)",
+      "passed": 40,
+      "default": false
+    },
+    "artifacts": {"href": "/guestAuth/app/rest/builds/id:113175/artifacts/children"},
+    "relatedIssues": {"href": "/guestAuth/app/rest/builds/id:113175/relatedIssues"},
+    "properties": {
+      "count": 12,
+      "property": [
+        {
+          "name": "env.EMAIL_REPORTING_CONFIG_FILE_PATH",
+          "value": "/home/devadmin/buildFiles/email_reporting_ui_config.json"
+        },
+        {
+          "name": "env.EnableNuGetPackageRestore",
+          "value": "true"
+        },
+        {
+          "name": "env.SPRING_DATASOURCE_USERNAME",
+          "value": "devadmin"
+        },
+        {
+          "name": "system.BuildInRelease",
+          "value": "false"
+        },
+        {
+          "name": "system.buildSqlRollFiles",
+          "value": "true"
+        },
+        {
+          "name": "system.IncludeAll",
+          "value": "false"
+        },
+        {
+          "name": "system.IncludeMerges",
+          "value": "false"
+        },
+        {
+          "name": "system.MercurialCurrentBranch",
+          "value": "email-gateway"
+        },
+        {
+          "name": "system.RunSql",
+          "value": "true"
+        },
+        {
+          "name": "system.RunSqlCatalogList",
+          "value": "c_bishop_miege;c_carnegie_mellon_university;c_colgate_university;c_michigan_state_university;c_univ_of_minnesota;c_imod_green"
+        },
+        {
+          "name": "system.SourceControlProvider",
+          "value": "mercurial"
+        },
+        {
+          "name": "teamcity.ui.runButton.caption",
+          "value": "Build"
+        }
+      ]
+    },
+    "attributes": {
+      "count": 1,
+      "entry": [
+        {
+          "name": "teamcity.cleanSources",
+          "value": "true"
+        }
+      ]
+    },
+    "statistics": {"href": "/guestAuth/app/rest/builds/id:113175/statistics"}
+  }
+}
