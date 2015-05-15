@@ -403,7 +403,8 @@ describe('Models.Build', function () {
 					'builds.0.isRunning': false,
 					'builds.0.isSuccess': true,
 					'builds.0.statusText': 'Success',
-					'builds.0.percentageComplete': 100
+					'builds.0.percentageComplete': 100,
+					'builds.0.finishDate': new Date(2015, 1, 17, 15, 30, 0)
 				}
 			});
 		});

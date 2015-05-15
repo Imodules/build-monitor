@@ -24,9 +24,14 @@
 
 
 			{{#if isBuilding}}
-				<div class="bsCurrent">
-					{{currentBuild.statusText}} ({{currentBuild.pctComplete}}%)
-				</div>
+				{{#with lastBuild}}
+					<div class="bsLast">
+						{{usernames}}
+					</div>
+					<div class="bsTotal">
+						{{percentageComplete}}%
+					</div>
+				{{/with}}
 			{{else}}
 				{{#with lastBuild}}
 					<div class="bsLast">

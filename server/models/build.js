@@ -117,7 +117,8 @@ Models.Build.prototype = {
 				'builds.0.isRunning': buildDetail.isRunning,
 				'builds.0.isSuccess': buildDetail.isSuccess,
 				'builds.0.statusText': buildDetail.statusText,
-				'builds.0.percentageComplete': buildDetail.percentageComplete
+				'builds.0.percentageComplete': buildDetail.percentageComplete,
+				'builds.0.finishDate': buildDetail.finishDate
 			}
 		});
 	},
