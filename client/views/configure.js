@@ -43,7 +43,7 @@ Template.configure.helpers({
 		return Collections.Projects.find({parentId: null});
 	},
 	allMyBuilds: function () {
-		return Collections.Builds.find({watchers: {$in: [Meteor.userId()]}});
+		return Collections.Builds.find({watchers: {$in: [Meteor.userId()]}}, {sort: {name: 1}});
 	},
 	isDisplayedOnly: function () {
 		return Session.equals('displayedOnly', true);
