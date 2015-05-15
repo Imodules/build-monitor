@@ -99,6 +99,7 @@ Models.Build.prototype = {
 
 		if (this.isLastBuildSuccess && !buildDetail.isSuccess) {
 			set.isLastBuildSuccess = false;
+			set.whoBrokeIt = buildDetail.usernames;
 		}
 
 		Collections.Builds.update({_id: this._id}, {$set: set});
@@ -131,12 +132,15 @@ Models.Build.prototype = {
 	refreshBuildData: function (service) {
 		var self = this;
 		service.getBuildData(self.href, 10, function (buildDetailsArray) {
-			var isLastBuildSuccess = true;
+			var isLastBuildSuccess = true,
+					whoBrokeIt = null;
 			if (buildDetailsArray.length > 0) {
 				if (!buildDetailsArray[0].isSuccess) {
 					isLastBuildSuccess = false;
+					whoBrokeIt = buildDetailsArray[0].usernames;
 				} else if (buildDetailsArray[0].isRunning && buildDetailsArray.length > 1) {
 					isLastBuildSuccess = buildDetailsArray[1].isSuccess;
+					whoBrokeIt = buildDetailsArray[1].usernames;
 				}
 			}
 
@@ -144,7 +148,13 @@ Models.Build.prototype = {
 				return bd.toJson();
 			});
 
-			Collections.Builds.update({_id: self._id}, {$set: {isLastBuildSuccess: isLastBuildSuccess, builds: buildData}});
+			Collections.Builds.update({_id: self._id}, {
+				$set: {
+					isLastBuildSuccess: isLastBuildSuccess,
+					whoBrokeIt: whoBrokeIt,
+					builds: buildData
+				}
+			});
 		});
 	},
 
@@ -193,7 +203,7 @@ Models.Build.prototype = {
 		}
 
 		this._doc.watchers.push(watcher);
-		Collections.Builds.update({_id: this._id}, {$addToSet: {watchers: watcher}});
+		Collections.Builds.update({_id: this._id}, {$addToSet: {watchers: watcher}, $set: {watcherCount: this.watchers.length}});
 
 		if (this.watchers.length === 1 && service) {
 			this.refreshBuildData(service);
@@ -205,12 +215,12 @@ Models.Build.prototype = {
 			return w === watcher;
 		});
 
-		if(nWatchers.length === this.watchers.length) {
+		if (nWatchers.length === this.watchers.length) {
 			return;
 		}
 
 		this._doc.watchers = nWatchers;
-		Collections.Builds.update({_id: this._id}, {$set: {watchers: nWatchers}});
+		Collections.Builds.update({_id: this._id}, {$set: {watchers: nWatchers, watcherCount: this.watchers.length}});
 	}
 	//endregion
 };

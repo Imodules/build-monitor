@@ -4,32 +4,32 @@
 
 'use strict';
 ViewModels.Configure = (function () {
-	function _upsert(serverId, buildId, shortName, isOn, cb) {
+	function _upsert(serverId, buildId, shortName, cb) {
 		var userId = Meteor.userId(),
 				myBuildItem = Collections.MyBuildDisplay.findOne({serverId: serverId, userId: userId, buildId: buildId});
 
 		if (!myBuildItem) {
 			Collections.MyBuildDisplay.insert({
-				serverId: serverId, userId: userId, buildId: buildId, isDisplayed: (isOn === true), shortName: shortName
+				serverId: serverId, userId: userId, buildId: buildId, shortName: shortName
 			}, cb);
 		} else {
-			var setItem = { };
-			if (isOn !== null) {
-				setItem.isDisplayed = isOn;
-			}
-			if (!s(shortName).isBlank()) {
-				setItem.shortName = shortName;
-			}
+			var setItem = { shortName: shortName };
 			Collections.MyBuildDisplay.update({_id: myBuildItem._id}, {$set: setItem}, cb);
 		}
 	}
 
 	function updateBuildTypeShortName(serverId, buildId, shortName, cb) {
-		return _upsert(serverId, buildId, shortName, null, cb);
+		return _upsert(serverId, buildId, shortName, cb);
 	}
 
 	function updateDisplayToggle(serverId, buildId, isOn, cb) {
-		Meteor.call('watchBuild', serverId, buildId, Meteor.userId(), isOn, cb);
+		Meteor.call('watchBuild', serverId, buildId, Meteor.userId(), isOn, function (e) {
+			if (e) {
+				return cb(e);
+			}
+
+			_upsert(serverId, buildId, null, cb);
+		});
 	}
 
 	return {

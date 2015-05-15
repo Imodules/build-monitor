@@ -5,7 +5,7 @@
 'use strict';
 describe('Models.Build', function () {
 	describe('refreshBuildData()', function () {
-		it('should do something and return true', function () {
+		it('should refresh the build data', function () {
 			var responseData = new Models.BuildDetail({
 						id: 687,
 						serviceBuildId: 'MBP_UnitTestAndBundle',
@@ -37,11 +37,11 @@ describe('Models.Build', function () {
 
 			expect(Collections.Builds.update.calls.count()).toBe(1);
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_SomeBuildId_'},
-					{$set: {isLastBuildSuccess: true, builds: dbData}}
+					{$set: {isLastBuildSuccess: true, whoBrokeIt: null, builds: dbData}}
 			);
 		});
 
-		it('should update isLastBuildSuccess to false if the last build has failed', function () {
+		it('should update isLastBuildSuccess to false and set whoBrokeIt if the last build has failed', function () {
 			var responseData0 = new Models.BuildDetail({
 						id: 687,
 						serviceBuildId: 'MBP_UnitTestAndBundle',
@@ -85,11 +85,11 @@ describe('Models.Build', function () {
 
 			expect(Collections.Builds.update.calls.count()).toBe(1);
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_SomeBuildId_'},
-					{$set: {isLastBuildSuccess: false, builds: dbData}}
+					{$set: {isLastBuildSuccess: false, whoBrokeIt: ['pstuart2'], builds: dbData}}
 			);
 		});
 
-		it('should update isLastBuildSuccess to false if the last build is still running and the previous build failed', function () {
+		it('should update isLastBuildSuccess to false and set whoBrokeIt if the last build is still running and the previous build failed', function () {
 			var responseData0 = new Models.BuildDetail({
 						id: 687,
 						serviceBuildId: 'MBP_UnitTestAndBundle',
@@ -100,7 +100,7 @@ describe('Models.Build', function () {
 						statusText: 'Step 1/3',
 						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
 						finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'),
-						usernames: ['pstuart2']
+						usernames: ['pstuart3']
 					}),
 					responseData1 = new Models.BuildDetail({
 						id: 686,
@@ -112,7 +112,7 @@ describe('Models.Build', function () {
 						statusText: 'Step 1/3',
 						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
 						finishDate: new Date('Fri May 01 2015 21:30:13 GMT-0500 (CDT)'),
-						usernames: ['pstuart2']
+						usernames: ['pstuart4']
 					}),
 					dbData = [responseData0.toJson(), responseData1.toJson()];
 
@@ -133,7 +133,7 @@ describe('Models.Build', function () {
 
 			expect(Collections.Builds.update.calls.count()).toBe(1);
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_SomeBuildId_'},
-					{$set: {isLastBuildSuccess: false, builds: dbData}}
+					{$set: {isLastBuildSuccess: false, whoBrokeIt: ['pstuart4'], builds: dbData}}
 			);
 		});
 	});
@@ -151,7 +151,7 @@ describe('Models.Build', function () {
 			}), 'myCoolUserId');
 
 			expect(build.watchers.length).toBe(1);
-			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_IUKJOIkd'}, {$addToSet: {watchers: 'myCoolUserId'}});
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_IUKJOIkd'}, {$addToSet: {watchers: 'myCoolUserId'}, $set: {watcherCount: 1}});
 			expect(Models.Build.prototype.refreshBuildData).toHaveBeenCalled();
 		});
 
@@ -180,7 +180,7 @@ describe('Models.Build', function () {
 			build.removeWatcher('Watcher2');
 
 			expect(build.watchers.length).toBe(2);
-			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_IUKJOIkd'}, {$set: {watchers: ['Watcher1','Watcher3']}});
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_IUKJOIkd'}, {$set: {watchers: ['Watcher1','Watcher3'], watcherCount: 2}});
 		});
 
 		it('should not update if the watcher does not exist in the lsit', function () {
@@ -307,7 +307,7 @@ describe('Models.Build', function () {
 			});
 		});
 
-		it('should change last build success to false if the current build starts failing', function () {
+		it('should change last build success to false and add the shame if the current build starts failing', function () {
 			spyOn(Services.TeamCity.prototype, 'getBuildDetails').and.callFake(function (href, cb) {
 				cb(new Models.BuildDetail({
 					id: 420,
@@ -349,6 +349,7 @@ describe('Models.Build', function () {
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'build_bt3'}, {
 				$set: {
 					isLastBuildSuccess: false,
+					whoBrokeIt: ['pstuart69'],
 					'builds.0.isRunning': true,
 					'builds.0.isSuccess': false,
 					'builds.0.statusText': 'Oh no! I am failing',

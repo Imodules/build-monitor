@@ -96,8 +96,10 @@ describe('ViewModels.Configure', function () {
 				expect(err).toBeUndefined();
 
 				var userId = Meteor.userId(),
-						build = Collections.Builds.findOne({_id: 'MyClientTestBuild_02'});
+						build = Collections.Builds.findOne({_id: 'MyClientTestBuild_02'}),
+						myBuildItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: build._id});
 
+				expect(myBuildItem).not.toBeFalsy();
 				expect(build).not.toBeFalsy();
 				expect(build.watchers.length).toBe(1);
 				expect(build.watchers[0]).toBe(userId);

@@ -86,6 +86,10 @@ Models.BuildDetail.prototype = {
 	get changes() {
 		return this.json.changes;
 	},
+
+	get usernames() {
+		return this.json.usernames;
+	},
 	//endregion
 
 	//region Methods
