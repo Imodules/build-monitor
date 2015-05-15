@@ -32,12 +32,12 @@ describe('server.updateBuildDisplay', function () {
 		expect(build.isDisplayed).toBeFalsy();
 
 		var server = Controllers.Servers.getServer(serverId);
-		server.toggleBuildDisplay(buildId, true, 'TheSweet1');
+		server.toggleBuildDisplay(buildId, 'TheSweet1', true);
 		build = Controllers.Builds.getBuild(buildId);
 		expect(build.watchers.length).toBe(1);
 		expect(build.isDisplayed).toBe(true);
 
-		server.toggleBuildDisplay(buildId, true, 'TheSweet2');
+		server.toggleBuildDisplay(buildId, 'TheSweet2', true);
 		build = Controllers.Builds.getBuild(buildId);
 		expect(build.watchers.length).toBe(2);
 		expect(build.isDisplayed).toBe(true);
@@ -49,12 +49,12 @@ describe('server.updateBuildDisplay', function () {
 		expect(build.isDisplayed).toBe(true);
 
 		var server = Controllers.Servers.getServer(serverId);
-		server.toggleBuildDisplay(buildId, false, 'TheSweet1');
+		server.toggleBuildDisplay(buildId, 'TheSweet1', false);
 		build = Controllers.Builds.getBuild(buildId);
 		expect(build.watchers.length).toBe(1);
 		expect(build.isDisplayed).toBe(true);
 
-		server.toggleBuildDisplay(buildId, false, 'TheSweet2');
+		server.toggleBuildDisplay(buildId, 'TheSweet2', false);
 		build = Controllers.Builds.getBuild(buildId);
 		expect(build.watchers.length).toBe(0);
 		expect(build.isDisplayed).toBeFalsy();

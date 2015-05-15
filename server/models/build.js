@@ -194,7 +194,7 @@ Models.Build.prototype = {
 		this._doc.watchers.push(watcher);
 		Collections.Builds.update({_id: this._id}, {$addToSet: {watchers: watcher}});
 
-		if (this.watchers.length === 1) {
+		if (this.watchers.length === 1 && service) {
 			this.refreshBuildData(service);
 		}
 	},

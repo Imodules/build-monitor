@@ -4,8 +4,9 @@
 
 'use strict';
 
-Services.TeamCity = function (server) {
+Services.TeamCity = function (server, isTest) {
 	this.server = server;
+	this.isTest = isTest === true;
 };
 
 Services.TeamCity.prototype = {
@@ -48,6 +49,11 @@ Services.TeamCity.prototype = {
 		}
 
 		fullUrl += url;
+
+		//if (this.isTest) {
+		//	console.log('Test Mode!!! - ' + fullUrl);
+		//	return callback({});
+		//}
 
 		console.log('Calling: ' + fullUrl);
 		HTTP.get(fullUrl, opt, function (err, response) {

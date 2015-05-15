@@ -5,29 +5,11 @@
 'use strict';
 Controllers.MyBuildDisplayAllow = (function () {
 	function Insert(userId, doc) {
-		if (userId !== Meteor.userId()) {
-			return false;
-		}
-
-		if (doc.isDisplayed === true) {
-			var server = Controllers.Servers.getServer(doc.serverId);
-			server.toggleBuildDisplay(doc.buildId, true, userId);
-		}
-
-		return true;
+		return (userId === Meteor.userId());
 	}
 
 	function Update(userId, doc, fieldNames, modifier) {
-		if (userId !== Meteor.userId()) {
-			return false;
-		}
-
-		if (modifier.$set && modifier.$set.isDisplayed !== undefined) {
-			var server = Controllers.Servers.getServer(doc.serverId);
-			server.toggleBuildDisplay(doc.buildId, modifier.$set.isDisplayed, userId);
-		}
-
-		return true;
+		return (userId === Meteor.userId());
 	}
 
 	return {

@@ -4,13 +4,13 @@
 
 'use strict';
 ViewModels.Configure = (function () {
-	function _upsert(id, serverId, shortName, isOn, cb) {
+	function _upsert(serverId, buildId, shortName, isOn, cb) {
 		var userId = Meteor.userId(),
-				myBuildItem = Collections.MyBuildDisplay.findOne({serverId: serverId, userId: userId, buildId: id});
+				myBuildItem = Collections.MyBuildDisplay.findOne({serverId: serverId, userId: userId, buildId: buildId});
 
 		if (!myBuildItem) {
 			Collections.MyBuildDisplay.insert({
-				serverId: serverId, userId: userId, buildId: id, isDisplayed: (isOn === true), shortName: shortName
+				serverId: serverId, userId: userId, buildId: buildId, isDisplayed: (isOn === true), shortName: shortName
 			}, cb);
 		} else {
 			var setItem = { };
@@ -24,12 +24,12 @@ ViewModels.Configure = (function () {
 		}
 	}
 
-	function updateBuildTypeShortName(id, serverId, shortName, cb) {
-		return _upsert(id, serverId, shortName, null, cb);
+	function updateBuildTypeShortName(serverId, buildId, shortName, cb) {
+		return _upsert(serverId, buildId, shortName, null, cb);
 	}
 
-	function updateDisplayToggle(id, serverId, isOn, cb) {
-		return _upsert(id, serverId, null, isOn, cb);
+	function updateDisplayToggle(serverId, buildId, isOn, cb) {
+		Meteor.call('watchBuild', serverId, buildId, Meteor.userId(), isOn, cb);
 	}
 
 	return {
@@ -43,10 +43,7 @@ Template.configure.helpers({
 		return Collections.Projects.find({parentId: null});
 	},
 	allMyBuilds: function () {
-		var myBuilds = Collections.MyBuildDisplay.find({isDisplayed: true}, {fields: {buildId: 1}}).fetch(),
-				myBuildIds = _.pluck(myBuilds, 'buildId');
-
-		return Collections.Builds.find({_id: {$in: myBuildIds}});
+		return Collections.Builds.find({watchers: {$in: [Meteor.userId()]}});
 	},
 	isDisplayedOnly: function () {
 		return Session.equals('displayedOnly', true);
@@ -119,26 +116,27 @@ Template.cfgBuildTypeRow.helpers({
 		return '';
 	},
 	myBuildDisplayItem: function () {
-		var myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: Meteor.userId(), buildId: this._id});
+		var userId = Meteor.userId(),
+				myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: this._id});
 		if (!myBuildDisplayItem) {
-			return {
+			myBuildDisplayItem = {
 				serverId: this.serverId,
-				isDisplayed: false,
 				shortName: null,
 				buildId: this._id
 			};
 		}
 
+		myBuildDisplayItem.isDisplayed = this.watchers === undefined ? false :  _.contains(this.watchers, userId);
 		return myBuildDisplayItem;
 	}
 });
 
 Template.cfgBuildTypeRow.events({
 	'keyup input.shortName': function (e, t) {
-		ViewModels.Configure.onUpdateBuildTypeShortName(this.buildId, this.serverId, t.$(e.currentTarget).val());
+		ViewModels.Configure.onUpdateBuildTypeShortName(this.serverId, this.buildId, t.$(e.currentTarget).val());
 	},
 
 	'change input.isOn': function (e, t) {
-		ViewModels.Configure.onUpdateDisplayToggle(this.buildId, this.serverId, t.$(e.currentTarget).is(':checked'));
+		ViewModels.Configure.onUpdateDisplayToggle(this.serverId, this.buildId, t.$(e.currentTarget).is(':checked'));
 	}
 });

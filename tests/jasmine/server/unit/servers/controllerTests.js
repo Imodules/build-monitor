@@ -146,4 +146,17 @@ describe('Controllers.Servers', function () {
 			expect(Models.Server.prototype.refreshProjects).toHaveBeenCalled();
 		});
 	});
+
+	describe('onWatchBuild()', function () {
+		it('should get the server and call toggleDisplay', function () {
+			spyOn(Controllers.Servers, 'getServer').and.callFake(function () {
+				return new Models.Server({_id: '-toggle-build-watch-build', url: 'http://somewhere', type: 'teamcity'});
+			});
+			spyOn(Models.Server.prototype, 'toggleBuildDisplay');
+
+			Controllers.Servers.onWatchBuild('-toggle-build-watch-build', 'CoolBuildId', 'My-CurUser', true);
+
+			expect(Models.Server.prototype.toggleBuildDisplay).toHaveBeenCalledWith('CoolBuildId', 'My-CurUser', true);
+		});
+	});
 });

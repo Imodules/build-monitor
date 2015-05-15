@@ -4,8 +4,7 @@
 
 'use strict';
 describe('ViewModels.Configure', function () {
-	var firstShortNameTestId = null,
-			firstIsOnTestId = null;
+	var firstShortNameTestId = null;
 
 	describe('onUpdateBuildTypeShortName()', function () {
 		beforeAll(function (done) {
@@ -25,7 +24,7 @@ describe('ViewModels.Configure', function () {
 		});
 
 		it('should insert a new record with the proper values', function (done) {
-			ViewModels.Configure.onUpdateBuildTypeShortName('MyClientTestBuild_01', 'MyClientTestServer_01', 'mySweetShortName', function (err, id) {
+			ViewModels.Configure.onUpdateBuildTypeShortName('MyClientTestServer_01', 'MyClientTestBuild_01', 'mySweetShortName', function (err, id) {
 				expect(err).toBeUndefined();
 				expect(id).toBeTruthy();
 
@@ -56,7 +55,7 @@ describe('ViewModels.Configure', function () {
 		});
 
 		it('should update the name of an existing record', function (done) {
-			ViewModels.Configure.onUpdateBuildTypeShortName('MyClientTestBuild_01', 'MyClientTestServer_01', 'MyNewNameHEre', function (err) {
+			ViewModels.Configure.onUpdateBuildTypeShortName('MyClientTestServer_01', 'MyClientTestBuild_01', 'MyNewNameHEre', function (err) {
 				expect(err).toBeUndefined();
 
 				var userId = Meteor.userId(),
@@ -90,37 +89,31 @@ describe('ViewModels.Configure', function () {
 			});
 		});
 
-		it('should insert a new record with the proper value', function (done) {
-			ViewModels.Configure.onUpdateDisplayToggle('MyClientTestBuild_02', 'MyClientTestServer_01', true, function (err, id) {
+		it('should add my user to the watchers', function (done) {
+			spyOn(HTTP, 'get');
+
+			ViewModels.Configure.onUpdateDisplayToggle('MyClientTestServer_01', 'MyClientTestBuild_02', true, function (err) {
 				expect(err).toBeUndefined();
-				expect(id).toBeTruthy();
 
 				var userId = Meteor.userId(),
-						item = Collections.MyBuildDisplay.findOne({_id: id});
+						build = Collections.Builds.findOne({_id: 'MyClientTestBuild_02'});
 
-				expect(item).not.toBeUndefined();
-				expect(item.userId).toBe(userId);
-				expect(item.shortName).toBeFalsy();
-				expect(item.isDisplayed).toBe(true)
-				expect(item.serverId).toBe('MyClientTestServer_01');
-
-				firstIsOnTestId = item._id;
+				expect(build).not.toBeFalsy();
+				expect(build.watchers.length).toBe(1);
+				expect(build.watchers[0]).toBe(userId);
 				done();
 			});
 		});
 
-		it('should not modify the short name', function (done) {
-			ViewModels.Configure.onUpdateDisplayToggle('MyClientTestBuild_01', 'MyClientTestServer_01', true, function (err) {
+		it('should remove my user from the watchers', function (done) {
+			spyOn(HTTP, 'get');
+			ViewModels.Configure.onUpdateDisplayToggle('MyClientTestServer_01', 'MyClientTestBuild_02', false, function (err) {
 				expect(err).toBeUndefined();
 
-				var userId = Meteor.userId(),
-						item = Collections.MyBuildDisplay.findOne({_id: firstShortNameTestId});
+				var build = Collections.Builds.findOne({_id: 'MyClientTestBuild_02'});
+				expect(build).not.toBeFalsy();
+				expect(build.watchers.length).toBe(0);
 
-				expect(item).not.toBeUndefined();
-				expect(item.userId).toBe(userId);
-				expect(item.shortName).toBe('MyNewNameHEre');
-				expect(item.isDisplayed).toBe(true);
-				expect(item.serverId).toBe('MyClientTestServer_01');
 				done();
 			});
 		});

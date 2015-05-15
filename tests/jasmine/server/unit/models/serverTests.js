@@ -101,7 +101,7 @@ describe('Models.Server', function () {
 			spyOn(Models.Build.prototype, 'addWatcher');
 
 			var server = new Models.Server({_id: '98494', type: 'teamcity', url: 'http://url.example.com'});
-			server.toggleBuildDisplay('bidleid', true, 'Watcher1');
+			server.toggleBuildDisplay('bidleid', 'Watcher1', true);
 
 			expect(Controllers.Builds.getBuild).toHaveBeenCalledWith('bidleid');
 			expect(Models.Build.prototype.addWatcher).toHaveBeenCalledWith(jasmine.any(Services.TeamCity), 'Watcher1');
@@ -125,7 +125,7 @@ describe('Models.Server', function () {
 			spyOn(Models.Build.prototype, 'removeWatcher');
 
 			var server = new Models.Server({_id: '98494', type: 'teamcity', url: 'http://url.example.com'});
-			server.toggleBuildDisplay('bidleid2', false, 'Watcher2');
+			server.toggleBuildDisplay('bidleid2', 'Watcher2', false);
 
 			expect(Controllers.Builds.getBuild).toHaveBeenCalledWith('bidleid2');
 			expect(Models.Build.prototype.removeWatcher).toHaveBeenCalledWith('Watcher2');

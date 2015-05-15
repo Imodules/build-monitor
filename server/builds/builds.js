@@ -2,6 +2,7 @@
  * Created by imod on 4/29/15.
  */
 
+'use strict';
 Collections.Builds.allow({
 	insert: function () {
 		return false;

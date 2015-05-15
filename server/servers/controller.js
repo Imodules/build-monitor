@@ -72,6 +72,11 @@ Controllers.Servers = (function () {
 		server.refreshProjects();
 	}
 
+	function WatchBuild(serverId, buildId, userId, isWatch) {
+		var server = Controllers.Servers.getServer(serverId);
+		server.toggleBuildDisplay(buildId, userId, isWatch);
+	}
+
 	return {
 		getServer: GetServer,
 		getServerByName: GetServerByName,
@@ -79,6 +84,8 @@ Controllers.Servers = (function () {
 
 		onSaveServer: SaveServer,
 		onDeleteServer: DeleteServer,
-		onRefreshProjects: RefreshProjects
+		onRefreshProjects: RefreshProjects,
+
+		onWatchBuild: WatchBuild
 	};
 })();
