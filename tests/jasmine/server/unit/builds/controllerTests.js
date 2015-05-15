@@ -11,7 +11,7 @@ describe('Controllers.Builds', function () {
 			Controllers.Builds.getActiveServerBuilds('MeCo0lId');
 
 			expect(Collections.Builds.find).toHaveBeenCalledWith({serverId: 'MeCo0lId', displayCounter: {$gt: 0}},
-					{fields: {serviceBuildId: 1}, transform: jasmine.any(Function)});
+					{transform: jasmine.any(Function)});
 		});
 	});
 

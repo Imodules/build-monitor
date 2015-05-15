@@ -22,7 +22,8 @@ function loadTestDb() {
 
 	var serverId = 'MyClientTestServer_01',
 			projectId = 'MyClientTestProject_01',
-			buildId = 'MyClientTestBuild_01';
+			buildId1 = 'MyClientTestBuild_01',
+			buildId2 = 'MyClientTestBuild_02';
 
 	Collections.Servers.insert({_id: serverId, name: 'Ze Client Integration Test', type: 'teamcity', url: 'http://clitest.example.com'});
 	Collections.Projects.insert({
@@ -30,12 +31,23 @@ function loadTestDb() {
 		serviceParentProjectId: null, name: 'Client test project', href: '/guestAuth/project/test1'
 	});
 	Collections.Builds.insert({
-		_id: buildId,
+		_id: buildId1,
 		serverId: serverId,
 		projectId: projectId,
 		serviceBuildId: 'My_Client_Build_Service_id01',
 		name: 'Client test build 01',
 		href: '/guestAuth/build/test1',
+		displayCounter: 0,
+		isLastBuildSuccess: true,
+		isBuilding: false
+	});
+	Collections.Builds.insert({
+		_id: buildId2,
+		serverId: serverId,
+		projectId: projectId,
+		serviceBuildId: 'My_Client_Build_Service_id02',
+		name: 'Client test build 02',
+		href: '/guestAuth/build/test2',
 		displayCounter: 0,
 		isLastBuildSuccess: true,
 		isBuilding: false
