@@ -82,7 +82,7 @@ describe('refreshProjects', function () {
 		var arrUsAwsBuilds = usAwsBuilds.fetch();
 		arrUsAwsBuilds.forEach(function (build) {
 			expect(build.serverId).toBe(server._id);
-			expect(build.displayCounter).toBe(0);
+			expect(build.watchers.length).toBe(0);
 			expect(build.isDisplayed).toBe(false);
 			expect(build.isLastBuildSuccess).toBe(true);
 			expect(build.isBuilding).toBeFalsy();

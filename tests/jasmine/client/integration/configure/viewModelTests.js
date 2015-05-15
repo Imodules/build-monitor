@@ -25,7 +25,7 @@ describe('ViewModels.Configure', function () {
 		});
 
 		it('should insert a new record with the proper values', function (done) {
-			ViewModels.Configure.onUpdateBuildTypeShortName('MyClientTestBuild_01', 'mySweetShortName', function (err, id) {
+			ViewModels.Configure.onUpdateBuildTypeShortName('MyClientTestBuild_01', 'MyClientTestServer_01', 'mySweetShortName', function (err, id) {
 				expect(err).toBeUndefined();
 				expect(id).toBeTruthy();
 
@@ -34,6 +34,7 @@ describe('ViewModels.Configure', function () {
 
 				expect(myBuildItem).not.toBeFalsy();
 				expect(myBuildItem.userId).toBe(userId);
+				expect(myBuildItem.serverId).toBe('MyClientTestServer_01');
 				expect(myBuildItem.buildId).toBe('MyClientTestBuild_01');
 				expect(myBuildItem.shortName).toBe('mySweetShortName');
 
@@ -44,7 +45,7 @@ describe('ViewModels.Configure', function () {
 
 		it('should not create a new record for a different user.', function (done) {
 			Collections.MyBuildDisplay.insert({
-				userId: 'someOneElse', buildId: 'HereKittyKitty', isDisplayed: false, shortName: 'SomethingClever'
+				serverId: 'MyClientTestServer_01', userId: 'someOneElse', buildId: 'HereKittyKitty', isDisplayed: false, shortName: 'SomethingClever'
 			}, function (err, id) {
 
 				var myBuildItem = Collections.MyBuildDisplay.findOne({_id: id});
@@ -55,7 +56,7 @@ describe('ViewModels.Configure', function () {
 		});
 
 		it('should update the name of an existing record', function (done) {
-			ViewModels.Configure.onUpdateBuildTypeShortName('MyClientTestBuild_01', 'MyNewNameHEre', function (err) {
+			ViewModels.Configure.onUpdateBuildTypeShortName('MyClientTestBuild_01', 'MyClientTestServer_01', 'MyNewNameHEre', function (err) {
 				expect(err).toBeUndefined();
 
 				var userId = Meteor.userId(),
@@ -63,6 +64,7 @@ describe('ViewModels.Configure', function () {
 
 				expect(myBuildItem).not.toBeFalsy();
 				expect(myBuildItem.userId).toBe(userId);
+				expect(myBuildItem.serverId).toBe('MyClientTestServer_01');
 				expect(myBuildItem.buildId).toBe('MyClientTestBuild_01');
 				expect(myBuildItem.shortName).toBe('MyNewNameHEre');
 
@@ -89,7 +91,7 @@ describe('ViewModels.Configure', function () {
 		});
 
 		it('should insert a new record with the proper value', function (done) {
-			ViewModels.Configure.onUpdateDisplayToggle('MyClientTestBuild_02', true, function (err, id) {
+			ViewModels.Configure.onUpdateDisplayToggle('MyClientTestBuild_02', 'MyClientTestServer_01', true, function (err, id) {
 				expect(err).toBeUndefined();
 				expect(id).toBeTruthy();
 
@@ -99,7 +101,8 @@ describe('ViewModels.Configure', function () {
 				expect(item).not.toBeUndefined();
 				expect(item.userId).toBe(userId);
 				expect(item.shortName).toBeFalsy();
-				expect(item.isDisplayed).toBe(true);
+				expect(item.isDisplayed).toBe(true)
+				expect(item.serverId).toBe('MyClientTestServer_01');
 
 				firstIsOnTestId = item._id;
 				done();
@@ -107,7 +110,7 @@ describe('ViewModels.Configure', function () {
 		});
 
 		it('should not modify the short name', function (done) {
-			ViewModels.Configure.onUpdateDisplayToggle('MyClientTestBuild_01', true, function (err) {
+			ViewModels.Configure.onUpdateDisplayToggle('MyClientTestBuild_01', 'MyClientTestServer_01', true, function (err) {
 				expect(err).toBeUndefined();
 
 				var userId = Meteor.userId(),
@@ -117,6 +120,7 @@ describe('ViewModels.Configure', function () {
 				expect(item.userId).toBe(userId);
 				expect(item.shortName).toBe('MyNewNameHEre');
 				expect(item.isDisplayed).toBe(true);
+				expect(item.serverId).toBe('MyClientTestServer_01');
 				done();
 			});
 		});

@@ -3,7 +3,7 @@
  */
 
 'use strict';
-describe('updateBuildDisplay', function () {
+describe('server.updateBuildDisplay', function () {
 	var serverId,
 			buildId;
 
@@ -28,44 +28,35 @@ describe('updateBuildDisplay', function () {
 
 	it('should increment the display count of the build', function () {
 		var build = Controllers.Builds.getBuild(buildId);
-		expect(build.displayCounter).toBe(0);
+		expect(build.watchers.length).toBe(0);
 		expect(build.isDisplayed).toBeFalsy();
 
-		Controllers.Servers.onUpdateBuildDisplay(buildId, true);
+		var server = Controllers.Servers.getServer(serverId);
+		server.toggleBuildDisplay(buildId, true, 'TheSweet1');
 		build = Controllers.Builds.getBuild(buildId);
-		expect(build.displayCounter).toBe(1);
+		expect(build.watchers.length).toBe(1);
 		expect(build.isDisplayed).toBe(true);
 
-		Controllers.Servers.onUpdateBuildDisplay(buildId, true);
+		server.toggleBuildDisplay(buildId, true, 'TheSweet2');
 		build = Controllers.Builds.getBuild(buildId);
-		expect(build.displayCounter).toBe(2);
+		expect(build.watchers.length).toBe(2);
 		expect(build.isDisplayed).toBe(true);
 	});
 
-	it('should decrement the dispaly count of the build', function () {
+	it('should decrement the display count of the build', function () {
 		var build = Controllers.Builds.getBuild(buildId);
-		expect(build.displayCounter).toBe(2);
+		expect(build.watchers.length).toBe(2);
 		expect(build.isDisplayed).toBe(true);
 
-		Controllers.Servers.onUpdateBuildDisplay(buildId, false);
+		var server = Controllers.Servers.getServer(serverId);
+		server.toggleBuildDisplay(buildId, false, 'TheSweet1');
 		build = Controllers.Builds.getBuild(buildId);
-		expect(build.displayCounter).toBe(1);
+		expect(build.watchers.length).toBe(1);
 		expect(build.isDisplayed).toBe(true);
 
-		Controllers.Servers.onUpdateBuildDisplay(buildId, false);
+		server.toggleBuildDisplay(buildId, false, 'TheSweet2');
 		build = Controllers.Builds.getBuild(buildId);
-		expect(build.displayCounter).toBe(0);
-		expect(build.isDisplayed).toBeFalsy();
-	});
-
-	it('should not decrement below 0', function () {
-		var build = Controllers.Builds.getBuild(buildId);
-		expect(build.displayCounter).toBe(0);
-		expect(build.isDisplayed).toBeFalsy();
-
-		Controllers.Servers.onUpdateBuildDisplay(buildId, false);
-		build = Controllers.Builds.getBuild(buildId);
-		expect(build.displayCounter).toBe(0);
+		expect(build.watchers.length).toBe(0);
 		expect(build.isDisplayed).toBeFalsy();
 	});
 });

@@ -11,6 +11,9 @@ Models.Build = function (doc) {
 	if (this._doc.isLastBuildSuccess === undefined) {
 		this._doc.isLastBuildSuccess = true;
 	}
+	if (this._doc.watchers === undefined) {
+		this._doc.watchers = [];
+	}
 };
 
 Models.Build.prototype = {
@@ -43,15 +46,15 @@ Models.Build.prototype = {
 		return this._doc.href;
 	},
 
-	get displayCounter() {
-		return this._doc.displayCounter;
+	get watchers() {
+		return this._doc.watchers;
 	},
 
 	/**
 	 * @returns {boolean}
 	 */
 	get isDisplayed() {
-		return this.displayCounter > 0;
+		return this.watchers.length > 0;
 	},
 
 	/**
@@ -131,7 +134,7 @@ Models.Build.prototype = {
 			if (buildDetailsArray.length > 0) {
 				if (!buildDetailsArray[0].isSuccess) {
 					isLastBuildSuccess = false;
-				} else if(buildDetailsArray[0].isRunning && buildDetailsArray.length > 1) {
+				} else if (buildDetailsArray[0].isRunning && buildDetailsArray.length > 1) {
 					isLastBuildSuccess = buildDetailsArray[1].isSuccess;
 				}
 			}
@@ -183,19 +186,30 @@ Models.Build.prototype = {
 		});
 	},
 
-	updateIsDisplayed: function (service, setIsDisplayed) {
-		if (this.displayCounter === 0 && !setIsDisplayed) {
+	addWatcher: function (service, watcher) {
+		if (_.contains(this.watchers, watcher)) {
 			return;
 		}
 
-		var inc = setIsDisplayed ? 1 : -1;
-		this._doc.displayCounter += inc;
+		this._doc.watchers.push(watcher);
+		Collections.Builds.update({_id: this._id}, {$addToSet: {watchers: watcher}});
 
-		Collections.Builds.update({_id: this._id}, {$inc: {displayCounter: inc}});
-
-		if (this.displayCounter === 1 && setIsDisplayed) {
+		if (this.watchers.length === 1) {
 			this.refreshBuildData(service);
 		}
+	},
+
+	removeWatcher: function (watcher) {
+		var nWatchers = _.reject(this.watchers, function (w) {
+			return w === watcher;
+		});
+
+		if(nWatchers.length === this.watchers.length) {
+			return;
+		}
+
+		this._doc.watchers = nWatchers;
+		Collections.Builds.update({_id: this._id}, {$set: {watchers: nWatchers}});
 	}
 	//endregion
 };

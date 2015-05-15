@@ -72,12 +72,6 @@ Controllers.Servers = (function () {
 		server.refreshProjects();
 	}
 
-	function UpdateBuildDisplay(buildId, isDisplayed) {
-		var build = Controllers.Builds.getBuild(buildId),
-				server = Controllers.Servers.getServer(build.serverId);
-		build.updateIsDisplayed(server.service, isDisplayed);
-	}
-
 	return {
 		getServer: GetServer,
 		getServerByName: GetServerByName,
@@ -85,7 +79,6 @@ Controllers.Servers = (function () {
 
 		onSaveServer: SaveServer,
 		onDeleteServer: DeleteServer,
-		onRefreshProjects: RefreshProjects,
-		onUpdateBuildDisplay: UpdateBuildDisplay
+		onRefreshProjects: RefreshProjects
 	};
 })();

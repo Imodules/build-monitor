@@ -37,7 +37,6 @@ function loadTestDb() {
 		serviceBuildId: 'My_Client_Build_Service_id01',
 		name: 'Client test build 01',
 		href: '/guestAuth/build/test1',
-		displayCounter: 0,
 		isLastBuildSuccess: true,
 		isBuilding: false
 	});
@@ -48,7 +47,6 @@ function loadTestDb() {
 		serviceBuildId: 'My_Client_Build_Service_id02',
 		name: 'Client test build 02',
 		href: '/guestAuth/build/test2',
-		displayCounter: 0,
 		isLastBuildSuccess: true,
 		isBuilding: false
 	});

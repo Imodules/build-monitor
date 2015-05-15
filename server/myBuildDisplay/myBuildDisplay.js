@@ -10,7 +10,8 @@ Controllers.MyBuildDisplayAllow = (function () {
 		}
 
 		if (doc.isDisplayed === true) {
-			Controllers.Servers.onUpdateBuildDisplay(doc.buildId, doc.isDisplayed);
+			var server = Controllers.Servers.getServer(doc.serverId);
+			server.toggleBuildDisplay(doc.buildId, true, userId);
 		}
 
 		return true;
@@ -21,8 +22,9 @@ Controllers.MyBuildDisplayAllow = (function () {
 			return false;
 		}
 
-		if (modifier.$set) {
-			Controllers.Servers.onUpdateBuildDisplay(doc.buildId, modifier.$set.isDisplayed);
+		if (modifier.$set && modifier.$set.isDisplayed !== undefined) {
+			var server = Controllers.Servers.getServer(doc.serverId);
+			server.toggleBuildDisplay(doc.buildId, modifier.$set.isDisplayed, userId);
 		}
 
 		return true;

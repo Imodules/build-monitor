@@ -83,7 +83,7 @@ describe('Models.Server', function () {
 	});
 
 	describe('toggleBuildDisplay()', function () {
-		it('should get the build and call updateIsDisplayed', function () {
+		it('should get the build and call addWatcher', function () {
 			spyOn(Controllers.Builds, 'getBuild').and.callFake(function () {
 				return new Models.Build({
 					'_id': 'BLD-id1',
@@ -98,13 +98,37 @@ describe('Models.Server', function () {
 				});
 			});
 
-			spyOn(Models.Build.prototype, 'updateIsDisplayed');
+			spyOn(Models.Build.prototype, 'addWatcher');
 
 			var server = new Models.Server({_id: '98494', type: 'teamcity', url: 'http://url.example.com'});
-			server.toggleBuildDisplay('bidleid', true);
+			server.toggleBuildDisplay('bidleid', true, 'Watcher1');
 
 			expect(Controllers.Builds.getBuild).toHaveBeenCalledWith('bidleid');
-			expect(Models.Build.prototype.updateIsDisplayed).toHaveBeenCalledWith(jasmine.any(Services.TeamCity), true);
+			expect(Models.Build.prototype.addWatcher).toHaveBeenCalledWith(jasmine.any(Services.TeamCity), 'Watcher1');
+		});
+
+		it('should get the build and call removeWatcher', function () {
+			spyOn(Controllers.Builds, 'getBuild').and.callFake(function () {
+				return new Models.Build({
+					'_id': 'BLD-id1',
+					'serverId': 'xdafsdasfcdga5r4',
+					'projectId': 'MBP',
+					'serviceBuildId': 'MBP_UnitTestAndBundle',
+					'name': 'Unit Test and Bundle',
+					'url': '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle',
+					'displayCounter': 0,
+					'isLastBuildSuccess': true,
+					'isBuilding': false
+				});
+			});
+
+			spyOn(Models.Build.prototype, 'removeWatcher');
+
+			var server = new Models.Server({_id: '98494', type: 'teamcity', url: 'http://url.example.com'});
+			server.toggleBuildDisplay('bidleid2', false, 'Watcher2');
+
+			expect(Controllers.Builds.getBuild).toHaveBeenCalledWith('bidleid2');
+			expect(Models.Build.prototype.removeWatcher).toHaveBeenCalledWith('Watcher2');
 		});
 	});
 

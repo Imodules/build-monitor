@@ -4,13 +4,13 @@
 
 'use strict';
 ViewModels.Configure = (function () {
-	function _upsert(id, shortName, isOn, cb) {
+	function _upsert(id, serverId, shortName, isOn, cb) {
 		var userId = Meteor.userId(),
-				myBuildItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: id});
+				myBuildItem = Collections.MyBuildDisplay.findOne({serverId: serverId, userId: userId, buildId: id});
 
 		if (!myBuildItem) {
 			Collections.MyBuildDisplay.insert({
-				userId: userId, buildId: id, isDisplayed: (isOn === true), shortName: shortName
+				serverId: serverId, userId: userId, buildId: id, isDisplayed: (isOn === true), shortName: shortName
 			}, cb);
 		} else {
 			var setItem = { };
@@ -24,12 +24,12 @@ ViewModels.Configure = (function () {
 		}
 	}
 
-	function updateBuildTypeShortName(id, shortName, cb) {
-		return _upsert(id, shortName, null, cb);
+	function updateBuildTypeShortName(id, serverId, shortName, cb) {
+		return _upsert(id, serverId, shortName, null, cb);
 	}
 
-	function updateDisplayToggle(id, isOn, cb) {
-		return _upsert(id, null, isOn, cb);
+	function updateDisplayToggle(id, serverId, isOn, cb) {
+		return _upsert(id, serverId, null, isOn, cb);
 	}
 
 	return {
@@ -122,6 +122,7 @@ Template.cfgBuildTypeRow.helpers({
 		var myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: Meteor.userId(), buildId: this._id});
 		if (!myBuildDisplayItem) {
 			return {
+				serverId: this.serverId,
 				isDisplayed: false,
 				shortName: null,
 				buildId: this._id
@@ -134,10 +135,10 @@ Template.cfgBuildTypeRow.helpers({
 
 Template.cfgBuildTypeRow.events({
 	'keyup input.shortName': function (e, t) {
-		ViewModels.Configure.onUpdateBuildTypeShortName(this.buildId, t.$(e.currentTarget).val());
+		ViewModels.Configure.onUpdateBuildTypeShortName(this.buildId, this.serverId, t.$(e.currentTarget).val());
 	},
 
 	'change input.isOn': function (e, t) {
-		ViewModels.Configure.onUpdateDisplayToggle(this.buildId, t.$(e.currentTarget).is(':checked'));
+		ViewModels.Configure.onUpdateDisplayToggle(this.buildId, this.serverId, t.$(e.currentTarget).is(':checked'));
 	}
 });

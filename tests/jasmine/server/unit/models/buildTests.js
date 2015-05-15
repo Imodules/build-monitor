@@ -138,40 +138,58 @@ describe('Models.Build', function () {
 		});
 	});
 
-	describe('updateIsDisplayed()', function () {
-		it('should update the isDisplayed and set the counter to 1 if it is not already displayed', function () {
+	describe('addWatcher()', function () {
+		it('should add the user to the watchers list', function () {
 			spyOn(Collections.Builds, 'update');
 
 			spyOn(Models.Build.prototype, 'refreshBuildData');
 
-			var build = new Models.Build({_id: '_IUKJOIkd', displayCounter: 0});
-			build.updateIsDisplayed(new Services.TeamCity({
+			var build = new Models.Build({_id: '_IUKJOIkd', watchers: []});
+			build.addWatcher(new Services.TeamCity({
 				_id: '-updateIsDIsplayed-',
 				url: 'http://example.com/updateIsDisplayed'
-			}), true);
+			}), 'myCoolUserId');
 
-			expect(build.displayCounter).toBe(1);
-			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_IUKJOIkd'}, {$inc: {displayCounter: 1}});
+			expect(build.watchers.length).toBe(1);
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_IUKJOIkd'}, {$addToSet: {watchers: 'myCoolUserId'}});
 			expect(Models.Build.prototype.refreshBuildData).toHaveBeenCalled();
 		});
 
-		it('should only increment the counter if it is already displayed', function () {
+		it('should not add to set if it already exists', function () {
 			spyOn(Collections.Builds, 'update');
 
-			var build = new Models.Build({_id: '_adfeeasc-dfasdad', displayCounter: 3});
-			build.updateIsDisplayed(false);
+			spyOn(Models.Build.prototype, 'refreshBuildData');
 
-			expect(build.displayCounter).toBe(2);
-			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_adfeeasc-dfasdad'}, {$inc: {displayCounter: -1}});
+			var build = new Models.Build({_id: '_IUKJOIkd', watchers: ['WatherIsThere']});
+			build.addWatcher(new Services.TeamCity({
+				_id: '-updateIsDIsplayed-',
+				url: 'http://example.com/updateIsDisplayed'
+			}), 'WatherIsThere');
+
+			expect(build.watchers.length).toBe(1);
+			expect(Collections.Builds.update).not.toHaveBeenCalled();
+			expect(Models.Build.prototype.refreshBuildData).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('removeWatcher()', function () {
+		it('should remove the watcher from the list and the database', function () {
+			spyOn(Collections.Builds, 'update');
+
+			var build = new Models.Build({_id: '_IUKJOIkd', watchers: ['Watcher1','Watcher2','Watcher3']});
+			build.removeWatcher('Watcher2');
+
+			expect(build.watchers.length).toBe(2);
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: '_IUKJOIkd'}, {$set: {watchers: ['Watcher1','Watcher3']}});
 		});
 
-		it('should not decrement past 0', function () {
+		it('should not update if the watcher does not exist in the lsit', function () {
 			spyOn(Collections.Builds, 'update');
 
-			var build = new Models.Build({_id: '_adfeeasc-dfasdad', displayCounter: 0});
-			build.updateIsDisplayed(false);
+			var build = new Models.Build({_id: '_IUKJOIkd', watchers: ['Watcher1','Watcher3']});
+			build.removeWatcher('Watcher2');
 
-			expect(build.displayCounter).toBe(0);
+			expect(build.watchers.length).toBe(2);
 			expect(Collections.Builds.update).not.toHaveBeenCalled();
 		});
 	});

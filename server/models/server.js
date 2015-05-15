@@ -82,9 +82,13 @@ Models.Server.prototype = {
 		this.service.getProjects(Controllers.Projects.onAddProject);
 	},
 
-	toggleBuildDisplay: function (buildId, isDisplayed) {
+	toggleBuildDisplay: function (buildId, isDisplayed, watcher) {
 		var build = Controllers.Builds.getBuild(buildId);
-		build.updateIsDisplayed(this._service, isDisplayed);
+		if (isDisplayed) {
+			build.addWatcher(this._service, watcher);
+		} else {
+			build.removeWatcher(watcher);
+		}
 	},
 
 	/**

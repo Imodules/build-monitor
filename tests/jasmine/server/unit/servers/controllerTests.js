@@ -146,32 +146,4 @@ describe('Controllers.Servers', function () {
 			expect(Models.Server.prototype.refreshProjects).toHaveBeenCalled();
 		});
 	});
-
-	describe('onUpdateBuildDisplay()', function () {
-		it('should get the build and server and call the build update display', function () {
-			spyOn(Controllers.Builds, 'getBuild').and.callFake(function () {
-				return new Models.Build({
-					'_id': 'BLD-idd3',
-					'serverId': 'asdf45dd4',
-					'projectId': 'MBP',
-					'serviceBuildId': 'MBP_UnitTestAndBundle',
-					'name': 'Unit Test and Bundle',
-					'url': '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle',
-					'displayCounter': 0,
-					'isLastBuildSuccess': true,
-					'isBuilding': false
-				});
-			});
-			spyOn(Controllers.Servers, 'getServer').and.callFake(function () {
-				return new Models.Server({_id: 'asdf45dd4', url: 'http://somewhere', type: 'teamcity'});
-			});
-			spyOn(Models.Build.prototype, 'updateIsDisplayed');
-
-			Controllers.Servers.onUpdateBuildDisplay('BLD-idd3', true);
-
-			expect(Controllers.Builds.getBuild).toHaveBeenCalledWith('BLD-idd3');
-			expect(Controllers.Servers.getServer).toHaveBeenCalledWith('asdf45dd4');
-			expect(Models.Build.prototype.updateIsDisplayed).toHaveBeenCalledWith(jasmine.any(Services.TeamCity), true);
-		});
-	});
 });
