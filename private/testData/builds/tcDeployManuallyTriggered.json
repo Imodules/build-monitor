@@ -1,0 +1,204 @@
+{
+  "statusCode": 200,
+  "data": {
+    "id": 113364,
+    "buildTypeId": "UpdateSite_AmazonWebServices_UpdateAwsUx",
+    "number": "122",
+    "status": "SUCCESS",
+    "state": "running",
+    "running": true,
+    "percentageComplete": 18,
+    "href": "/guestAuth/app/rest/builds/id:113364",
+    "webUrl": "http://bs.example.com/viewLog.html?buildId=113364&buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsUx",
+    "statusText": "Resolving artifact dependencies",
+    "buildType": {
+      "id": "UpdateSite_AmazonWebServices_UpdateAwsUx",
+      "name": "Update AWS UX",
+      "description": "Updates Renegades",
+      "projectName": "Update Site :: AWS - Amazon Web Services",
+      "projectId": "UpdateSite_AmazonWebServices",
+      "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdateAwsUx",
+      "webUrl": "http://bs.example.com/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsUx"
+    },
+    "tags": {
+      "tag": []
+    },
+    "running-info": {
+      "percentageComplete": 18,
+      "elapsedSeconds": 251,
+      "estimatedTotalSeconds": 1174,
+      "currentStageText": "Resolving artifact dependencies: Destination directory [D:\\BuildAgent\\work\\987325d8b3623cd5\\BuildArtifacts\\Web] does not exist, will be created",
+      "outdated": false,
+      "probablyHanging": false
+    },
+    "queuedDate": "20150518T081603-0500",
+    "startDate": "20150518T081604-0500",
+    "triggered": {
+      "type": "user",
+      "date": "20150518T081603-0500",
+      "user": {
+        "username": "lfast",
+        "name": "Luke Fast",
+        "id": 5,
+        "href": "/guestAuth/app/rest/users/id:5"
+      }
+    },
+    "lastChanges": {},
+    "changes": {
+      "href": "/guestAuth/app/rest/changes?locator=build:(id:113364)"
+    },
+    "revisions": {
+      "revision": []
+    },
+    "agent": {
+      "id": 18,
+      "name": "AWSBuildAgent1",
+      "typeId": 18,
+      "href": "/guestAuth/app/rest/agents/id:18"
+    },
+    "artifacts": {
+      "href": "/guestAuth/app/rest/builds/id:113364/artifacts/children"
+    },
+    "relatedIssues": {
+      "href": "/guestAuth/app/rest/builds/id:113364/relatedIssues"
+    },
+    "properties": {
+      "count": 29,
+      "property": [
+        {
+          "name": "system.AppsFolder",
+          "value": ""
+        },
+        {
+          "name": "system.BuildNumber",
+          "value": "%build.number%"
+        },
+        {
+          "name": "system.Codebase1",
+          "value": "\\\\awsqaweb03\\Websites\\imod.net\\UX"
+        },
+        {
+          "name": "system.Codebase2",
+          "value": "\\\\awsqaweb04\\Websites\\imod.net\\UX"
+        },
+        {
+          "name": "system.Codebase3",
+          "value": ""
+        },
+        {
+          "name": "system.Codebase4",
+          "value": ""
+        },
+        {
+          "name": "system.Db01",
+          "value": "c_imodules_ux"
+        },
+        {
+          "name": "system.Db02",
+          "value": ""
+        },
+        {
+          "name": "system.Db03",
+          "value": ""
+        },
+        {
+          "name": "system.Db04",
+          "value": ""
+        },
+        {
+          "name": "system.Db05",
+          "value": ""
+        },
+        {
+          "name": "system.Db06",
+          "value": ""
+        },
+        {
+          "name": "system.Db07",
+          "value": ""
+        },
+        {
+          "name": "system.Db08",
+          "value": ""
+        },
+        {
+          "name": "system.HgBranchName1",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName2",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName3",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchName4",
+          "value": "%system.HgBranchNameAll%"
+        },
+        {
+          "name": "system.HgBranchNameAll",
+          "value": "Production-UX"
+        },
+        {
+          "name": "system.IgnoreIModMasterSQL",
+          "value": "false"
+        },
+        {
+          "name": "system.IsAWS",
+          "value": "true"
+        },
+        {
+          "name": "system.RunSql",
+          "value": "true"
+        },
+        {
+          "name": "system.RunUpdateXml",
+          "value": "true"
+        },
+        {
+          "name": "system.ServerConfiguration1",
+          "value": "AWSQAWEBPUB.UX"
+        },
+        {
+          "name": "system.ServerConfiguration2",
+          "value": "AWSQAWEBPUB.UX"
+        },
+        {
+          "name": "system.ServerConfiguration3",
+          "value": ""
+        },
+        {
+          "name": "system.ServerConfiguration4",
+          "value": ""
+        },
+        {
+          "name": "system.UpdateCodebase",
+          "value": "true"
+        },
+        {
+          "name": "teamcity.ui.runButton.caption",
+          "value": "Update UX"
+        }
+      ]
+    },
+    "statistics": {
+      "href": "/guestAuth/app/rest/builds/id:113364/statistics"
+    },
+    "artifact-dependencies": {
+      "count": 1,
+      "build": [
+        {
+          "id": 113295,
+          "buildTypeId": "CheckInTriggeredBuilds_CoreBuilds_ProductionUx",
+          "number": "PUX-229",
+          "status": "SUCCESS",
+          "state": "finished",
+          "href": "/guestAuth/app/rest/builds/id:113295",
+          "webUrl": "http://bs.example.com/viewLog.html?buildId=113295&buildTypeId=CheckInTriggeredBuilds_CoreBuilds_ProductionUx"
+        }
+      ]
+    }
+  }
+}
