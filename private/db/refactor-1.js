@@ -1,19 +1,15 @@
 // projects: update url to href
-db.getCollection('projects').update({}, {$rename: {'url': 'href'}}, {multi: true});
+db.projects.update({}, {$rename: {'url': 'href'}}, {multi: true});
 
 // builds: update url to href
 // builds: drop projectId, isDisplayed, currentBuild
-var builds = db.getCollection('builds');
-builds.update({}, {$rename: {'url': 'href'}, $unset: {projectId: '', isDisplayed: '', currentBuild: ''}, $set: {watchers: [], watcherCount: 0}}, {multi: true});
+db.builds.update({}, {$rename: {'url': 'href'}, $unset: {projectId: '', isDisplayed: '', currentBuild: ''}, $set: {watchers: [], watcherCount: 0}}, {multi: true});
 
 // myBuildDisplay: add serverId
 // myBuildDisplay: drop isDisplayed
-var myBuildDisplays = db.getCollection('myBuildDisplay');
-myBuildDisplays.update({}, {$set: {serverId: 'wtmyDGeknx9vW3k5A'}});
+db.myBuildDisplays.update({}, {$set: {serverId: 'wtmyDGeknx9vW3k5A'}});
 
 // builds: Need to add watcherCount from myBuildDisplay
-myBuildDisplays.find({}).forEach(function (mbd) {
-	builds.update({_id: mbd.buildId}, {$inc: {watcherCount: 1}, $addToSet: {watchers: mbd.userId}});
-});
+db.myBuildDisplays.find({isDisplayed: true}).forEach(function (mbd) { db.builds.update({_id: mbd.buildId}, {$inc: {watcherCount: 1}, $addToSet: {watchers: mbd.userId}}); });
 
-myBuildDisplays.update({}, {$unset: {isDisplayed: ''}}, {multi: true});
+db.myBuildDisplays.update({}, {$unset: {isDisplayed: ''}}, {multi: true});
