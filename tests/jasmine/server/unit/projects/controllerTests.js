@@ -15,7 +15,9 @@ describe('Controller.Projects', function () {
 				return true;
 			});
 			spyOn(Controllers.Projects, 'getByServiceProjectId').and.callFake(function (svId, projId) {
-				if (projId === 'someone') { return null; }
+				if (projId === 'someone') {
+					return null;
+				}
 				return new Models.Project({_id: '_MBP_INSERT_ID_CB', serviceProjectId: 'MBP'});
 			});
 
@@ -42,11 +44,11 @@ describe('Controller.Projects', function () {
 			expect(Controllers.Projects.getByServiceProjectId).toHaveBeenCalledWith('_onAddProjectTest_', 'MBP');
 			expect(Collections.Projects.upsert).toHaveBeenCalledWith({
 						serverId: '_onAddProjectTest_',
-						serviceParentProjectId: 'someone',
 						serviceProjectId: 'MBP'
 					},
 					{
 						$set: {
+							serviceParentProjectId: 'someone',
 							parentId: null,
 							name: 'My Brew Planner',
 							href: '/guestAuth/app/rest/projects/id:MBP'
@@ -63,7 +65,7 @@ describe('Controller.Projects', function () {
 							name: 'Acceptance Test',
 							href: '/guestAuth/app/rest/buildTypes/id:MBP_AcceptanceTest'
 						}
-			});
+					});
 
 			expect(Collections.Builds.upsert).toHaveBeenCalledWith({
 						serverId: '_onAddProjectTest_',
@@ -88,7 +90,9 @@ describe('Controller.Projects', function () {
 				return true;
 			});
 			spyOn(Controllers.Projects, 'getByServiceProjectId').and.callFake(function (svId, projId) {
-				if (projId === 'someone') { return null; }
+				if (projId === 'someone') {
+					return null;
+				}
 				return new Models.Project({_id: '-the-id-to-use-on-build-', serviceProjectId: 'MBP-Existing'});
 			});
 
@@ -116,11 +120,11 @@ describe('Controller.Projects', function () {
 
 			expect(Collections.Projects.upsert).toHaveBeenCalledWith({
 						serverId: '_onAddBuild2ExistingProjectTest_',
-						serviceParentProjectId: 'someone',
 						serviceProjectId: 'MBP-Existing'
 					},
 					{
 						$set: {
+							serviceParentProjectId: 'someone',
 							parentId: null,
 							name: 'My Brew Planner',
 							href: '/guestAuth/app/rest/projects/id:MBP'
@@ -142,6 +146,83 @@ describe('Controller.Projects', function () {
 			expect(Collections.Builds.upsert).toHaveBeenCalledWith({
 						serverId: '_onAddBuild2ExistingProjectTest_',
 						projectId: '-the-id-to-use-on-build-',
+						serviceBuildId: 'MBP_UnitTestAndBundle'
+					},
+					{
+						$set: {
+							name: 'Unit Test and Bundle',
+							href: '/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
+						}
+					});
+		});
+
+		it('should add the parent / child project relationship', function () {
+			spyOn(Collections.Projects, 'upsert').and.callFake(function () {
+				return {
+					numberAffected: 1
+				};
+			});
+			spyOn(Collections.Builds, 'upsert').and.callFake(function () {
+				return true;
+			});
+			spyOn(Controllers.Projects, 'getByServiceProjectId').and.callFake(function (svId, projId) {
+				if (projId === 'ParentServiceProjectId-0012') {
+					return new Models.Project({_id: 'PPID-0012', serviceProjectId: 'ParentServiceProjectId-0012'});
+				}
+				return new Models.Project({_id: 'ChildProject-0013', serviceProjectId: 'ChildServiceProjectId-0013'});
+			});
+
+			Controllers.Projects.onAddProject(new Models.Project({
+				serverId: '_ThisProjectHazKidz_',
+				serviceProjectId: 'ChildServiceProjectId-0013',
+				serviceParentProjectId: 'ParentServiceProjectId-0012',
+				name: 'My Brew Planner',
+				href: '/guestAuth/app/rest/projects/id:MBP'
+			}), [new Models.Build({
+				serverId: '_ThisProjectHazKidz_',
+				projectId: null,
+				serviceBuildId: 'MBP_AcceptanceTest',
+				name: 'Acceptance Test',
+				href: '/guestAuth/app/rest/buildTypes/id:MBP_AcceptanceTest'
+			}), new Models.Build({
+				serverId: '_ThisProjectHazKidz_',
+				projectId: null,
+				serviceBuildId: 'MBP_UnitTestAndBundle',
+				name: 'Unit Test and Bundle',
+				href: '/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
+			})]);
+
+			expect(Controllers.Projects.getByServiceProjectId).toHaveBeenCalledWith('_ThisProjectHazKidz_', 'ParentServiceProjectId-0012');
+			expect(Controllers.Projects.getByServiceProjectId).toHaveBeenCalledWith('_ThisProjectHazKidz_', 'ChildServiceProjectId-0013');
+
+			expect(Collections.Projects.upsert).toHaveBeenCalledWith({
+						serverId: '_ThisProjectHazKidz_',
+						serviceProjectId: 'ChildServiceProjectId-0013'
+					},
+					{
+						$set: {
+							serviceParentProjectId: 'ParentServiceProjectId-0012',
+							parentId: 'PPID-0012',
+							name: 'My Brew Planner',
+							href: '/guestAuth/app/rest/projects/id:MBP'
+						}
+					});
+
+			expect(Collections.Builds.upsert).toHaveBeenCalledWith({
+						serverId: '_ThisProjectHazKidz_',
+						projectId: 'ChildProject-0013',
+						serviceBuildId: 'MBP_AcceptanceTest'
+					},
+					{
+						$set: {
+							name: 'Acceptance Test',
+							href: '/guestAuth/app/rest/buildTypes/id:MBP_AcceptanceTest'
+						}
+					});
+
+			expect(Collections.Builds.upsert).toHaveBeenCalledWith({
+						serverId: '_ThisProjectHazKidz_',
+						projectId: 'ChildProject-0013',
 						serviceBuildId: 'MBP_UnitTestAndBundle'
 					},
 					{

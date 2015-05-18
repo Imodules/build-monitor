@@ -42,9 +42,6 @@ Controllers.Projects = (function () {
 	 * @constructor
 	 */
 	function AddProject(project, builds) {
-		//console.log('============================== Project ===================================');
-		//console.log(project);
-		//console.log(builds);
 		var parentId = null;
 		if (project.serviceParentProjectId) {
 			var parentProject = Controllers.Projects.getByServiceProjectId(project.serverId, project.serviceParentProjectId);
@@ -55,10 +52,10 @@ Controllers.Projects = (function () {
 
 		Collections.Projects.upsert({
 			serverId: project.serverId,
-			serviceParentProjectId: project.serviceParentProjectId,
 			serviceProjectId: project.serviceProjectId
 		}, {
 			$set: {
+				serviceParentProjectId: project.serviceParentProjectId,
 				parentId: parentId,
 				name: project.name,
 				href: project.href
