@@ -137,7 +137,6 @@ describe('Controllers.Timer', function () {
 
 			expect(Controllers.Servers.getServer).toHaveBeenCalledWith('SeverId');
 			expect(Models.Server.prototype.updateRunningBuilds).toHaveBeenCalledWith(jasmine.any(Function));
-			expect(Controllers.Timer.onStopRunningBuildsTimer).toHaveBeenCalledWith('SeverId');
 		});
 	});
 });

@@ -42,6 +42,9 @@ Controllers.Projects = (function () {
 	 * @constructor
 	 */
 	function AddProject(project, builds) {
+		//console.log('============================== Project ===================================');
+		//console.log(project);
+		//console.log(builds);
 		var parentId = null;
 		if (project.serviceParentProjectId) {
 			var parentProject = Controllers.Projects.getByServiceProjectId(project.serverId, project.serviceParentProjectId);
@@ -50,7 +53,7 @@ Controllers.Projects = (function () {
 			}
 		}
 
-		var upsId = Collections.Projects.upsert({
+		Collections.Projects.upsert({
 			serverId: project.serverId,
 			serviceParentProjectId: project.serviceParentProjectId,
 			serviceProjectId: project.serviceProjectId
@@ -62,8 +65,10 @@ Controllers.Projects = (function () {
 			}
 		});
 
+		var existingProj = Controllers.Projects.getByServiceProjectId(project.serverId, project.serviceProjectId);
+
 		builds.forEach(function (build) {
-			build.projectId = upsId.insertedId;
+			build.projectId = existingProj._id;
 			AddBuild(build);
 		});
 	}

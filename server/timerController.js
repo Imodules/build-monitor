@@ -62,9 +62,7 @@ Controllers.Timer = (function () {
 		console.log('Running build timer for server: ' + serverId);
 
 		var server = Controllers.Servers.getServer(serverId);
-		if (!server.updateRunningBuilds(CheckRunningBuildsTimer)) {
-			Controllers.Timer.onStopRunningBuildsTimer(serverId);
-		}
+		server.updateRunningBuilds(CheckRunningBuildsTimer);
 	}
 
 	function PollInterval() {

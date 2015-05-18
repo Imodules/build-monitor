@@ -138,18 +138,16 @@ Models.Server.prototype = {
 
 	/**
 	 * Updates the running builds from the server.
-	 *
-	 * @param cbTimerUpdate
 	 */
 	updateRunningBuilds: function () {
 		var self = this,
 				builds = Controllers.Builds.getRunningServerBuilds(self._id),
-				runningBuildCount = 0;
+				hasRunningBuilds = false;
+
 		builds.forEach(function (build) {
+			hasRunningBuilds = true;
 			build.updateRunningBuild(self._service);
 		});
-
-		return runningBuildCount > 0;
 	}
 	//endregion
 };

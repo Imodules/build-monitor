@@ -186,7 +186,7 @@ describe('timerController', function () {
 			expect(bt2.builds[0].percentageComplete).toBe(null);
 			expect(bt2.builds[0].statusText).toBe('It be all done');
 
-			expect(Controllers.Timer.onStopRunningBuildsTimer).toHaveBeenCalledWith(serverId);
+			//expect(Controllers.Timer.onStopRunningBuildsTimer).toHaveBeenCalledWith(serverId);
 		});
 	});
 });
