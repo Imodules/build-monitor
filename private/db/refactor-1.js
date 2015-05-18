@@ -4,7 +4,7 @@ db.getCollection('projects').update({}, {$rename: {'url': 'href'}}, {multi: true
 // builds: update url to href
 // builds: drop projectId, isDisplayed, currentBuild
 var builds = db.getCollections('builds');
-builds.update({}, {$rename: {'url': 'href'}, $unset: {projectId: '', isDisplayed: '', currentBuild: ''}, {$set: {watchers: [], watcherCount: 0}}}, {multi: true});
+builds.update({}, {$rename: {'url': 'href'}, $unset: {projectId: '', isDisplayed: '', currentBuild: ''}, $set: {watchers: [], watcherCount: 0}}, {multi: true});
 
 // myBuildDisplay: add serverId
 // myBuildDisplay: drop isDisplayed
