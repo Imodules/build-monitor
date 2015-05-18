@@ -12,7 +12,7 @@
  * serviceBuildId: string,
  * serviceNumber: string,
  * isSuccess: boolean,
- * isRunning: boolean,
+ * isBuilding: boolean,
  * href: string,
  * percentageComplete: Number,
  * statusText: string,
@@ -28,7 +28,7 @@ Models.BuildDetail = function (doc) {
 		serviceBuildId: doc.serviceBuildId,
 		serviceNumber: doc.serviceNumber,
 		isSuccess: doc.isSuccess,
-		isRunning: doc.isRunning,
+		isBuilding: doc.isBuilding,
 		href: doc.href,
 		percentageComplete: doc.percentageComplete,
 		statusText: doc.statusText,
@@ -59,8 +59,8 @@ Models.BuildDetail.prototype = {
 		return this.json.isSuccess;
 	},
 
-	get isRunning() {
-		return this.json.isRunning;
+	get isBuilding() {
+		return this.json.isBuilding;
 	},
 
 	get href() {

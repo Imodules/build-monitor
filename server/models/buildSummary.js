@@ -11,7 +11,7 @@
  * serviceBuildId: string,
  * serviceNumber: string,
  * isSuccess: boolean,
- * isRunning: boolean,
+ * isBuilding: boolean,
  * href: string}} doc
  *
  * @constructor
@@ -22,7 +22,7 @@ Models.BuildSummary = function (doc) {
 		serviceBuildId: doc.serviceBuildId,
 		serviceNumber: doc.serviceNumber,
 		isSuccess: doc.isSuccess,
-		isRunning: doc.isRunning,
+		isBuilding: doc.isBuilding,
 		href: doc.href
 	};
 };
@@ -45,8 +45,8 @@ Models.BuildSummary.prototype = {
 		return this.json.isSuccess;
 	},
 
-	get isRunning() {
-		return this.json.isRunning;
+	get isBuilding() {
+		return this.json.isBuilding;
 	},
 
 	get href() {

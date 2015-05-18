@@ -11,7 +11,7 @@ describe('Models.Build', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceNumber: '204',
 						isSuccess: true,
-						isRunning: false,
+						isBuilding: false,
 						href: '/httpAuth/app/rest/builds/id:687',
 						statusText: 'Step 1/3',
 						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
@@ -47,7 +47,7 @@ describe('Models.Build', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceNumber: '204',
 						isSuccess: false,
-						isRunning: false,
+						isBuilding: false,
 						href: '/httpAuth/app/rest/builds/id:687',
 						statusText: 'Step 1/3',
 						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
@@ -59,7 +59,7 @@ describe('Models.Build', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceNumber: '203',
 						isSuccess: true,
-						isRunning: false,
+						isBuilding: false,
 						href: '/httpAuth/app/rest/builds/id:687',
 						statusText: 'Step 1/3',
 						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
@@ -95,7 +95,7 @@ describe('Models.Build', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceNumber: '204',
 						isSuccess: true,
-						isRunning: true,
+						isBuilding: true,
 						href: '/httpAuth/app/rest/builds/id:687',
 						statusText: 'Step 1/3',
 						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
@@ -107,7 +107,7 @@ describe('Models.Build', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceNumber: '203',
 						isSuccess: false,
-						isRunning: false,
+						isBuilding: false,
 						href: '/httpAuth/app/rest/builds/id:687',
 						statusText: 'Step 1/3',
 						startDate: new Date('Fri May 01 2015 21:20:13 GMT-0500 (CDT)'),
@@ -201,7 +201,7 @@ describe('Models.Build', function () {
 				serviceBuildId: 'MBP_UT&B',
 				serviceNumber: '112',
 				isSuccess: true,
-				isRunning: true,
+				isBuilding: true,
 				href: '/httpAuth/app/rest/builds/id:420',
 				percentageComplete: 29,
 				statusText: 'Step Hannah of Dool',
@@ -218,17 +218,17 @@ describe('Models.Build', function () {
 
 			var build = new Models.Build({
 				_id: '_SomeBuildId331_', href: '/guestAuth/rundmc/bt884', builds: [
-					{id: 1, serviceBuildId: 'btNumber1', serviceNumber: 'bt1', isSuccess: true, isRunning: false},
-					{id: 2, serviceBuildId: 'btNumber2', serviceNumber: 'bt2', isSuccess: false, isRunning: false},
-					{id: 3, serviceBuildId: 'btNumber3', serviceNumber: 'bt3', isSuccess: true, isRunning: false},
-					{id: 4, serviceBuildId: 'btNumber4', serviceNumber: 'bt4', isSuccess: true, isRunning: false},
-					{id: 5, serviceBuildId: 'btNumber5', serviceNumber: 'bt5', isSuccess: true, isRunning: false},
-					{id: 6, serviceBuildId: 'btNumber6', serviceNumber: 'bt6', isSuccess: true, isRunning: false},
-					{id: 7, serviceBuildId: 'btNumber7', serviceNumber: 'bt7', isSuccess: true, isRunning: false},
-					{id: 8, serviceBuildId: 'btNumber8', serviceNumber: 'bt8', isSuccess: true, isRunning: false},
-					{id: 9, serviceBuildId: 'btNumber9', serviceNumber: 'bt9', isSuccess: true, isRunning: false},
-					{id: 10, serviceBuildId: 'btNumber10', serviceNumber: 'bt10', isSuccess: true, isRunning: false},
-					{id: 11, serviceBuildId: 'btNumber11', serviceNumber: 'bt11', isSuccess: true, isRunning: false}
+					{id: 1, serviceBuildId: 'btNumber1', serviceNumber: 'bt1', isSuccess: true, isBuilding: false},
+					{id: 2, serviceBuildId: 'btNumber2', serviceNumber: 'bt2', isSuccess: false, isBuilding: false},
+					{id: 3, serviceBuildId: 'btNumber3', serviceNumber: 'bt3', isSuccess: true, isBuilding: false},
+					{id: 4, serviceBuildId: 'btNumber4', serviceNumber: 'bt4', isSuccess: true, isBuilding: false},
+					{id: 5, serviceBuildId: 'btNumber5', serviceNumber: 'bt5', isSuccess: true, isBuilding: false},
+					{id: 6, serviceBuildId: 'btNumber6', serviceNumber: 'bt6', isSuccess: true, isBuilding: false},
+					{id: 7, serviceBuildId: 'btNumber7', serviceNumber: 'bt7', isSuccess: true, isBuilding: false},
+					{id: 8, serviceBuildId: 'btNumber8', serviceNumber: 'bt8', isSuccess: true, isBuilding: false},
+					{id: 9, serviceBuildId: 'btNumber9', serviceNumber: 'bt9', isSuccess: true, isBuilding: false},
+					{id: 10, serviceBuildId: 'btNumber10', serviceNumber: 'bt10', isSuccess: true, isBuilding: false},
+					{id: 11, serviceBuildId: 'btNumber11', serviceNumber: 'bt11', isSuccess: true, isBuilding: false}
 				]
 			});
 
@@ -243,15 +243,15 @@ describe('Models.Build', function () {
 				$set: {
 					isBuilding: true,
 					builds: [newBuildDetail,
-						{id: 1, serviceBuildId: 'btNumber1', serviceNumber: 'bt1', isSuccess: true, isRunning: false},
-						{id: 2, serviceBuildId: 'btNumber2', serviceNumber: 'bt2', isSuccess: false, isRunning: false},
-						{id: 3, serviceBuildId: 'btNumber3', serviceNumber: 'bt3', isSuccess: true, isRunning: false},
-						{id: 4, serviceBuildId: 'btNumber4', serviceNumber: 'bt4', isSuccess: true, isRunning: false},
-						{id: 5, serviceBuildId: 'btNumber5', serviceNumber: 'bt5', isSuccess: true, isRunning: false},
-						{id: 6, serviceBuildId: 'btNumber6', serviceNumber: 'bt6', isSuccess: true, isRunning: false},
-						{id: 7, serviceBuildId: 'btNumber7', serviceNumber: 'bt7', isSuccess: true, isRunning: false},
-						{id: 8, serviceBuildId: 'btNumber8', serviceNumber: 'bt8', isSuccess: true, isRunning: false},
-						{id: 9, serviceBuildId: 'btNumber9', serviceNumber: 'bt9', isSuccess: true, isRunning: false}]
+						{id: 1, serviceBuildId: 'btNumber1', serviceNumber: 'bt1', isSuccess: true, isBuilding: false},
+						{id: 2, serviceBuildId: 'btNumber2', serviceNumber: 'bt2', isSuccess: false, isBuilding: false},
+						{id: 3, serviceBuildId: 'btNumber3', serviceNumber: 'bt3', isSuccess: true, isBuilding: false},
+						{id: 4, serviceBuildId: 'btNumber4', serviceNumber: 'bt4', isSuccess: true, isBuilding: false},
+						{id: 5, serviceBuildId: 'btNumber5', serviceNumber: 'bt5', isSuccess: true, isBuilding: false},
+						{id: 6, serviceBuildId: 'btNumber6', serviceNumber: 'bt6', isSuccess: true, isBuilding: false},
+						{id: 7, serviceBuildId: 'btNumber7', serviceNumber: 'bt7', isSuccess: true, isBuilding: false},
+						{id: 8, serviceBuildId: 'btNumber8', serviceNumber: 'bt8', isSuccess: true, isBuilding: false},
+						{id: 9, serviceBuildId: 'btNumber9', serviceNumber: 'bt9', isSuccess: true, isBuilding: false}]
 				}
 			});
 		});
@@ -265,7 +265,7 @@ describe('Models.Build', function () {
 					serviceBuildId: 'MBP_UTB-bt1',
 					serviceNumber: '112',
 					isSuccess: true,
-					isRunning: true,
+					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/btid:420',
 					percentageComplete: 95,
 					statusText: 'I am still running',
@@ -282,7 +282,7 @@ describe('Models.Build', function () {
 					serviceBuildId: 'MBP_UTB-bt1',
 					serviceNumber: '112',
 					isSuccess: true,
-					isRunning: true,
+					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/btid:420',
 					statusText: 'And I ran...',
 					startDate: new Date(2015, 1, 17, 15, 20, 0),
@@ -299,7 +299,7 @@ describe('Models.Build', function () {
 			expect(Services.TeamCity.prototype.getBuildDetails).toHaveBeenCalledWith('/httpAuth/app/rest/builds/btid:420', jasmine.any(Function));
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'build_bt1'}, {
 				$set: {
-					'builds.0.isRunning': true,
+					'builds.0.isBuilding': true,
 					'builds.0.isSuccess': true,
 					'builds.0.statusText': 'I am still running',
 					'builds.0.percentageComplete': 95
@@ -314,7 +314,7 @@ describe('Models.Build', function () {
 					serviceBuildId: 'MBP_UTB-bt1',
 					serviceNumber: '112',
 					isSuccess: false,
-					isRunning: true,
+					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/btid:420',
 					percentageComplete: 95,
 					statusText: 'Oh no! I am failing',
@@ -331,7 +331,7 @@ describe('Models.Build', function () {
 					serviceBuildId: 'MBP_UTB-bt1',
 					serviceNumber: '112',
 					isSuccess: true,
-					isRunning: true,
+					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/btid:420',
 					statusText: 'And I ran...',
 					startDate: new Date(2015, 1, 17, 15, 20, 0),
@@ -350,7 +350,7 @@ describe('Models.Build', function () {
 				$set: {
 					isLastBuildSuccess: false,
 					whoBrokeIt: ['pstuart69'],
-					'builds.0.isRunning': true,
+					'builds.0.isBuilding': true,
 					'builds.0.isSuccess': false,
 					'builds.0.statusText': 'Oh no! I am failing',
 					'builds.0.percentageComplete': 95
@@ -365,7 +365,7 @@ describe('Models.Build', function () {
 					serviceBuildId: 'MBP_UTB-bt1',
 					serviceNumber: '112',
 					isSuccess: true,
-					isRunning: false,
+					isBuilding: false,
 					href: '/httpAuth/app/rest/builds/btid:420',
 					percentageComplete: 100,
 					statusText: 'Success',
@@ -382,7 +382,7 @@ describe('Models.Build', function () {
 					serviceBuildId: 'MBP_UTB-bt1',
 					serviceNumber: '112',
 					isSuccess: true,
-					isRunning: true,
+					isBuilding: true,
 					href: '/httpAuth/app/rest/builds/btid:420',
 					statusText: 'And I ran...',
 					startDate: new Date(2015, 1, 17, 15, 20, 0),
@@ -401,7 +401,7 @@ describe('Models.Build', function () {
 				$set: {
 					isLastBuildSuccess: true,
 					isBuilding: false,
-					'builds.0.isRunning': false,
+					'builds.0.isBuilding': false,
 					'builds.0.isSuccess': true,
 					'builds.0.statusText': 'Success',
 					'builds.0.percentageComplete': 100,

@@ -91,7 +91,7 @@ Models.Build.prototype = {
 	 */
 	_updateBuild: function (buildDetail) {
 		var set = {
-			'builds.0.isRunning': buildDetail.isRunning,
+			'builds.0.isBuilding': buildDetail.isBuilding,
 			'builds.0.isSuccess': buildDetail.isSuccess,
 			'builds.0.statusText': buildDetail.statusText,
 			'builds.0.percentageComplete': buildDetail.percentageComplete
@@ -115,7 +115,7 @@ Models.Build.prototype = {
 			$set: {
 				isLastBuildSuccess: buildDetail.isSuccess,
 				isBuilding: false,
-				'builds.0.isRunning': buildDetail.isRunning,
+				'builds.0.isBuilding': buildDetail.isBuilding,
 				'builds.0.isSuccess': buildDetail.isSuccess,
 				'builds.0.statusText': buildDetail.statusText,
 				'builds.0.percentageComplete': buildDetail.percentageComplete,
@@ -138,7 +138,7 @@ Models.Build.prototype = {
 				if (!buildDetailsArray[0].isSuccess) {
 					isLastBuildSuccess = false;
 					whoBrokeIt = buildDetailsArray[0].usernames;
-				} else if (buildDetailsArray[0].isRunning && buildDetailsArray.length > 1) {
+				} else if (buildDetailsArray[0].isBuilding && buildDetailsArray.length > 1) {
 					isLastBuildSuccess = buildDetailsArray[1].isSuccess;
 					whoBrokeIt = buildDetailsArray[1].usernames;
 				}
@@ -189,7 +189,7 @@ Models.Build.prototype = {
 		var self = this,
 				build = self.builds[0];
 		service.getBuildDetails(build.href, function (buildDetail) {
-			if (buildDetail.isRunning) {
+			if (buildDetail.isBuilding) {
 				self._updateBuild(buildDetail);
 			} else {
 				self._finishBuild(buildDetail);

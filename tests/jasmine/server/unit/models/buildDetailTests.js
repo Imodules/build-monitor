@@ -8,7 +8,7 @@ var tcBuildDetail = {
 	'serviceBuildId': 'CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava',
 	'serviceNumber': 'FEATURE-ENC-20657-166',
 	'isSuccess': true,
-	'isRunning': false,
+	'isBuilding': false,
 	'href': '/httpAuth/app/rest/builds/id:112682',
 	'percentageComplete': 23,
 	'statusText': 'Tests passed: 38',
@@ -24,7 +24,7 @@ describe('Models', function () {
 			expect(bt.id).toBe(112682);
 			expect(bt.serviceBuildId).toBe('CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava');
 			expect(bt.isSuccess).toBe(true);
-			expect(bt.isRunning).toBe(false);
+			expect(bt.isBuilding).toBe(false);
 			expect(bt.statusText).toBe('Tests passed: 38');
 			expect(bt.startDate).toBe(tcBuildDetail.startDate);
 			expect(bt.finishDate).toBe(tcBuildDetail.finishDate);
@@ -34,7 +34,7 @@ describe('Models', function () {
 				serviceBuildId: 'CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava',
 				serviceNumber: 'FEATURE-ENC-20657-166',
 				isSuccess: true,
-				isRunning: false,
+				isBuilding: false,
 				href: '/httpAuth/app/rest/builds/id:112682',
 				percentageComplete: 23,
 				statusText: 'Tests passed: 38',

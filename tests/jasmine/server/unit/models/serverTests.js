@@ -197,7 +197,7 @@ describe('Models.Server', function () {
 						serviceBuildId: 'MBP_AcceptanceTest',
 						serviceBuildNumber: '179',
 						isSuccess: true,
-						isRunning: true,
+						isBuilding: true,
 						href: '/httpAuth/app/rest/builds/id:124'
 					}),
 					new Models.BuildSummary({
@@ -205,7 +205,7 @@ describe('Models.Server', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceBuildNumber: '160',
 						isSuccess: true,
-						isRunning: true,
+						isBuilding: true,
 						href: '/httpAuth/app/rest/builds/id:123'
 					})
 				]);
@@ -254,7 +254,7 @@ describe('Models.Server', function () {
 						serviceBuildId: 'MBP_AcceptanceTest',
 						serviceBuildNumber: '1120',
 						isSuccess: true,
-						isRunning: true,
+						isBuilding: true,
 						href: '/httpAuth/app/rest/builds/id:131'
 					}),
 					new Models.BuildSummary({
@@ -262,7 +262,7 @@ describe('Models.Server', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceBuildNumber: '1121',
 						isSuccess: true,
-						isRunning: true,
+						isBuilding: true,
 						href: '/httpAuth/app/rest/builds/id:130'
 					})
 				]);
@@ -297,7 +297,7 @@ describe('Models.Server', function () {
 							serviceBuildId: 'MBP_UTB-1',
 							serviceNumber: '112',
 							isSuccess: true,
-							isRunning: true,
+							isBuilding: true,
 							href: '/httpAuth/app/rest/builds/id:420',
 							statusText: 'Just keep swimming...',
 							startDate: new Date(2015, 1, 17, 15, 20, 0),
@@ -311,7 +311,7 @@ describe('Models.Server', function () {
 							serviceBuildId: 'MBP_UTB-2',
 							serviceNumber: '114',
 							isSuccess: true,
-							isRunning: false,
+							isBuilding: false,
 							href: '/httpAuth/app/rest/builds/id:421',
 							statusText: 'Success',
 							startDate: new Date(2015, 11, 27, 15, 20, 0),

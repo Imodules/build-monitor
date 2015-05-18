@@ -85,7 +85,7 @@ describe('timerController', function () {
 			expect(bt1.builds[0].id).toBe(112767);
 			expect(bt1.builds[0].serviceBuildId).toBe('RunningBuild_001');
 			expect(bt1.builds[0].isSuccess).toBe(true);
-			expect(bt1.builds[0].isRunning).toBe(true);
+			expect(bt1.builds[0].isBuilding).toBe(true);
 			expect(bt1.builds[0].href).toBe('/guestAuth/app/rest/builds/id:112767');
 			expect(bt1.builds[0].percentageComplete).toBe(20);
 			expect(bt1.builds[0].statusText).toBe('Moving on out');
@@ -101,7 +101,7 @@ describe('timerController', function () {
 			expect(bt2.builds[0].id).toBe(112766);
 			expect(bt2.builds[0].serviceBuildId).toBe('RunningBuild_002');
 			expect(bt2.builds[0].isSuccess).toBe(true);
-			expect(bt2.builds[0].isRunning).toBe(true);
+			expect(bt2.builds[0].isBuilding).toBe(true);
 			expect(bt2.builds[0].href).toBe('/guestAuth/app/rest/builds/id:112766');
 			expect(bt2.builds[0].percentageComplete).toBe(6);
 			expect(bt2.builds[0].statusText).toBe('_CopyFilesMarkedCopyLocal');
@@ -137,7 +137,7 @@ describe('timerController', function () {
 			expect(bt1.builds[0].id).toBe(112767);
 			expect(bt1.builds[0].serviceBuildId).toBe('RunningBuild_001');
 			expect(bt1.builds[0].isSuccess).toBe(true);
-			expect(bt1.builds[0].isRunning).toBe(true);
+			expect(bt1.builds[0].isBuilding).toBe(true);
 			expect(bt1.builds[0].href).toBe('/guestAuth/app/rest/builds/id:112767');
 			expect(bt1.builds[0].percentageComplete).toBe(60);
 			expect(bt1.builds[0].statusText).toBe('Moving on out');
@@ -152,7 +152,7 @@ describe('timerController', function () {
 			expect(bt2.isLastBuildSuccess).toBe(false);
 			expect(bt2.builds.length).toBe(1);
 			expect(bt2.builds[0].isSuccess).toBe(false);
-			expect(bt2.builds[0].isRunning).toBe(true);
+			expect(bt2.builds[0].isBuilding).toBe(true);
 			expect(bt2.builds[0].percentageComplete).toBe(88);
 			expect(bt2.builds[0].statusText).toBe('Failure is eminent');
 		});
@@ -182,7 +182,7 @@ describe('timerController', function () {
 			expect(bt2.isBuilding).toBe(false);
 			expect(bt2.builds.length).toBe(1);
 			expect(bt2.builds[0].isSuccess).toBe(false);
-			expect(bt2.builds[0].isRunning).toBe(false);
+			expect(bt2.builds[0].isBuilding).toBe(false);
 			expect(bt2.builds[0].percentageComplete).toBe(null);
 			expect(bt2.builds[0].statusText).toBe('It be all done');
 

@@ -71,7 +71,7 @@ describe('rereshBuildData', function () {
 		expect(build.builds[1].isSuccess).toBe(false);
 		expect(build.builds[2].isSuccess).toBe(true);
 
-		expect(build.builds[0].isRunning).toBe(false);
+		expect(build.builds[0].isBuilding).toBe(false);
 		expect(build.builds[0].statusText).toBe('Tests passed: 40');
 
 		expect(build.builds[0].startDate.toString()).toBe('Wed May 13 2015 17:21:17 GMT-0500 (CDT)');
@@ -112,7 +112,7 @@ describe('rereshBuildData', function () {
 		expect(build.builds[1].isSuccess).toBe(true);
 		expect(build.builds[2].isSuccess).toBe(true);
 
-		expect(build.builds[0].isRunning).toBe(false);
+		expect(build.builds[0].isBuilding).toBe(false);
 		expect(build.builds[0].statusText).toBe('Tests failed: 1, passed: 30');
 	});
 });

@@ -319,7 +319,7 @@ describe('Services.TeamCity', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceNumber: '204',
 						isSuccess: true,
-						isRunning: true,
+						isBuilding: true,
 						href: '/httpAuth/app/rest/builds/id:687',
 						percentageComplete: 30,
 						statusText: 'Step 1/3',
@@ -352,7 +352,7 @@ describe('Services.TeamCity', function () {
 						serviceBuildId: 'MBP_UnitTestAndBundle',
 						serviceNumber: '204',
 						isSuccess: true,
-						isRunning: true,
+						isBuilding: true,
 						href: '/httpAuth/app/rest/builds/id:687',
 						percentageComplete: 30,
 						statusText: 'Step 1/3',
@@ -397,14 +397,14 @@ describe('Services.TeamCity', function () {
 				serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri',
 				serviceNumber: '131',
 				isSuccess: true,
-				isRunning: true,
+				isBuilding: true,
 				href: '/httpAuth/app/rest/builds/id:112427'
 			}), new Models.BuildSummary({
 				id: 112429,
 				serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsMissouri',
 				serviceNumber: '141',
 				isSuccess: true,
-				isRunning: true,
+				isBuilding: true,
 				href: '/httpAuth/app/rest/builds/id:112429'
 			})]);
 		});

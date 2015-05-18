@@ -110,7 +110,7 @@ Services.TeamCity.prototype = {
 				serviceBuildId: buildDetail.buildTypeId,
 				serviceNumber: buildDetail.number,
 				isSuccess: buildDetail.status === 'SUCCESS',
-				isRunning: buildDetail.running === true,
+				isBuilding: buildDetail.running === true,
 				href: buildDetail.href,
 				percentageComplete: buildDetail.percentageComplete,
 				statusText: buildDetail.statusText,
@@ -138,7 +138,7 @@ Services.TeamCity.prototype = {
 							serviceBuildId: build.buildTypeId,
 							serviceNumber: build.number,
 							isSuccess: build.status === 'SUCCESS',
-							isRunning: build.running === true,
+							isBuilding: build.running === true,
 							href: build.href
 						})
 				);
