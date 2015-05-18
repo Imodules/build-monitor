@@ -121,6 +121,7 @@ describe('timerController', function () {
 					cb(null, JSON.parse(Assets.getText('testData/builds/tcRunningBuildDetail_001_update.json')));
 				}
 			});
+			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
 
 			Controllers.Timer.onRunningBuildQueryInterval(serverId);
 
@@ -164,6 +165,7 @@ describe('timerController', function () {
 					cb(null, JSON.parse(Assets.getText('testData/builds/tcRunningBuildDetail_001_update.json')));
 				}
 			});
+			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
 
 			Controllers.Timer.onRunningBuildQueryInterval(serverId);
 
@@ -183,6 +185,8 @@ describe('timerController', function () {
 			expect(bt2.builds[0].isRunning).toBe(false);
 			expect(bt2.builds[0].percentageComplete).toBe(null);
 			expect(bt2.builds[0].statusText).toBe('It be all done');
+
+			expect(Controllers.Timer.onStopRunningBuildsTimer).toHaveBeenCalledWith(serverId);
 		});
 	});
 });

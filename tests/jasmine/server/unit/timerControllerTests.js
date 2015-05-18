@@ -114,13 +114,30 @@ describe('Controllers.Timer', function () {
 			spyOn(Controllers.Servers, 'getServer').and.callFake(function () {
 				return new Models.Server({_id: 'SeverId', url: 'http://example.com/bs1', type: 'teamcity'});
 			});
+			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
 
-			spyOn(Models.Server.prototype, 'updateRunningBuilds');
+			spyOn(Models.Server.prototype, 'updateRunningBuilds').and.callFake(function () { return true; });
 
 			Controllers.Timer.onRunningBuildQueryInterval('SeverId');
 
 			expect(Controllers.Servers.getServer).toHaveBeenCalledWith('SeverId');
 			expect(Models.Server.prototype.updateRunningBuilds).toHaveBeenCalledWith(jasmine.any(Function));
+			expect(Controllers.Timer.onStopRunningBuildsTimer).not.toHaveBeenCalled();
+		});
+
+		it('should call stop timer if no builds are running', function () {
+			spyOn(Controllers.Servers, 'getServer').and.callFake(function () {
+				return new Models.Server({_id: 'SeverId', url: 'http://example.com/bs1', type: 'teamcity'});
+			});
+			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
+
+			spyOn(Models.Server.prototype, 'updateRunningBuilds').and.callFake(function () { return false; });
+
+			Controllers.Timer.onRunningBuildQueryInterval('SeverId');
+
+			expect(Controllers.Servers.getServer).toHaveBeenCalledWith('SeverId');
+			expect(Models.Server.prototype.updateRunningBuilds).toHaveBeenCalledWith(jasmine.any(Function));
+			expect(Controllers.Timer.onStopRunningBuildsTimer).toHaveBeenCalledWith('SeverId');
 		});
 	});
 });

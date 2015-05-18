@@ -143,10 +143,13 @@ Models.Server.prototype = {
 	 */
 	updateRunningBuilds: function () {
 		var self = this,
-				builds = Controllers.Builds.getRunningServerBuilds(self._id);
+				builds = Controllers.Builds.getRunningServerBuilds(self._id),
+				runningBuildCount = 0;
 		builds.forEach(function (build) {
 			build.updateRunningBuild(self._service);
 		});
+
+		return runningBuildCount > 0;
 	}
 	//endregion
 };
