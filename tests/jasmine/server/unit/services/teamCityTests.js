@@ -3,6 +3,7 @@
  */
 
 'use strict';
+//region Test Data
 var tcProjects = {
 	statusCode: 200,
 	data: {
@@ -35,14 +36,7 @@ var tcProject = {
 		id: 'MBP',
 		name: 'My Brew Planner',
 		parentProjectId: '_Root',
-		description: 'This is the main project for My Brew Planner',
 		href: '/guestAuth/app/rest/projects/id:MBP',
-		parentProject: {
-			id: '_Root',
-			name: '<Root project>',
-			description: 'Contains all other projects',
-			href: '/guestAuth/app/rest/projects/id:_Root'
-		},
 		buildTypes: {
 			count: 2, buildType: [{
 				id: 'MBP_AcceptanceTest',
@@ -60,16 +54,6 @@ var tcProject = {
 					projectId: 'MBP',
 					href: '/guestAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
 				}]
-		},
-		templates: {count: 0, buildType: []},
-		parameters: {
-			count: 3,
-			href: '/app/rest/projects/id:MBP/parameters',
-			property: [Object]
-		},
-		vcsRoots: {
-			count: 1,
-			href: '/httpAuth/app/rest/vcs-roots?locator=project:(id:MBP)'
 		},
 		projects: {count: 0}
 	}
@@ -102,31 +86,6 @@ var tcRunningBuilds = {
 	}
 };
 
-var tcLast2BuildsFailure = {
-	statusCode: 200,
-	data: {
-		'count': 2,
-		'build': [
-			{
-				'id': 665,
-				'buildTypeId': 'MBP_UnitTestAndBundle',
-				'number': '193',
-				'status': 'FAILURE',
-				'state': 'finished',
-				'href': '/httpAuth/app/rest/builds/id:665'
-			},
-			{
-				'id': 661,
-				'buildTypeId': 'MBP_UnitTestAndBundle',
-				'number': '192',
-				'status': 'SUCCESS',
-				'state': 'finished',
-				'href': '/httpAuth/app/rest/builds/id:661'
-			}
-		]
-	}
-};
-
 var tcLast2BuildsRunningAndFailure = {
 	statusCode: 200,
 	data: {
@@ -152,23 +111,6 @@ var tcLast2BuildsRunningAndFailure = {
 	}
 };
 
-var tcLast1BuildSuccess = {
-	statusCode: 200,
-	data: {
-		'count': 1,
-		'build': [
-			{
-				'id': 665,
-				'buildTypeId': 'MBP_UnitTestAndBundle',
-				'number': '193',
-				'status': 'SUCCESS',
-				'state': 'finished',
-				'href': '/httpAuth/app/rest/builds/id:665'
-			}
-		]
-	}
-};
-
 var tcRunningBuildDetail = {
 	statusCode: 200,
 	data: {
@@ -189,26 +131,8 @@ var tcRunningBuildDetail = {
 			'projectId': 'MBP',
 			'href': '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
 		},
-		'running-info': {
-			'percentageComplete': 30,
-			'elapsedSeconds': 33,
-			'estimatedTotalSeconds': 119,
-			'currentStageText': 'Step 1/3: http GET https://registry.npmjs.org/lodash.keys',
-			'outdated': false,
-			'probablyHanging': false
-		},
 		'queuedDate': '20150501T212011-0500',
 		'startDate': '20150501T212013-0500',
-		'triggered': {
-			'type': 'user',
-			'date': '20150501T212011-0500',
-			'user': {
-				'username': 'pstuart',
-				'name': 'Paul Stuart',
-				'id': 1,
-				'href': '/httpAuth/app/rest/users/id:1'
-			}
-		},
 		'lastChanges': {
 			'count': 1,
 			'change': [
@@ -220,9 +144,6 @@ var tcRunningBuildDetail = {
 					'href': '/httpAuth/app/rest/changes/id:207'
 				}
 			]
-		},
-		'statistics': {
-			'href': '/httpAuth/app/rest/builds/id:687/statistics'
 		}
 	}
 };
@@ -247,27 +168,9 @@ var tcFinishedBuildDetail = {
 			'projectId': 'MBP',
 			'href': '/httpAuth/app/rest/buildTypes/id:MBP_UnitTestAndBundle'
 		},
-		'running-info(DONT_KNOW_IF_THIS_WOULD_BE_HERE)': {
-			'percentageComplete': 30,
-			'elapsedSeconds': 33,
-			'estimatedTotalSeconds': 119,
-			'currentStageText': 'Step 1/3: http GET https://registry.npmjs.org/lodash.keys',
-			'outdated': false,
-			'probablyHanging': false
-		},
 		'queuedDate': '20150501T212011-0500',
 		'startDate': '20150501T212013-0500',
 		'finishDate': '20150501T213013-0500',
-		'triggered': {
-			'type': 'user',
-			'date': '20150501T212011-0500',
-			'user': {
-				'username': 'pstuart',
-				'name': 'Paul Stuart',
-				'id': 1,
-				'href': '/httpAuth/app/rest/users/id:1'
-			}
-		},
 		'lastChanges': {
 			'count': 1,
 			'change': [
@@ -279,29 +182,51 @@ var tcFinishedBuildDetail = {
 					'href': '/httpAuth/app/rest/changes/id:207'
 				}
 			]
-		},
-		'statistics': {
-			'href': '/httpAuth/app/rest/builds/id:687/statistics'
 		}
 	}
 };
 
+var tcManualBuildTrigger = {
+			'statusCode': 200,
+			'data': {
+				'id': 113364,
+				'buildTypeId': 'UpdateSite_AmazonWebServices_UpdateAwsUx',
+				'number': '122',
+				'status': 'SUCCESS',
+				'state': 'running',
+				'running': true,
+				'percentageComplete': 18,
+				'href': '/guestAuth/app/rest/builds/id:113364',
+				'webUrl': 'http://bs.example.com/viewLog.html?buildId=113364&buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsUx',
+				'statusText': 'Resolving artifact dependencies',
+				'queuedDate': '20150518T081603-0500',
+				'startDate': '20150518T081604-0500',
+				'triggered': {
+					'type': 'user',
+					'date': '20150518T081603-0500',
+					'user': {
+						'username': 'lfast',
+						'name': 'Luke Fast',
+						'id': 5,
+						'href': '/guestAuth/app/rest/users/id:5'
+					}
+				},
+				'lastChanges': {},
+				'changes': {
+					'href': '/guestAuth/app/rest/changes?locator=build:(id:113364)'
+				}
+			}
+		};
+//endregion
+
 function _tcDateTimeToDate(datetime) {
-	if (!datetime) { return null; }
+	if (!datetime) {
+		return null;
+	}
 	return moment(datetime, 'YYYYMMDDTHHmmssZ').toDate();
 }
 
 describe('Services.TeamCity', function () {
-
-	describe('getBuild()', function () {
-		it('should get the build data and call the callback', function () {
-			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-				cb(null, tcLast2BuildsRunningAndFailure);
-			});
-
-			var cbSpy = jasmine.createSpy('spy');
-		});
-	});
 
 	describe('getBuildData()', function () {
 		it('should get the data for the build and callback with the build history objects', function () {
@@ -359,6 +284,37 @@ describe('Services.TeamCity', function () {
 						startDate: _tcDateTimeToDate(tcRunningBuildDetail.data.startDate),
 						finishDate: _tcDateTimeToDate(tcRunningBuildDetail.data.finishDate),
 						usernames: ['pstuart2']
+					});
+
+			var tc = new Services.TeamCity({
+				_id: '_getBuildDataTest_',
+				url: 'http://example.com/getBuildDetails'
+			});
+			tc.getBuildDetails('/guestAuth/app/rest/buildTypes/id:SomeProjectBuildIdThing', cbSpy);
+
+			expect(HTTP.get.calls.count()).toBe(1);
+			expect(cbSpy.calls.count()).toBe(1);
+			expect(cbSpy).toHaveBeenCalledWith(responseData);
+		});
+
+		it('should get the user from a manually triggered build', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				cb(null, tcManualBuildTrigger);
+			});
+
+			var cbSpy = jasmine.createSpy('spy'),
+					responseData = new Models.BuildDetail({
+						id: 113364,
+						serviceBuildId: 'UpdateSite_AmazonWebServices_UpdateAwsUx',
+						serviceNumber: '122',
+						isSuccess: true,
+						isBuilding: true,
+						href: '/guestAuth/app/rest/builds/id:113364',
+						percentageComplete: 18,
+						statusText: 'Resolving artifact dependencies',
+						startDate: _tcDateTimeToDate(tcManualBuildTrigger.data.startDate),
+						finishDate: _tcDateTimeToDate(tcManualBuildTrigger.data.finishDate),
+						usernames: ['lfast']
 					});
 
 			var tc = new Services.TeamCity({

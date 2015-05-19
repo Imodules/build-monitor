@@ -26,6 +26,17 @@
 				"percentageComplete": 1,
 				"href": "/httpAuth/app/rest/builds/id:112766",
 				"webUrl": "http://int.example.com/viewLog.html?buildId=112766&buildTypeId=RunningBuild_002"
+			},
+			{
+				"id": 112765,
+				"buildTypeId": "RunningBuild_004",
+				"number": "130",
+				"status": "SUCCESS",
+				"state": "running",
+				"running": true,
+				"percentageComplete": 19,
+				"href": "/httpAuth/app/rest/builds/id:112765",
+				"webUrl": "http://int.example.com/viewLog.html?buildId=112766&buildTypeId=RunningBuild_004"
 			}
 		]
 	}

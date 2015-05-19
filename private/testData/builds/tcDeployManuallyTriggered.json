@@ -2,7 +2,7 @@
   "statusCode": 200,
   "data": {
     "id": 113364,
-    "buildTypeId": "UpdateSite_AmazonWebServices_UpdateAwsUx",
+    "buildTypeId": "RunningBuild_004",
     "number": "122",
     "status": "SUCCESS",
     "state": "running",
@@ -12,7 +12,7 @@
     "webUrl": "http://bs.example.com/viewLog.html?buildId=113364&buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsUx",
     "statusText": "Resolving artifact dependencies",
     "buildType": {
-      "id": "UpdateSite_AmazonWebServices_UpdateAwsUx",
+      "id": "RunningBuild_001",
       "name": "Update AWS UX",
       "description": "Updates Renegades",
       "projectName": "Update Site :: AWS - Amazon Web Services",

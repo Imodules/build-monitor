@@ -50,11 +50,6 @@ Services.TeamCity.prototype = {
 
 		fullUrl += url;
 
-		//if (this.isTest) {
-		//	console.log('Test Mode!!! - ' + fullUrl);
-		//	return callback({});
-		//}
-
 		console.log('Calling: ' + fullUrl);
 		HTTP.get(fullUrl, opt, function (err, response) {
 			if (err) {
@@ -99,10 +94,14 @@ Services.TeamCity.prototype = {
 		var self = this;
 		self._call(href, function (buildDetail) {
 			var users = [];
-			if (buildDetail.lastChanges) {
+			if (buildDetail.lastChanges.count > 0) {
 				users = _.map(buildDetail.lastChanges.change, function (change) {
 					return change.username;
 				});
+			} else if(buildDetail.triggered) {
+				if (buildDetail.triggered.type === 'user') {
+					users = [buildDetail.triggered.user.username];
+				}
 			}
 
 			var bh = new Models.BuildDetail({
