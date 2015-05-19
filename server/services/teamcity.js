@@ -79,7 +79,25 @@ Services.TeamCity.prototype = {
 	 * @returns {*}
 	 * @private
 	 */
-	_getDependencyBuildDetails: function (buildDetail, cb) {
+	getDependencyBuildDetails: function (buildDetail, cb) {
+		/*
+		 var self = this,
+		 href = '/app/rest/builds?locator=number:';
+
+		 if(buildDetail.triggered.details.indexOf('triggeredByBuild=') < 0) {
+		 return self._createBuildDetails(buildDetail, [], cb);
+		 }
+
+		 var sArr = buildDetail.triggered.details.split('triggeredByBuild='),
+		 buildNumber = sArr[sArr.length - 1].replace(/"/g, '');
+
+		 href += buildNumber;
+
+		 self._call(href, function (depDetail) {
+		 var users = self._getUsersFromBuildDetail(depDetail);
+		 self._createBuildDetails(buildDetail, users, cb);
+		 });
+		 */
 		var self = this,
 				snapshot = buildDetail['snapshot-dependencies'],
 				artifact = buildDetail['artifact-dependencies'],
@@ -183,7 +201,7 @@ Services.TeamCity.prototype = {
 		var self = this;
 		self._call(href, function (buildDetail) {
 			if (buildDetail.triggered && buildDetail.triggered.type === 'unknown') {
-				return self._getDependencyBuildDetails(buildDetail, cb);
+				return self.getDependencyBuildDetails(buildDetail, cb);
 			}
 
 			var users = self._getUsersFromBuildDetail(buildDetail);

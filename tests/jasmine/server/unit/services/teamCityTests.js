@@ -346,7 +346,7 @@ describe('Services.TeamCity', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
 				if (url.indexOf('/builds?count=') > 0) {
 					cb(null, tcLast2BuildsRunningAndFailure);
-				} else if(url.indexOf('/guestAuth/app/rest/builds/id:113299') > 0) {
+				} else if (url.indexOf('/guestAuth/app/rest/builds/id:113299') > 0) {
 					cb(null, {
 						'statusCode': 200,
 						'data': {
@@ -376,7 +376,8 @@ describe('Services.TeamCity', function () {
 									}
 								]
 							}
-						}});
+						}
+					});
 				} else {
 					cb(null, tcAutoDeployTrigger);
 				}
@@ -394,7 +395,7 @@ describe('Services.TeamCity', function () {
 						statusText: 'Running yo',
 						startDate: _tcDateTimeToDate(tcAutoDeployTrigger.data.startDate),
 						finishDate: _tcDateTimeToDate(tcAutoDeployTrigger.data.finishDate),
-						usernames: ['pstuart','rellias']
+						usernames: ['pstuart', 'rellias']
 					});
 
 			var tc = new Services.TeamCity({
@@ -408,6 +409,44 @@ describe('Services.TeamCity', function () {
 			expect(cbSpy).toHaveBeenCalledWith([responseData, responseData]);
 		});
 	});
+
+	//describe('getDependencyBuildDetails()', function () {
+	//	it('should strip the triggeredByBuild out of the details', function () {
+	//		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+	//			cb(null, tcFinishedBuildDetail);
+	//		});
+	//
+	//		var cbSpy = jasmine.createSpy('spy');
+	//
+	//		var tc = new Services.TeamCity({
+	//			_id: '_getBuildDataTest_',
+	//			url: 'http://example.com/unknown'
+	//		});
+	//		tc.getDependencyBuildDetails(tcAutoDeployTrigger.data, cbSpy);
+	//
+	//		var responseData = new Models.BuildDetail({
+	//			id: 113303,
+	//			serviceBuildId: 'UpdateSite_AmazonWebServices_UpdatePwsEmailGateway',
+	//			serviceNumber: '156',
+	//			isSuccess: true,
+	//			isBuilding: true,
+	//			href: '/guestAuth/app/rest/builds/id:113303',
+	//			percentageComplete: 21,
+	//			statusText: 'Running yo',
+	//			startDate: _tcDateTimeToDate(tcAutoDeployTrigger.data.startDate),
+	//			finishDate: _tcDateTimeToDate(tcAutoDeployTrigger.data.finishDate),
+	//			usernames: ['pstuart2']
+	//		});
+	//
+	//		expect(HTTP.get).toHaveBeenCalledWith('http://example.com/unknown/guestAuth/app/rest/builds?locator=number:FEATURE-ENC-20657-206', {
+	//			timeOut: 30000,
+	//			headers: {Accept: 'application/json'}
+	//		}, jasmine.any(Function));
+	//
+	//		expect(cbSpy.calls.count()).toBe(1);
+	//		expect(cbSpy).toHaveBeenCalledWith(responseData);
+	//	});
+	//});
 
 	describe('getBuildDetails()', function () {
 		it('should get the data for the build and callback with the build history object', function () {
@@ -471,7 +510,7 @@ describe('Services.TeamCity', function () {
 			expect(cbSpy.calls.count()).toBe(1);
 			expect(cbSpy).toHaveBeenCalledWith(responseData);
 		});
-		
+
 		it('should call href from the snapshot or artifacts dependencies to get the users', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
 				if (url.indexOf('/guestAuth/app/rest/builds/id:113299') > 0) {
