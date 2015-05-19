@@ -39,6 +39,12 @@ describe('timerController', function () {
 						name: 'Manually Triggered build',
 						displayCounter: 14
 					}),
+					new Models.Build({
+						serverId: serverId,
+						serviceBuildId: 'RunningBuild_005',
+						name: 'Dependency Triggered build',
+						displayCounter: 2
+					})
 				];
 
 		Controllers.Projects.onAddProject(project, builds);
@@ -68,7 +74,6 @@ describe('timerController', function () {
 
 		it('should update running builds if it gets data back', function () {
 			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
-				console.log(url);
 				if (s(url).endsWith('/builds?locator=running:true')) {
 					cb(null, JSON.parse(Assets.getText('testData/tcRunningBuilds.json')));
 				} else if(s(url).endsWith('builds/id:112766')) {
@@ -77,13 +82,26 @@ describe('timerController', function () {
 					cb(null, JSON.parse(Assets.getText('testData/builds/tcRunningBuildDetail_001.json')));
 				} else if(s(url).endsWith('builds/id:112765')) {
 					cb(null, JSON.parse(Assets.getText('testData/builds/tcDeployManuallyTriggered.json')));
+				} else if(s(url).endsWith('builds/id:113303')) {
+					cb(null, JSON.parse(Assets.getText('testData/builds/tcDeployDependencyTrigger.json')));
+				} else if(s(url).endsWith('/guestAuth/app/rest/builds/id:113299')) {
+					cb(null, {
+						'statusCode': 200,
+						'data': {
+							triggered: {
+								type: 'user',
+								user: {
+									username: 'pstuart183'
+								}
+							}
+						}});
 				}
 			});
 
 			Controllers.Timer.onPollInterval();
 
 			var activeBuilds = Controllers.Builds.getRunningServerBuilds(serverId).fetch();
-			expect(activeBuilds.length).toBe(3);
+			expect(activeBuilds.length).toBe(4);
 
 			var bt3 = Controllers.Builds.getBuildByServiceId(serverId, 'RunningBuild_003');
 			expect(bt3.isBuilding).toBeFalsy();
@@ -125,6 +143,13 @@ describe('timerController', function () {
 			expect(bt4.builds[0].serviceBuildId).toBe('RunningBuild_004');
 			expect(bt4.builds[0].usernames.length).toBe(1);
 			expect(bt4.builds[0].usernames[0]).toBe('lfast');
+
+			var bt5 = Controllers.Builds.getBuildByServiceId(serverId, 'RunningBuild_005');
+			expect(bt5.isBuilding).toBe(true);
+			expect(bt5.builds.length).toBe(1);
+			expect(bt5.builds[0].serviceBuildId).toBe('RunningBuild_005');
+			expect(bt5.builds[0].usernames.length).toBe(1);
+			expect(bt5.builds[0].usernames[0]).toBe('pstuart183');
 		});
 	});
 
@@ -142,7 +167,7 @@ describe('timerController', function () {
 			Controllers.Timer.onRunningBuildQueryInterval(serverId);
 
 			var activeBuilds = Controllers.Builds.getRunningServerBuilds(serverId).fetch();
-			expect(activeBuilds.length).toBe(3);
+			expect(activeBuilds.length).toBe(4);
 
 			var bt3 = Controllers.Builds.getBuildByServiceId(serverId, 'RunningBuild_003');
 			expect(bt3.isBuilding).toBeFalsy();
@@ -186,7 +211,7 @@ describe('timerController', function () {
 			Controllers.Timer.onRunningBuildQueryInterval(serverId);
 
 			var activeBuilds = Controllers.Builds.getRunningServerBuilds(serverId).fetch();
-			expect(activeBuilds.length).toBe(2);
+			expect(activeBuilds.length).toBe(3);
 
 			var bt3 = Controllers.Builds.getBuildByServiceId(serverId, 'RunningBuild_003');
 			expect(bt3.isBuilding).toBeFalsy();

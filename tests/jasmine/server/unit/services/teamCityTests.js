@@ -123,6 +123,11 @@ var tcRunningBuildDetail = {
 		'percentageComplete': 30,
 		'href': '/httpAuth/app/rest/builds/id:687',
 		'statusText': 'Step 1/3',
+		'triggered': {
+			'type': 'vcs',
+			'details': 'mercurial',
+			'date': '20150515T173534-0500'
+		},
 		'buildType': {
 			'id': 'MBP_UnitTestAndBundle',
 			'name': 'Unit Test and Bundle',
@@ -171,6 +176,11 @@ var tcFinishedBuildDetail = {
 		'queuedDate': '20150501T212011-0500',
 		'startDate': '20150501T212013-0500',
 		'finishDate': '20150501T213013-0500',
+		'triggered': {
+			'type': 'vcs',
+			'details': 'mercurial',
+			'date': '20150515T173534-0500'
+		},
 		'lastChanges': {
 			'count': 1,
 			'change': [
@@ -187,36 +197,104 @@ var tcFinishedBuildDetail = {
 };
 
 var tcManualBuildTrigger = {
-			'statusCode': 200,
-			'data': {
-				'id': 113364,
-				'buildTypeId': 'UpdateSite_AmazonWebServices_UpdateAwsUx',
-				'number': '122',
-				'status': 'SUCCESS',
-				'state': 'running',
-				'running': true,
-				'percentageComplete': 18,
-				'href': '/guestAuth/app/rest/builds/id:113364',
-				'webUrl': 'http://bs.example.com/viewLog.html?buildId=113364&buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsUx',
-				'statusText': 'Resolving artifact dependencies',
-				'queuedDate': '20150518T081603-0500',
-				'startDate': '20150518T081604-0500',
-				'triggered': {
-					'type': 'user',
-					'date': '20150518T081603-0500',
-					'user': {
-						'username': 'lfast',
-						'name': 'Luke Fast',
-						'id': 5,
-						'href': '/guestAuth/app/rest/users/id:5'
-					}
-				},
-				'lastChanges': {},
-				'changes': {
-					'href': '/guestAuth/app/rest/changes?locator=build:(id:113364)'
-				}
+	'statusCode': 200,
+	'data': {
+		'id': 113364,
+		'buildTypeId': 'UpdateSite_AmazonWebServices_UpdateAwsUx',
+		'number': '122',
+		'status': 'SUCCESS',
+		'state': 'running',
+		'running': true,
+		'percentageComplete': 18,
+		'href': '/guestAuth/app/rest/builds/id:113364',
+		'webUrl': 'http://bs.example.com/viewLog.html?buildId=113364&buildTypeId=UpdateSite_AmazonWebServices_UpdateAwsUx',
+		'statusText': 'Resolving artifact dependencies',
+		'queuedDate': '20150518T081603-0500',
+		'startDate': '20150518T081604-0500',
+		'triggered': {
+			'type': 'user',
+			'date': '20150518T081603-0500',
+			'user': {
+				'username': 'lfast',
+				'name': 'Luke Fast',
+				'id': 5,
+				'href': '/guestAuth/app/rest/users/id:5'
 			}
-		};
+		},
+		'lastChanges': {},
+		'changes': {
+			'href': '/guestAuth/app/rest/changes?locator=build:(id:113364)'
+		}
+	}
+};
+
+var tcAutoDeployTrigger = {
+	'statusCode': 200,
+	'data': {
+		'id': 113303,
+		'buildTypeId': 'UpdateSite_AmazonWebServices_UpdatePwsEmailGateway',
+		'number': '156',
+		'status': 'SUCCESS',
+		'state': 'running',
+		'running': true,
+		'percentageComplete': 21,
+		'href': '/guestAuth/app/rest/builds/id:113303',
+		'webUrl': 'http://example.com:80/viewLog.html?buildId=113303&buildTypeId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway',
+		'statusText': 'Running yo',
+		'buildType': {
+			'id': 'UpdateSite_AmazonWebServices_UpdatePwsEmailGateway',
+			'name': 'Update PWS Email Gateway',
+			'description': 'Push the fleet of email gateway applications to Pivotal Web Services (cloud foundry)',
+			'projectName': 'Update Site :: Pivotal',
+			'projectId': 'UpdateSite_Pivotal',
+			'href': '/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdatePwsEmailGateway',
+			'webUrl': 'http://example.com:80/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway'
+		},
+		'tags': {
+			'tag': []
+		},
+		'queuedDate': '20150515T173534-0500',
+		'startDate': '20150515T173935-0500',
+		'triggered': {
+			'type': 'unknown',
+			'details': '##triggeredByBuildType="bt462" triggeredByBuild="FEATURE-ENC-20657-206"',
+			'date': '20150515T173534-0500'
+		},
+		'lastChanges': {},
+		'changes': {
+			'href': '/guestAuth/app/rest/changes?locator=build:(id:113303)'
+		},
+		'snapshot-dependencies': {
+			'count': 1,
+			'build': [
+				{
+					'id': 113299,
+					'buildTypeId': 'CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava',
+					'number': 'FEATURE-ENC-20657-206',
+					'status': 'SUCCESS',
+					'state': 'finished',
+					'href': '/guestAuth/app/rest/builds/id:113299',
+					'webUrl': 'http://example.com:80/viewLog.html?buildId=113299&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava'
+				}
+			]
+		},
+		'artifact-dependencies': {
+			'count': 1,
+			'build': [
+				{
+					'id': 113299,
+					'buildTypeId': 'CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava',
+					'number': 'FEATURE-ENC-20657-206',
+					'status': 'SUCCESS',
+					'state': 'finished',
+					'href': '/guestAuth/app/rest/builds/id:113299',
+					'webUrl': 'http://example.com:80/viewLog.html?buildId=113299&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava'
+				}
+			]
+		}
+	}
+};
+
 //endregion
 
 function _tcDateTimeToDate(datetime) {
@@ -260,6 +338,72 @@ describe('Services.TeamCity', function () {
 			tc.getBuildData('/guestAuth/app/rest/buildTypes/id:SomeProjectBuildIdThing', 10, cbSpy);
 
 			expect(HTTP.get.calls.count()).toBe(3);
+			expect(cbSpy.calls.count()).toBe(1);
+			expect(cbSpy).toHaveBeenCalledWith([responseData, responseData]);
+		});
+
+		it('should get the details for a dependency triggered build', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				if (url.indexOf('/builds?count=') > 0) {
+					cb(null, tcLast2BuildsRunningAndFailure);
+				} else if(url.indexOf('/guestAuth/app/rest/builds/id:113299') > 0) {
+					cb(null, {
+						'statusCode': 200,
+						'data': {
+							'triggered': {
+								'type': 'vcs',
+								'date': '20150513T212250-0500',
+								'details': 'mercurial'
+							},
+							'lastChanges': {
+								'count': 2,
+								'change': [
+									{
+										'id': 218645,
+										'version': '763299c439fa',
+										'username': 'local\\pstuart',
+										'date': '20150513T154959-0500',
+										'href': '/guestAuth/app/rest/changes/id:218645',
+										'webLink': 'http://bs.example.com/viewModification.html?modId=218645&personal=false'
+									},
+									{
+										'id': 218646,
+										'version': '063299c439fa',
+										'username': 'local\\rellias',
+										'date': '20150513T154959-0500',
+										'href': '/guestAuth/app/rest/changes/id:218644',
+										'webLink': 'http://bs.example.com/viewModification.html?modId=218644&personal=false'
+									}
+								]
+							}
+						}});
+				} else {
+					cb(null, tcAutoDeployTrigger);
+				}
+			});
+
+			var cbSpy = jasmine.createSpy('spy'),
+					responseData = new Models.BuildDetail({
+						id: 113303,
+						serviceBuildId: 'UpdateSite_AmazonWebServices_UpdatePwsEmailGateway',
+						serviceNumber: '156',
+						isSuccess: true,
+						isBuilding: true,
+						href: '/guestAuth/app/rest/builds/id:113303',
+						percentageComplete: 21,
+						statusText: 'Running yo',
+						startDate: _tcDateTimeToDate(tcAutoDeployTrigger.data.startDate),
+						finishDate: _tcDateTimeToDate(tcAutoDeployTrigger.data.finishDate),
+						usernames: ['pstuart','rellias']
+					});
+
+			var tc = new Services.TeamCity({
+				_id: '_getBuildDataTest_',
+				url: 'http://example.com/getBuildDataTest'
+			});
+			tc.getBuildData('/guestAuth/app/rest/buildTypes/id:SomeProjectBuildIdThing', 10, cbSpy);
+
+			expect(HTTP.get.calls.count()).toBe(5);
 			expect(cbSpy.calls.count()).toBe(1);
 			expect(cbSpy).toHaveBeenCalledWith([responseData, responseData]);
 		});
@@ -327,6 +471,45 @@ describe('Services.TeamCity', function () {
 			expect(cbSpy.calls.count()).toBe(1);
 			expect(cbSpy).toHaveBeenCalledWith(responseData);
 		});
+		
+		it('should call href from the snapshot or artifacts dependencies to get the users', function () {
+			spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
+				if (url.indexOf('/guestAuth/app/rest/builds/id:113299') > 0) {
+					cb(null, tcFinishedBuildDetail);
+				} else {
+					cb(null, tcAutoDeployTrigger);
+				}
+			});
+
+			var cbSpy = jasmine.createSpy('spy'),
+					responseData = new Models.BuildDetail({
+						id: 113303,
+						serviceBuildId: 'UpdateSite_AmazonWebServices_UpdatePwsEmailGateway',
+						serviceNumber: '156',
+						isSuccess: true,
+						isBuilding: true,
+						href: '/guestAuth/app/rest/builds/id:113303',
+						percentageComplete: 21,
+						statusText: 'Running yo',
+						startDate: _tcDateTimeToDate(tcAutoDeployTrigger.data.startDate),
+						finishDate: _tcDateTimeToDate(tcAutoDeployTrigger.data.finishDate),
+						usernames: ['pstuart2']
+					});
+
+			var tc = new Services.TeamCity({
+				_id: '_getBuildDataTest_',
+				url: 'http://example.com/getBuildDetails'
+			});
+			tc.getBuildDetails('/guestAuth/app/rest/buildTypes/id:SomeProjectBuildIdThing', cbSpy);
+
+			expect(HTTP.get.calls.count()).toBe(2);
+			expect(cbSpy.calls.count()).toBe(1);
+			expect(cbSpy).toHaveBeenCalledWith(responseData);
+		});
+
+		// TODO: Need to handle
+		// http://ex.com/httpAuth/app/rest/builds/id:113495
+		// http://ex.com/httpAuth/app/rest/builds/id:113489
 	});
 
 	describe('queryRunningBuilds()', function () {

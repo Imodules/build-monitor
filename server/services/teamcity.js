@@ -65,8 +65,96 @@ Services.TeamCity.prototype = {
 	},
 
 	_tcDateTimeToDate: function (datetime) {
-		if (!datetime) { return null; }
+		if (!datetime) {
+			return null;
+		}
 		return moment(datetime, 'YYYYMMDDTHHmmssZ').toDate();
+	},
+
+	/**
+	 * If a build was auto-triggered because of a dependency, this will try to get that dependency detail.
+	 *
+	 * @param buildDetail
+	 * @param cb
+	 * @returns {*}
+	 * @private
+	 */
+	_getDependencyBuildDetails: function (buildDetail, cb) {
+		var self = this,
+				snapshot = buildDetail['snapshot-dependencies'],
+				artifact = buildDetail['artifact-dependencies'],
+				href = false;
+		if(snapshot && snapshot.count > 0) {
+			href = snapshot.build[0].href;
+		} else if(artifact && artifact.count > 0) {
+			href = artifact.build[0].href;
+		}
+		if (!href) {
+			return self._createBuildDetails(buildDetail, [], cb);
+		}
+
+		self._call(href, function (depDetail) {
+			var users = self._getUsersFromBuildDetail(depDetail);
+			self._createBuildDetails(buildDetail, users, cb);
+		});
+	},
+
+	/**
+	 * Builds the BuildDetails object and sends it to the callback.
+	 *
+	 * @param buildDetail
+	 * @param users
+	 * @param cb
+	 * @private
+	 */
+	_createBuildDetails: function (buildDetail, users, cb) {
+		var self = this;
+
+		var bh = new Models.BuildDetail({
+			id: buildDetail.id,
+			serviceBuildId: buildDetail.buildTypeId,
+			serviceNumber: buildDetail.number,
+			isSuccess: buildDetail.status === 'SUCCESS',
+			isBuilding: buildDetail.running === true,
+			href: buildDetail.href,
+			percentageComplete: buildDetail.percentageComplete,
+			statusText: buildDetail.statusText,
+			startDate: self._tcDateTimeToDate(buildDetail.startDate),
+			finishDate: self._tcDateTimeToDate(buildDetail.finishDate),
+			usernames: users
+		});
+
+		cb(bh);
+	},
+
+	/**
+	 * Gets the responsible user from a build detail.
+	 *
+	 * @param buildDetail
+	 * @returns {Array}
+	 * @private
+	 */
+	_getUsersFromBuildDetail: function (buildDetail) {
+		var users = [];
+		if (buildDetail.triggered) {
+			switch (buildDetail.triggered.type) {
+				case 'user':
+				{
+					users = [buildDetail.triggered.user.username];
+				}	break;
+
+				case 'vcs':
+				{
+					if (buildDetail.lastChanges.count > 0) {
+						users = _.map(buildDetail.lastChanges.change, function (change) {
+							return change.username;
+						});
+					}
+				}	break;
+			}
+		}
+
+		return users;
 	},
 
 	getBuildData: function (href, historyCount, cb) {
@@ -83,6 +171,7 @@ Services.TeamCity.prototype = {
 					bhArray.push(bh);
 
 					if (bhArray.length === expectedCount) {
+						bhArray = _.sortBy(bhArray, function(item){ return item.id; }).reverse();
 						cb(bhArray);
 					}
 				});
@@ -93,32 +182,12 @@ Services.TeamCity.prototype = {
 	getBuildDetails: function (href, cb) {
 		var self = this;
 		self._call(href, function (buildDetail) {
-			var users = [];
-			if (buildDetail.lastChanges.count > 0) {
-				users = _.map(buildDetail.lastChanges.change, function (change) {
-					return change.username;
-				});
-			} else if(buildDetail.triggered) {
-				if (buildDetail.triggered.type === 'user') {
-					users = [buildDetail.triggered.user.username];
-				}
+			if (buildDetail.triggered && buildDetail.triggered.type === 'unknown') {
+				return self._getDependencyBuildDetails(buildDetail, cb);
 			}
 
-			var bh = new Models.BuildDetail({
-				id: buildDetail.id,
-				serviceBuildId: buildDetail.buildTypeId,
-				serviceNumber: buildDetail.number,
-				isSuccess: buildDetail.status === 'SUCCESS',
-				isBuilding: buildDetail.running === true,
-				href: buildDetail.href,
-				percentageComplete: buildDetail.percentageComplete,
-				statusText: buildDetail.statusText,
-				startDate: self._tcDateTimeToDate(buildDetail.startDate),
-				finishDate: self._tcDateTimeToDate(buildDetail.finishDate),
-				usernames: users
-			});
-
-			cb(bh);
+			var users = self._getUsersFromBuildDetail(buildDetail);
+			self._createBuildDetails(buildDetail, users, cb);
 		});
 	},
 

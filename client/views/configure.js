@@ -13,7 +13,10 @@ ViewModels.Configure = (function () {
 				serverId: serverId, userId: userId, buildId: buildId, shortName: shortName
 			}, cb);
 		} else {
-			var setItem = { shortName: shortName };
+			var setItem = { sort: 0 };
+			if (shortName !== null) {
+				setItem.shortName = shortName;
+			}
 			Collections.MyBuildDisplay.update({_id: myBuildItem._id}, {$set: setItem}, cb);
 		}
 	}

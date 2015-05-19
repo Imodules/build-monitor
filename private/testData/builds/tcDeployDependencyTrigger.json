@@ -2,28 +2,37 @@
   "statusCode": 200,
   "data": {
 	"id": 113303,
-	"buildTypeId": "UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+	"buildTypeId": "RunningBuild_005",
 	"number": "156",
 	"status": "SUCCESS",
-	"state": "finished",
+	"state": "running",
+	"running": true,
+	"percentageComplete": 25,
 	"href": "/guestAuth/app/rest/builds/id:113303",
-	"webUrl": "http://buildserver2:90/viewLog.html?buildId=113303&buildTypeId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+	"webUrl": "http://example.com:80/viewLog.html?buildId=113303&buildTypeId=RunningBuild_005",
 	"statusText": "Success",
 	"buildType": {
-	  "id": "UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
+	  "id": "RunningBuild_005",
 	  "name": "Update PWS Email Gateway",
 	  "description": "Push the fleet of email gateway applications to Pivotal Web Services (cloud foundry)",
 	  "projectName": "Update Site :: Pivotal",
 	  "projectId": "UpdateSite_Pivotal",
-	  "href": "/guestAuth/app/rest/buildTypes/id:UpdateSite_AmazonWebServices_UpdatePwsEmailGateway",
-	  "webUrl": "http://buildserver2:90/viewType.html?buildTypeId=UpdateSite_AmazonWebServices_UpdatePwsEmailGateway"
+	  "href": "/guestAuth/app/rest/buildTypes/id:RunningBuild_005",
+	  "webUrl": "http://example.com:80/viewType.html?buildTypeId=RunningBuild_005"
 	},
 	"tags": {
 	  "tag": []
 	},
-	"queuedDate": "20150515T173534-0500",
-	"startDate": "20150515T173935-0500",
-	"finishDate": "20150515T174351-0500",
+	"running-info": {
+	  "percentageComplete": 25,
+	  "elapsedSeconds": 57,
+	  "estimatedTotalSeconds": 1081,
+	  "currentStageText": "Some stuff",
+	  "outdated": false,
+	  "probablyHanging": false
+	},
+	"queuedDate": "20150513T222150-0500",
+	"startDate": "20150513T222153-0500",
 	"triggered": {
 	  "type": "unknown",
 	  "details": "##triggeredByBuildType='bt462' triggeredByBuild='FEATURE-ENC-20657-206'",
@@ -146,7 +155,7 @@
 		  "status": "SUCCESS",
 		  "state": "finished",
 		  "href": "/guestAuth/app/rest/builds/id:113299",
-		  "webUrl": "http://buildserver2:90/viewLog.html?buildId=113299&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+		  "webUrl": "http://example.com:80/viewLog.html?buildId=113299&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
 		}
 	  ]
 	},
@@ -160,7 +169,7 @@
 		  "status": "SUCCESS",
 		  "state": "finished",
 		  "href": "/guestAuth/app/rest/builds/id:113299",
-		  "webUrl": "http://buildserver2:90/viewLog.html?buildId=113299&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
+		  "webUrl": "http://example.com:80/viewLog.html?buildId=113299&buildTypeId=CheckInTriggeredBuilds_FeatureBuilds_FeatureEnc20657EmailMarketingGatewayJava"
 		}
 	  ]
 	}

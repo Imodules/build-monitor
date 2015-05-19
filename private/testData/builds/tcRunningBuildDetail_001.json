@@ -31,14 +31,9 @@
 		"queuedDate": "20150513T222150-0500",
 		"startDate": "20150513T222153-0500",
 		"triggered": {
-			"type": "user",
+			"type": "vcs",
 			"date": "20150513T212250-0500",
-			"user": {
-				"username": "pstuart",
-				"name": "Paul Stuart",
-				"id": 11,
-				"href": "/guestAuth/app/rest/users/id:11"
-			}
+			"details": "mercurial"
 		},
 		"lastChanges": {
 			"count": 2,

@@ -51,10 +51,20 @@ describe('rereshBuildData', function () {
 		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
 			if (s(url).endsWith('/builds?count=10')) {
 				cb(null, JSON.parse(Assets.getText('testData/builds/tcRefreshBuildDataSummary.json')));
-			} else if (s(url).endsWith('/id:113173')) {
-				cb(null, JSON.parse(Assets.getText('testData/builds/tcFailureBuildDetail.json')));
 			} else {
-				cb(null, JSON.parse(Assets.getText('testData/builds/tcSuccessBuildDetail.json')));
+				var sp = url.split(':'),
+						id = parseInt(sp[2]),
+						data;
+
+				if (s(url).endsWith('/id:9')) {
+					data = JSON.parse(Assets.getText('testData/builds/tcFailureBuildDetail.json'));
+					data.data.id = id;
+					cb(null, data);
+				} else {
+					data = JSON.parse(Assets.getText('testData/builds/tcSuccessBuildDetail.json'));
+					data.data.id = id;
+					cb(null, data);
+				}
 			}
 		});
 
@@ -70,6 +80,18 @@ describe('rereshBuildData', function () {
 		expect(build.builds[0].isSuccess).toBe(true);
 		expect(build.builds[1].isSuccess).toBe(false);
 		expect(build.builds[2].isSuccess).toBe(true);
+
+		expect(build.builds[0].id).toBe(10);
+		expect(build.builds[1].id).toBe(9);
+		expect(build.builds[2].id).toBe(8);
+		expect(build.builds[3].id).toBe(7);
+		expect(build.builds[4].id).toBe(6);
+		expect(build.builds[5].id).toBe(5);
+		expect(build.builds[6].id).toBe(4);
+		expect(build.builds[7].id).toBe(3);
+		expect(build.builds[8].id).toBe(2);
+		expect(build.builds[9].id).toBe(1);
+
 
 		expect(build.builds[0].isBuilding).toBe(false);
 		expect(build.builds[0].statusText).toBe('Tests passed: 40');
@@ -92,10 +114,20 @@ describe('rereshBuildData', function () {
 		spyOn(HTTP, 'get').and.callFake(function (url, opt, cb) {
 			if (s(url).endsWith('/builds?count=10')) {
 				cb(null, JSON.parse(Assets.getText('testData/builds/tcRefreshBuildDataSummary.json')));
-			} else if (s(url).endsWith('/id:113175')) {
-				cb(null, JSON.parse(Assets.getText('testData/builds/tcFailureBuildDetail.json')));
 			} else {
-				cb(null, JSON.parse(Assets.getText('testData/builds/tcSuccessBuildDetail.json')));
+				var sp = url.split(':'),
+						id = parseInt(sp[2]),
+						data;
+
+				if (s(url).endsWith('/id:10')) {
+					data = JSON.parse(Assets.getText('testData/builds/tcFailureBuildDetail.json'));
+					data.data.id = id;
+					cb(null, data);
+				} else {
+					data = JSON.parse(Assets.getText('testData/builds/tcSuccessBuildDetail.json'));
+					data.data.id = id;
+					cb(null, data);
+				}
 			}
 		});
 
