@@ -139,7 +139,7 @@ Models.Server.prototype = {
 	/**
 	 * Updates the running builds from the server.
 	 */
-	updateRunningBuilds: function () {
+	updateRunningBuilds: function (cbTimerUpdate) {
 		var self = this,
 				builds = Controllers.Builds.getRunningServerBuilds(self._id),
 				hasRunningBuilds = false;
@@ -148,6 +148,10 @@ Models.Server.prototype = {
 			hasRunningBuilds = true;
 			build.updateRunningBuild(self._service);
 		});
+
+		if (!hasRunningBuilds && cbTimerUpdate !== undefined) {
+			cbTimerUpdate(self._id, false);
+		}
 	}
 	//endregion
 };

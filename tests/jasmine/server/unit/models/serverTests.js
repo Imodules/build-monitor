@@ -288,6 +288,19 @@ describe('Models.Server', function () {
 	});
 
 	describe('updateRunningBuilds()', function () {
+		it('should stop the timer if there are no builds', function () {
+			spyOn(Controllers.Builds, 'getRunningServerBuilds').and.callFake(function () {
+				return [];
+			});
+
+			var cbSpy = jasmine.createSpy('spy');
+
+			var server = new Models.Server({_id: '_$ServerId$_', url: 'http://niner.example.com', type: 'teamcity'});
+			server.updateRunningBuilds(cbSpy);
+
+			expect(cbSpy).toHaveBeenCalledWith('_$ServerId$_', false);
+		});
+
 		it('should query the builds controller for all the running builds, then tell them to update', function () {
 			spyOn(Controllers.Builds, 'getRunningServerBuilds').and.callFake(function () {
 				return [

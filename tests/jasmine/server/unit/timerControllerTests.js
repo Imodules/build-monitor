@@ -107,6 +107,17 @@ describe('Controllers.Timer', function () {
 			expect(Controllers.Timer.onStopRunningBuildsTimer).not.toHaveBeenCalled();
 			expect(Controllers.Timer.onStartRunningBuildsTimer).not.toHaveBeenCalled();
 		});
+
+		it('should stop the timer if we do not have builds', function () {
+			spyOn(_, 'find').and.callFake(function () { return { serverId: 'CoolSrvId3', timerId: 'Kiddos'}; });
+			spyOn(Controllers.Timer, 'onStartRunningBuildsTimer');
+			spyOn(Controllers.Timer, 'onStopRunningBuildsTimer');
+
+			Controllers.Timer.onCheckRunningBuildsTimer('CoolSrvId3', false);
+
+			expect(Controllers.Timer.onStartRunningBuildsTimer).not.toHaveBeenCalled();
+			expect(Controllers.Timer.onStopRunningBuildsTimer).toHaveBeenCalledWith('CoolSrvId3');
+		});
 	});
 
 	describe('OnRunningBuildQueryInterval()', function () {

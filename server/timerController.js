@@ -47,6 +47,8 @@ Controllers.Timer = (function () {
 
 		if (hasActiveBuilds && !serverTimerHandle) {
 			Controllers.Timer.onStartRunningBuildsTimer(serverId);
+		} else if(!hasActiveBuilds && serverTimerHandle) {
+			Controllers.Timer.onStopRunningBuildsTimer(serverId);
 		}
 	}
 
