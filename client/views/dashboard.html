@@ -34,9 +34,17 @@
 				{{/with}}
 			{{else}}
 				{{#with lastBuild}}
-					<div class="bsLast">
+
+						{{#if ../isLastBuildSuccess}}
+						<div class="bsLast">
 						{{livestamp finishDate}}
-					</div>
+						</div>
+						{{else}}
+							<div class="bsBrokeit">
+							{{../whoBrokeIt}}
+							</div>
+						{{/if}}
+
 					<div class="bsTotal">
 						{{buildTime startDate finishDate}}
 					</div>
