@@ -89,6 +89,11 @@ Models.Build.prototype = {
 	 * @private
 	 */
 	_updateBuild: function (buildDetail) {
+		// Ensure that our build was started.
+		if (this.builds.length > 0 && this.builds[0].id !== buildDetail.id) {
+			return;
+		}
+
 		var set = {
 			'builds.0.isBuilding': buildDetail.isBuilding,
 			'builds.0.isSuccess': buildDetail.isSuccess,
@@ -132,7 +137,7 @@ Models.Build.prototype = {
 		var self = this;
 		service.getBuildData(self.href, 10, function (buildDetailsArray) {
 			var isLastBuildSuccess = true,
-					whoBrokeIt = null;
+				whoBrokeIt = null;
 			if (buildDetailsArray.length > 0) {
 				if (!buildDetailsArray[0].isSuccess) {
 					isLastBuildSuccess = false;
@@ -186,7 +191,7 @@ Models.Build.prototype = {
 	 */
 	updateRunningBuild: function (service) {
 		var self = this,
-				build = self.builds[0];
+			build = self.builds[0];
 		service.getBuildDetails(build.href, function (buildDetail) {
 			self._updateBuild(buildDetail);
 			if (!buildDetail.isBuilding) {
@@ -201,7 +206,10 @@ Models.Build.prototype = {
 		}
 
 		this._doc.watchers.push(watcher);
-		Collections.Builds.update({_id: this._id}, {$addToSet: {watchers: watcher}, $set: {watcherCount: this.watchers.length}});
+		Collections.Builds.update({_id: this._id}, {
+			$addToSet: {watchers: watcher},
+			$set: {watcherCount: this.watchers.length}
+		});
 
 		if (this.watchers.length === 1 && service) {
 			this.refreshBuildData(service);

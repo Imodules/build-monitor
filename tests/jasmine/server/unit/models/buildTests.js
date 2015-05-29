@@ -258,6 +258,48 @@ describe('Models.Build', function () {
 	});
 
 	describe('updateRunningBuild()', function () {
+		it('should not update the build if it was not already started', function () {
+			spyOn(Services.TeamCity.prototype, 'getBuildDetails').and.callFake(function (href, cb) {
+				cb(new Models.BuildDetail({
+					id: 411,
+					serviceBuildId: 'MBP_UTB-bt1',
+					serviceNumber: '112',
+					isSuccess: true,
+					isBuilding: true,
+					href: '/httpAuth/app/rest/builds/btid:411',
+					percentageComplete: 95,
+					statusText: 'I am still running',
+					startDate: new Date(2015, 1, 17, 15, 20, 0),
+					finishDate: null,
+					usernames: ['pstuart69']
+				}));
+			});
+			spyOn(Collections.Builds, 'update');
+
+			var build = new Models.Build({
+				_id: 'build_bt1', href: '/guestAuth/no/call', builds: [{
+					id: 410,
+					serviceBuildId: 'MBP_UTB-bt1',
+					serviceNumber: '112',
+					isSuccess: true,
+					isBuilding: true,
+					href: '/httpAuth/app/rest/builds/btid:410',
+					statusText: 'And I ran...',
+					startDate: new Date(2015, 1, 17, 15, 20, 0),
+					finishDate: null,
+					usernames: ['pstuart69']
+				}]
+			});
+
+			build.updateRunningBuild(new Services.TeamCity({
+				_id: '_startBuildTestId_',
+				url: 'http://example.com/startBuild'
+			}));
+
+			expect(Services.TeamCity.prototype.getBuildDetails).toHaveBeenCalledWith('/httpAuth/app/rest/builds/btid:410', jasmine.any(Function));
+			expect(Collections.Builds.update).not.toHaveBeenCalled();
+		});
+
 		it('should call the service and get the latest status', function () {
 			spyOn(Services.TeamCity.prototype, 'getBuildDetails').and.callFake(function (href, cb) {
 				cb(new Models.BuildDetail({
@@ -399,6 +441,14 @@ describe('Models.Build', function () {
 			expect(Services.TeamCity.prototype.getBuildDetails).toHaveBeenCalledWith('/httpAuth/app/rest/builds/btid:420', jasmine.any(Function));
 			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'build_bt1'}, {
 				$set: {
+					'builds.0.isBuilding': false,
+					'builds.0.isSuccess': true,
+					'builds.0.statusText': 'Success',
+					'builds.0.percentageComplete': 100
+				}
+			});
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'build_bt1'}, {
+				$set: {
 					isLastBuildSuccess: true,
 					isBuilding: false,
 					'builds.0.isBuilding': false,
@@ -410,7 +460,7 @@ describe('Models.Build', function () {
 			});
 		});
 
-		it('should finish the build if it is no longer running and add the same if it failed and does not exist', function () {
+		it('should finish the build if it is no longer running and add the shame if it failed and does not exist', function () {
 			spyOn(Services.TeamCity.prototype, 'getBuildDetails').and.callFake(function (href, cb) {
 				cb(new Models.BuildDetail({
 					id: 422,
