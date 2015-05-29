@@ -409,6 +409,70 @@ describe('Models.Build', function () {
 				}
 			});
 		});
+
+		it('should finish the build if it is no longer running and add the same if it failed and does not exist', function () {
+			spyOn(Services.TeamCity.prototype, 'getBuildDetails').and.callFake(function (href, cb) {
+				cb(new Models.BuildDetail({
+					id: 422,
+					serviceBuildId: 'MBP_UTB-bt4',
+					serviceNumber: '112',
+					isSuccess: false,
+					isBuilding: false,
+					href: '/httpAuth/app/rest/builds/btid:422',
+					percentageComplete: 100,
+					statusText: 'Failed',
+					startDate: new Date(2015, 1, 17, 15, 20, 0),
+					finishDate: new Date(2015, 1, 17, 15, 30, 0),
+					usernames: ['pstuart71']
+				}));
+			});
+			spyOn(Collections.Builds, 'update');
+
+			var build = new Models.Build({
+				_id: 'build_bt4', href: '/guestAuth/no/call', builds: [{
+					id: 422,
+					serviceBuildId: 'MBP_UTB-bt4',
+					serviceNumber: '112',
+					isSuccess: true,
+					isBuilding: true,
+					href: '/httpAuth/app/rest/builds/btid:422',
+					statusText: 'And I ran...',
+					startDate: new Date(2015, 1, 17, 15, 20, 0),
+					finishDate: null,
+					isLastBuildSuccess: true,
+					usernames: ['pstuart71']
+				}]
+			});
+
+			build.updateRunningBuild(new Services.TeamCity({
+				_id: '_startBuildTestId_',
+				url: 'http://example.com/startBuild'
+			}));
+
+			expect(Services.TeamCity.prototype.getBuildDetails).toHaveBeenCalledWith('/httpAuth/app/rest/builds/btid:422', jasmine.any(Function));
+
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'build_bt4'}, {
+				$set: {
+					isLastBuildSuccess: false,
+					whoBrokeIt: ['pstuart71'],
+					'builds.0.isBuilding': false,
+					'builds.0.isSuccess': false,
+					'builds.0.statusText': 'Failed',
+					'builds.0.percentageComplete': 100
+				}
+			});
+			expect(Collections.Builds.update).toHaveBeenCalledWith({_id: 'build_bt4'}, {
+				$set: {
+					isLastBuildSuccess: false,
+					isBuilding: false,
+					'builds.0.isBuilding': false,
+					'builds.0.isSuccess': false,
+					'builds.0.statusText': 'Failed',
+					'builds.0.percentageComplete': 100,
+					'builds.0.finishDate': new Date(2015, 1, 17, 15, 30, 0)
+				}
+			});
+		});
 	});
 
 });

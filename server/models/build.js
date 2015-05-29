@@ -41,7 +41,6 @@ Models.Build.prototype = {
 		return this._doc.name;
 	},
 
-	// TODO: Change this to href for consistency.
 	get href() {
 		return this._doc.href;
 	},
@@ -189,9 +188,8 @@ Models.Build.prototype = {
 		var self = this,
 				build = self.builds[0];
 		service.getBuildDetails(build.href, function (buildDetail) {
-			if (buildDetail.isBuilding) {
-				self._updateBuild(buildDetail);
-			} else {
+			self._updateBuild(buildDetail);
+			if (!buildDetail.isBuilding) {
 				self._finishBuild(buildDetail);
 			}
 		});
