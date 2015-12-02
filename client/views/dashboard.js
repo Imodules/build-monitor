@@ -1,8 +1,9 @@
-/**
- * Created by paul on 4/22/15.
- */
 
 'use strict';
+Template.home.created = function () {
+	this.subscribe('displayedBuilds');
+};
+
 Template.home.helpers({
 	buildItems: function () {
 		return Collections.Builds.find({}, {sort: {name: 1}});

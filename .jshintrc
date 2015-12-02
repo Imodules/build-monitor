@@ -192,7 +192,8 @@
 	// Underscore.js
 	"$": false,
 	// jQuery
-	"Router": false,
+	"FlowRouter": false,
+	"BlazeLayout": false,
 	// iron-router
 
 	// Jasmin
@@ -221,7 +222,7 @@
 	"math": false,
 	"Sortable": false,
 	"s": false,
-    "numeral": false
+	"numeral": false
 	// Underscore.string
   }
 }

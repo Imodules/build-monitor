@@ -4,8 +4,6 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-platform
-iron:router
 velocity:html-reporter
 pstuart2:velocity-notify
 sanjo:jasmine
@@ -15,7 +13,6 @@ twbs:bootstrap
 useraccounts:bootstrap
 fortawesome:fontawesome
 accounts-ui
-zimme:iron-router-active
 duongthienduc:meteor-bootstrap-growl
 pstuart2:test-bootstrap
 underscore
@@ -24,3 +21,22 @@ momentjs:moment
 copleykj:livestamp
 numeral:numeral
 jparker:gravatar
+standard-minifiers
+meteor-base
+mobile-experience
+mongo
+blaze-html-templates
+session
+jquery
+tracker
+logging
+reload
+random
+ejson
+spacebars
+check
+underscorestring:underscore.string
+kadira:flow-router
+kadira:blaze-layout
+zimme:active-route
+ecmascript

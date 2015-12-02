@@ -1,7 +1,3 @@
-/**
- * Created by paul on 4/23/15.
- */
-
 'use strict';
 Controllers.Servers = (function () {
 	function _validateUser() {
@@ -14,7 +10,7 @@ Controllers.Servers = (function () {
 
 	function _cleanUnamePWord(uname, pword) {
 		var user = (s.isBlank(uname) ? false : uname),
-				password = (s.isBlank(pword) ? false : pword);
+			password = (s.isBlank(pword) ? false : pword);
 
 		return {user: user, password: password};
 	}

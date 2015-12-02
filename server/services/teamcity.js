@@ -1,7 +1,3 @@
-/**
- * Created by paul on 4/26/15.
- */
-
 'use strict';
 
 Services.TeamCity = function (server, isTest) {
@@ -221,6 +217,10 @@ Services.TeamCity.prototype = {
 		var self = this;
 
 		self._call('/app/rest/projects', function (tcProjects) {
+			if (!tcProjects) {
+				return;
+			}
+
 			for (var i = 0; i < tcProjects.count; i++) {
 				var project = tcProjects.project[i];
 

@@ -1,7 +1,3 @@
-/**
- * Created by paul on 5/3/15.
- */
-
 'use strict';
 describe('ViewModels.Configure', function () {
 	var firstShortNameTestId = null;
@@ -12,7 +8,7 @@ describe('ViewModels.Configure', function () {
 				// check if we have correctly logged in the system
 				expect(err).toBeUndefined();
 
-				Router.go('configure');
+				FlowRouter.go('/configure');
 				Tracker.afterFlush(done);
 			});
 		});
@@ -29,7 +25,7 @@ describe('ViewModels.Configure', function () {
 				expect(id).toBeTruthy();
 
 				var userId = Meteor.userId(),
-						myBuildItem = Collections.MyBuildDisplay.findOne({_id: id});
+					myBuildItem = Collections.MyBuildDisplay.findOne({_id: id});
 
 				expect(myBuildItem).not.toBeFalsy();
 				expect(myBuildItem.userId).toBe(userId);
@@ -44,7 +40,11 @@ describe('ViewModels.Configure', function () {
 
 		it('should not create a new record for a different user.', function (done) {
 			Collections.MyBuildDisplay.insert({
-				serverId: 'MyClientTestServer_01', userId: 'someOneElse', buildId: 'HereKittyKitty', isDisplayed: false, shortName: 'SomethingClever'
+				serverId: 'MyClientTestServer_01',
+				userId: 'someOneElse',
+				buildId: 'HereKittyKitty',
+				isDisplayed: false,
+				shortName: 'SomethingClever'
 			}, function (err, id) {
 
 				var myBuildItem = Collections.MyBuildDisplay.findOne({_id: id});
@@ -59,7 +59,7 @@ describe('ViewModels.Configure', function () {
 				expect(err).toBeUndefined();
 
 				var userId = Meteor.userId(),
-						myBuildItem = Collections.MyBuildDisplay.findOne({_id: firstShortNameTestId});
+					myBuildItem = Collections.MyBuildDisplay.findOne({_id: firstShortNameTestId});
 
 				expect(myBuildItem).not.toBeFalsy();
 				expect(myBuildItem.userId).toBe(userId);
@@ -78,7 +78,7 @@ describe('ViewModels.Configure', function () {
 				// check if we have correctly logged in the system
 				expect(err).toBeUndefined();
 
-				Router.go('configure');
+				FlowRouter.go('/configure');
 				Tracker.afterFlush(done);
 			});
 		});
@@ -96,8 +96,8 @@ describe('ViewModels.Configure', function () {
 				expect(err).toBeUndefined();
 
 				var userId = Meteor.userId(),
-						build = Collections.Builds.findOne({_id: 'MyClientTestBuild_02'}),
-						myBuildItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: build._id});
+					build = Collections.Builds.findOne({_id: 'MyClientTestBuild_02'}),
+					myBuildItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: build._id});
 
 				expect(myBuildItem).not.toBeFalsy();
 				expect(build).not.toBeFalsy();

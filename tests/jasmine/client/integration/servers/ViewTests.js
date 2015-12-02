@@ -11,7 +11,7 @@ describe('Views.Servers', function () {
 				// check if we have correctly logged in the system
 				expect(err).toBeUndefined();
 
-				Router.go('servers');
+				FlowRouter.go('/servers');
 				Tracker.afterFlush(done);
 			});
 		});

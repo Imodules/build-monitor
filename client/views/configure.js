@@ -1,19 +1,15 @@
-/**
- * Created by imod on 4/28/15.
- */
-
 'use strict';
 ViewModels.Configure = (function () {
 	function _upsert(serverId, buildId, shortName, cb) {
 		var userId = Meteor.userId(),
-				myBuildItem = Collections.MyBuildDisplay.findOne({serverId: serverId, userId: userId, buildId: buildId});
+			myBuildItem = Collections.MyBuildDisplay.findOne({serverId: serverId, userId: userId, buildId: buildId});
 
 		if (!myBuildItem) {
 			Collections.MyBuildDisplay.insert({
 				serverId: serverId, userId: userId, buildId: buildId, shortName: shortName
 			}, cb);
 		} else {
-			var setItem = { sort: 0 };
+			var setItem = {sort: 0};
 			if (shortName !== null) {
 				setItem.shortName = shortName;
 			}
@@ -41,6 +37,12 @@ ViewModels.Configure = (function () {
 	};
 })();
 
+Template.configure.created = function () {
+	this.subscribe('servers');
+	this.subscribe('projects');
+	this.subscribe('builds');
+};
+
 Template.configure.helpers({
 	topLevelProjects: function () {
 		return Collections.Projects.find({parentId: null});
@@ -66,12 +68,12 @@ Template.cfgProjectRow.rendered = function () {
 	var ic = this.$('#ic_' + this.data._id);
 
 	this.$('.collapse').collapse({toggle: false})
-			.on('show.bs.collapse', function () {
-				ic.removeClass('fa-caret-right').addClass('fa-caret-down');
-			})
-			.on('hide.bs.collapse', function () {
-				ic.removeClass('fa-caret-down').addClass('fa-caret-right');
-			});
+		.on('show.bs.collapse', function () {
+			ic.removeClass('fa-caret-right').addClass('fa-caret-down');
+		})
+		.on('hide.bs.collapse', function () {
+			ic.removeClass('fa-caret-down').addClass('fa-caret-right');
+		});
 };
 
 Template.cfgProjectRow.helpers({
@@ -120,7 +122,7 @@ Template.cfgBuildTypeRow.helpers({
 	},
 	myBuildDisplayItem: function () {
 		var userId = Meteor.userId(),
-				myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: this._id});
+			myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: this._id});
 		if (!myBuildDisplayItem) {
 			myBuildDisplayItem = {
 				serverId: this.serverId,
@@ -129,7 +131,7 @@ Template.cfgBuildTypeRow.helpers({
 			};
 		}
 
-		myBuildDisplayItem.isDisplayed = this.watchers === undefined ? false :  _.contains(this.watchers, userId);
+		myBuildDisplayItem.isDisplayed = this.watchers === undefined ? false : _.contains(this.watchers, userId);
 		return myBuildDisplayItem;
 	}
 });

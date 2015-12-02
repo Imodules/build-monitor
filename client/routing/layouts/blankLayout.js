@@ -1,6 +1,5 @@
-/**
- * Created by imod on 4/24/15.
- */
+'use strict';
+
 Template.blankLayout.events({
 	'click #logout': function () {
 		Meteor.logout();

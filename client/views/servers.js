@@ -54,9 +54,13 @@ ViewModels.Servers = (function () {
 
 Template.servers.created = function () {
 	Session.set('isEditing', false);
+	this.subscribe('servers');
 };
 
 Template.servers.helpers({
+	servers: function () {
+		return Collections.Servers.find({}, {sort: {name: 1}});
+	},
 	isEdit: function () {
 		return !Session.equals('isEditing', false);
 	}
