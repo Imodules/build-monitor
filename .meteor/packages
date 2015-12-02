@@ -40,3 +40,4 @@ kadira:flow-router
 kadira:blaze-layout
 zimme:active-route
 ecmascript
+useraccounts:flow-routing

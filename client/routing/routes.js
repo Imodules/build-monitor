@@ -3,6 +3,7 @@
 BlazeLayout.setRoot('body');
 
 FlowRouter.route('/', {
+	triggersEnter: [AccountsTemplates.ensureSignedIn],
 	action: function() {
 		//Router.route('/', { name: 'dashboard', controller: Controllers.Route.Dashboard });
 		BlazeLayout.render('dashboard', {main: 'home'});
@@ -10,6 +11,7 @@ FlowRouter.route('/', {
 });
 
 FlowRouter.route('/servers', {
+	triggersEnter: [AccountsTemplates.ensureSignedIn],
 	action: function() {
 		//Router.route('/servers', { name: 'servers', controller: Controllers.Route.Servers });
 		BlazeLayout.render('blankLayout', {main: 'servers'});
@@ -24,6 +26,7 @@ FlowRouter.route('/login', {
 });
 
 FlowRouter.route('/users', {
+	triggersEnter: [AccountsTemplates.ensureSignedIn],
 	action: function() {
 		//Router.route('/users', { name: 'users', controller: Controllers.Route.Users });
 		BlazeLayout.render('blankLayout', {main: 'users'});

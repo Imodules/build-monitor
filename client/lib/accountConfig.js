@@ -1,7 +1,3 @@
-/**
- * Created by paul on 4/23/15.
- */
-
 'use strict';
 AccountsTemplates.configure({
 	// Behaviour
@@ -29,4 +25,15 @@ AccountsTemplates.configure({
 	// Redirects
 	homeRoutePath: '/',
 	redirectTimeout: 4000
+});
+
+AccountsTemplates.configure({
+	defaultLayout: 'noLayout',
+	defaultLayoutRegions: {},
+	defaultContentRegion: 'main'
+});
+
+AccountsTemplates.configureRoute('signIn', {
+	path: '/login',
+	contentRegion: 'main'
 });

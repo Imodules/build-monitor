@@ -60,6 +60,7 @@ Template.configure.helpers({
 
 Template.configure.events({
 	'click #buildsOnly': function () {
+		console.log('#BuildsOnly');
 		Session.set('displayedOnly', !Session.equals('displayedOnly', true));
 	}
 });

@@ -101,6 +101,7 @@ underscorestring:underscore.string@3.2.2
 url@1.0.5
 useraccounts:bootstrap@1.12.4
 useraccounts:core@1.12.4
+useraccounts:flow-routing@1.12.4
 velocity:chokidar@1.2.0_1
 velocity:core@0.10.9
 velocity:html-reporter@0.9.1

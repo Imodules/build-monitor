@@ -2,6 +2,6 @@
 
 Template.blankLayout.events({
 	'click #logout': function () {
-		Meteor.logout();
+		AccountsTemplates.logout();
 	}
 });
