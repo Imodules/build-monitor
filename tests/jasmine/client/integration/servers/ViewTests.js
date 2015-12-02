@@ -1,7 +1,3 @@
-/**
- * Created by paul on 4/24/15.
- */
-
 'use strict';
 describe('Views.Servers', function () {
 	describe('onAdd()', function () {
