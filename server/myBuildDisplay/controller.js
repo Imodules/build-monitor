@@ -1,7 +1,3 @@
-/**
- * Created by paul on 5/3/15.
- */
-
 'use strict';
 Controllers.MyBuildDisplay = (function () {
 	function GetBuildDisplayCount(buildId) {

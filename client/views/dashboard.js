@@ -1,12 +1,14 @@
-
 'use strict';
 Template.home.created = function () {
 	this.subscribe('displayedBuilds');
 };
 
 Template.home.helpers({
-	buildItems: function () {
-		return Collections.Builds.find({}, {sort: {name: 1}});
+	build: function () {
+		return Collections.Builds.findOne({_id: this.buildId});
+	},
+	buildOrder: function () {
+		return Collections.MyBuildDisplay.find({}, {sort: {sort: 1}});
 	}
 });
 
@@ -21,7 +23,7 @@ Template.buildItem.helpers({
 	},
 
 	isBuildingClass: function () {
-		return this.isBuilding ? 'blink_me': '';
+		return this.isBuilding ? 'blink_me' : '';
 	},
 
 	buildStateClass: function () {

@@ -1,24 +1,20 @@
 'use strict';
 ViewModels.Configure = (function () {
-	function _upsert(serverId, buildId, shortName, cb) {
+	function _upsert(serverId, buildId, setItem, cb) {
 		var userId = Meteor.userId(),
 			myBuildItem = Collections.MyBuildDisplay.findOne({serverId: serverId, userId: userId, buildId: buildId});
 
 		if (!myBuildItem) {
 			Collections.MyBuildDisplay.insert({
-				serverId: serverId, userId: userId, buildId: buildId, shortName: shortName
+				serverId: serverId, userId: userId, buildId: buildId, isDisplayed: true, shortName: setItem.shortName, sort: setItem.sort
 			}, cb);
 		} else {
-			var setItem = {sort: 0};
-			if (shortName !== null) {
-				setItem.shortName = shortName;
-			}
 			Collections.MyBuildDisplay.update({_id: myBuildItem._id}, {$set: setItem}, cb);
 		}
 	}
 
 	function updateBuildTypeShortName(serverId, buildId, shortName, cb) {
-		return _upsert(serverId, buildId, shortName, cb);
+		return _upsert(serverId, buildId, {shortName: shortName}, cb);
 	}
 
 	function updateDisplayToggle(serverId, buildId, isOn, cb) {
@@ -27,13 +23,18 @@ ViewModels.Configure = (function () {
 				return cb(e);
 			}
 
-			_upsert(serverId, buildId, null, cb);
+			_upsert(serverId, buildId, {isDisplayed: isOn}, cb);
 		});
+	}
+
+	function updateSort(serverId, buildId, sort, cb) {
+		return _upsert(serverId, buildId, {sort: sort}, cb);
 	}
 
 	return {
 		onUpdateBuildTypeShortName: updateBuildTypeShortName,
-		onUpdateDisplayToggle: updateDisplayToggle
+		onUpdateDisplayToggle: updateDisplayToggle,
+		onUpdateSort: updateSort
 	};
 })();
 
@@ -48,7 +49,13 @@ Template.configure.helpers({
 		return Collections.Projects.find({parentId: null});
 	},
 	allMyBuilds: function () {
-		return Collections.Builds.find({watchers: {$in: [Meteor.userId()]}}, {sort: {name: 1}});
+		var mybuilds = Collections.MyBuildDisplay.find({userId: Meteor.userId()}, {sort: {sort: 1}}),
+			builds = [];
+		mybuilds.forEach(function (build) {
+			var b = Collections.Builds.findOne({_id: build.buildId});
+			builds.push(b);
+		});
+		return builds;
 	},
 	isDisplayedOnly: function () {
 		return Session.equals('displayedOnly', true);
@@ -60,7 +67,6 @@ Template.configure.helpers({
 
 Template.configure.events({
 	'click #buildsOnly': function () {
-		console.log('#BuildsOnly');
 		Session.set('displayedOnly', !Session.equals('displayedOnly', true));
 	}
 });
@@ -128,11 +134,13 @@ Template.cfgBuildTypeRow.helpers({
 			myBuildDisplayItem = {
 				serverId: this.serverId,
 				shortName: null,
-				buildId: this._id
+				buildId: this._id,
+				sort: null,
+				isDisplayed: false
 			};
 		}
 
-		myBuildDisplayItem.isDisplayed = this.watchers === undefined ? false : _.contains(this.watchers, userId);
+		//myBuildDisplayItem.isDisplayed = this.watchers === undefined ? false : _.contains(this.watchers, userId);
 		return myBuildDisplayItem;
 	}
 });
@@ -141,7 +149,9 @@ Template.cfgBuildTypeRow.events({
 	'keyup input.shortName': function (e, t) {
 		ViewModels.Configure.onUpdateBuildTypeShortName(this.serverId, this.buildId, t.$(e.currentTarget).val());
 	},
-
+	'change input.sort': function (e, t) {
+		ViewModels.Configure.onUpdateSort(this.serverId, this.buildId, parseInt(t.$(e.currentTarget).val()));
+	},
 	'change input.isOn': function (e, t) {
 		ViewModels.Configure.onUpdateDisplayToggle(this.serverId, this.buildId, t.$(e.currentTarget).is(':checked'));
 	}

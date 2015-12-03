@@ -34,6 +34,7 @@ FlowRouter.route('/users', {
 });
 
 FlowRouter.route('/configure', {
+	triggersEnter: [AccountsTemplates.ensureSignedIn],
 	action: function() {
 		//Router.route('/configure', { name: 'configure', controller: Controllers.Route.Configure });
 		BlazeLayout.render('blankLayout', {main: 'configure'});

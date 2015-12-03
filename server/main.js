@@ -1,9 +1,4 @@
-/**
- * Created by paul on 4/29/15.
- */
-
 'use strict';
-
 Controllers.main = (function () {
 
 	function RefreshActiveBuilds() {
