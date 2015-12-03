@@ -8,7 +8,7 @@ Template.home.helpers({
 		return Collections.Builds.findOne({_id: this.buildId});
 	},
 	buildOrder: function () {
-		return Collections.MyBuildDisplay.find({}, {sort: {sort: 1}});
+		return Collections.MyBuildDisplay.find({isDisplayed: true}, {sort: {sort: 1}});
 	}
 });
 

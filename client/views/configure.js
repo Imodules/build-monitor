@@ -6,7 +6,12 @@ ViewModels.Configure = (function () {
 
 		if (!myBuildItem) {
 			Collections.MyBuildDisplay.insert({
-				serverId: serverId, userId: userId, buildId: buildId, isDisplayed: true, shortName: setItem.shortName, sort: setItem.sort
+				serverId: serverId,
+				userId: userId,
+				buildId: buildId,
+				isDisplayed: true,
+				shortName: setItem.shortName,
+				sort: Collections.MyBuildDisplay.find({isDisplayed: true}).count() + 1
 			}, cb);
 		} else {
 			Collections.MyBuildDisplay.update({_id: myBuildItem._id}, {$set: setItem}, cb);
@@ -23,18 +28,18 @@ ViewModels.Configure = (function () {
 				return cb(e);
 			}
 
-			_upsert(serverId, buildId, {isDisplayed: isOn}, cb);
-		});
-	}
+			var update = {isDisplayed: isOn};
+			if (isOn) {
+				update.sort = Collections.MyBuildDisplay.find({isDisplayed: true}).count() + 1;
+			}
 
-	function updateSort(serverId, buildId, sort, cb) {
-		return _upsert(serverId, buildId, {sort: sort}, cb);
+			_upsert(serverId, buildId, update, cb);
+		});
 	}
 
 	return {
 		onUpdateBuildTypeShortName: updateBuildTypeShortName,
-		onUpdateDisplayToggle: updateDisplayToggle,
-		onUpdateSort: updateSort
+		onUpdateDisplayToggle: updateDisplayToggle
 	};
 })();
 
@@ -48,15 +53,6 @@ Template.configure.helpers({
 	topLevelProjects: function () {
 		return Collections.Projects.find({parentId: null});
 	},
-	allMyBuilds: function () {
-		var mybuilds = Collections.MyBuildDisplay.find({userId: Meteor.userId()}, {sort: {sort: 1}}),
-			builds = [];
-		mybuilds.forEach(function (build) {
-			var b = Collections.Builds.findOne({_id: build.buildId});
-			builds.push(b);
-		});
-		return builds;
-	},
 	isDisplayedOnly: function () {
 		return Session.equals('displayedOnly', true);
 	},
@@ -68,6 +64,28 @@ Template.configure.helpers({
 Template.configure.events({
 	'click #buildsOnly': function () {
 		Session.set('displayedOnly', !Session.equals('displayedOnly', true));
+	}
+});
+
+Template.sortableList.rendered = function () {
+	$('.sortable').sortable({
+		items: '> .row',
+		cursor: 'move',
+		stop: function (event, ui) {
+			sortMyBuilds();
+		}
+	});
+};
+
+Template.sortableList.helpers({
+	allMyBuilds: function () {
+		var mybuilds = Collections.MyBuildDisplay.find({userId: Meteor.userId(), isDisplayed: true}, {sort: {sort: 1}}),
+			builds = [];
+		mybuilds.forEach(function (build) {
+			var b = Collections.Builds.findOne({_id: build.buildId});
+			builds.push(b);
+		});
+		return builds;
 	}
 });
 
@@ -132,6 +150,7 @@ Template.cfgBuildTypeRow.helpers({
 			myBuildDisplayItem = Collections.MyBuildDisplay.findOne({userId: userId, buildId: this._id});
 		if (!myBuildDisplayItem) {
 			myBuildDisplayItem = {
+				_id: '',
 				serverId: this.serverId,
 				shortName: null,
 				buildId: this._id,
@@ -140,7 +159,6 @@ Template.cfgBuildTypeRow.helpers({
 			};
 		}
 
-		//myBuildDisplayItem.isDisplayed = this.watchers === undefined ? false : _.contains(this.watchers, userId);
 		return myBuildDisplayItem;
 	}
 });
@@ -149,10 +167,24 @@ Template.cfgBuildTypeRow.events({
 	'keyup input.shortName': function (e, t) {
 		ViewModels.Configure.onUpdateBuildTypeShortName(this.serverId, this.buildId, t.$(e.currentTarget).val());
 	},
-	'change input.sort': function (e, t) {
-		ViewModels.Configure.onUpdateSort(this.serverId, this.buildId, parseInt(t.$(e.currentTarget).val()));
-	},
 	'change input.isOn': function (e, t) {
 		ViewModels.Configure.onUpdateDisplayToggle(this.serverId, this.buildId, t.$(e.currentTarget).is(':checked'));
 	}
 });
+
+function sortMyBuilds() {
+	var myBuildDisplayOrder = $('.sortable').sortable('toArray'),
+		myBuildDisplayNumber = 1,
+		currentBuildDisplay;
+
+	myBuildDisplayNumber = 1;
+	myBuildDisplayOrder.forEach(function (myBuildDisplayId) {
+		currentBuildDisplay = Collections.MyBuildDisplay.findOne({_id: myBuildDisplayId});
+
+		if (currentBuildDisplay.sort != myBuildDisplayNumber) {
+			Collections.MyBuildDisplay.update({_id: myBuildDisplayId}, {$set: {sort: myBuildDisplayNumber}}, {multi: false});
+		}
+
+		myBuildDisplayNumber++;
+	});
+};

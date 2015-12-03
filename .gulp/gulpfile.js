@@ -41,13 +41,18 @@ gulp.task('default', ['install.ext.dependencies']);
 
 gulp.task('install.ext.dependencies', function (cb) {
 	runSequence('clean.ext.dependencies',
-		['ext.underscore.string'],
+		['ext.underscore.string',],
 		cb);
 });
 
 gulp.task('ext.underscore.string', ['bower.install'], function () {
 	return gulp.src(path.join(BowerPath, '/bower_components/underscore.string/dist/underscore.string.js'))
 		.pipe(gulp.dest(path.join(LibBowerPath, '/underscore.string')));
+});
+
+gulp.task('ext.sortable', ['bower.install'], function () {
+	return gulp.src(path.join(BowerPath, '/bower_components/Sortable/Sortable.js'))
+			.pipe(gulp.dest(path.join(ClientBowerPath, '/Sortable')));
 });
 
 gulp.task('clean.ext.dependencies', function (cb) {
