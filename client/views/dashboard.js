@@ -50,7 +50,7 @@ Template.buildHistory.helpers({
 			return 'fa-tree faa-tada animated';
 		}
 
-		return this.isSuccess ? 'fa-tree' : 'fa-frown-o';
+		return this.isSuccess ? 'fa-tree' : 'fa-fire';
 	},
 
 	bhClass: function () {
