@@ -47,10 +47,10 @@ Template.buildItem.helpers({
 Template.buildHistory.helpers({
 	icon: function () {
 		if (this.isBuilding) {
-			return 'fa-cog fa-spin';
+			return 'fa-tree faa-flash animated';
 		}
 
-		return this.isSuccess ? 'fa-check' : 'fa-remove';
+		return this.isSuccess ? 'fa-tree' : 'fa-fire';
 	},
 
 	bhClass: function () {
