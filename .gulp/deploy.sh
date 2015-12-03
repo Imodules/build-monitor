@@ -10,6 +10,10 @@ mv build-monitor.tar.gz ${version}
 cd ${version}
 
 tar -xvf build-monitor.tar.gz
+cd bundle/programs/server
+npm install
+cd -
+
 mkdir logs
 
 cd ..
