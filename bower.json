@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "underscore.string": "~3.0.3",
-    "Sortable": "~1.4.2"
+    "Sortable": "~1.4.2",
+    "font-awesome-animation": "~0.0.7"
   }
 }

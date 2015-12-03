@@ -42,7 +42,7 @@ gulp.task('default', ['install.ext.dependencies']);
 
 gulp.task('install.ext.dependencies', function (cb) {
 	runSequence('clean.ext.dependencies',
-		['ext.underscore.string'],
+		['ext.underscore.string','ext.font-awesome.animation'],
 		cb);
 });
 
@@ -51,9 +51,9 @@ gulp.task('ext.underscore.string', ['bower.install'], function () {
 		.pipe(gulp.dest(path.join(LibBowerPath, '/underscore.string')));
 });
 
-gulp.task('ext.sortable', ['bower.install'], function () {
-	return gulp.src(path.join(BowerPath, '/bower_components/Sortable/Sortable.js'))
-		.pipe(gulp.dest(path.join(ClientBowerPath, '/Sortable')));
+gulp.task('ext.font-awesome.animation', ['bower.install'], function () {
+	return gulp.src(path.join(BowerPath, '/bower_components/font-awesome-animation/dist/font-awesome-animation.css'))
+		.pipe(gulp.dest(path.join(ClientBowerPath, '/fa-animation')));
 });
 
 gulp.task('clean.ext.dependencies', function (cb) {
