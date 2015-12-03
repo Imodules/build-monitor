@@ -22,6 +22,7 @@ console.log('New directory: ' + process.cwd());
 // Just some simple help debugs.
 var CodePath = './',
 	InstallPath = './',
+	BuildPath = './.build',
 
 	LibPath = path.join(InstallPath, '/lib'),
 	ClientPath = path.join(InstallPath, '/client'),
@@ -41,7 +42,7 @@ gulp.task('default', ['install.ext.dependencies']);
 
 gulp.task('install.ext.dependencies', function (cb) {
 	runSequence('clean.ext.dependencies',
-		['ext.underscore.string',],
+		['ext.underscore.string'],
 		cb);
 });
 
@@ -52,7 +53,7 @@ gulp.task('ext.underscore.string', ['bower.install'], function () {
 
 gulp.task('ext.sortable', ['bower.install'], function () {
 	return gulp.src(path.join(BowerPath, '/bower_components/Sortable/Sortable.js'))
-			.pipe(gulp.dest(path.join(ClientBowerPath, '/Sortable')));
+		.pipe(gulp.dest(path.join(ClientBowerPath, '/Sortable')));
 });
 
 gulp.task('clean.ext.dependencies', function (cb) {
@@ -70,11 +71,14 @@ gulp.task('bower.copy.json', function () {
 		.pipe(gulp.dest(BowerPath));
 });
 
-gulp.task('build', ['install.ext.dependencies'], function (cb) {
-
-	exec('meteor build ./.build', function (err, stdout, stderr) {
+gulp.task('build', ['install.ext.dependencies','clean.build'], function (cb) {
+	exec('meteor build ' + BuildPath, function (err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
 		cb(err);
 	});
+});
+
+gulp.task('clean.build', function (cb) {
+	del([BuildPath], cb);
 });
