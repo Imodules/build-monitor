@@ -5,12 +5,12 @@ version=$1
 echo "Version: $version"
 
 mkdir ${version}
-cd ${version}
 
 mv build-monitor.tar.gz ${version}
 cd ${version}
 
 tar -xvf build-monitor.tar.gz
+mkdir logs
 
 cd ..
 
