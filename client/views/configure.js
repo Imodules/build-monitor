@@ -50,6 +50,9 @@ Template.configure.created = function () {
 };
 
 Template.configure.helpers({
+	classSize: function () {
+		return null;
+	},
 	topLevelProjects: function () {
 		return Collections.Projects.find({parentId: null});
 	},
