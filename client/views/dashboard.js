@@ -14,7 +14,11 @@ Template.home.helpers({
 
 Template.buildItem.helpers({
 	sizeClass: function () {
-		return Meteor.user().profile.sizeClass || 'col-xs-12 col-sm-6 col-md-4 col-lg-3';
+		var user = Meteor.user();
+		if (!user.profile || !user.profile.sizeClass) {
+			return 'col-xs-12 col-sm-6 col-md-4 col-lg-3';
+		}
+		return Meteor.user().profile.sizeClass;
 	},
 	myBigName: function () {
 		var myItem = Collections.MyBuildDisplay.findOne({buildId: this._id});
