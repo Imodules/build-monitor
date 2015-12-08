@@ -50,8 +50,12 @@ Template.configure.created = function () {
 };
 
 Template.configure.helpers({
-	classSize: function () {
-		return null;
+	sizeClass: function () {
+		var user = Meteor.user();
+		if (!user || !user.profile) {
+			return null;
+		}
+		return user.profile.sizeClass;
 	},
 	topLevelProjects: function () {
 		return Collections.Projects.find({parentId: null});
@@ -67,6 +71,9 @@ Template.configure.helpers({
 Template.configure.events({
 	'click #buildsOnly': function () {
 		Session.set('displayedOnly', !Session.equals('displayedOnly', true));
+	},
+	'change input.sizeClass': function (e, t) {
+		Meteor.users.update({_id: Meteor.userId()}, {$set: {'profile.sizeClass': t.$(e.currentTarget).val()}});
 	}
 });
 
