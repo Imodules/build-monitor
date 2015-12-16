@@ -42,8 +42,13 @@ gulp.task('default', ['install.ext.dependencies']);
 
 gulp.task('install.ext.dependencies', function (cb) {
 	runSequence('clean.ext.dependencies',
-		['ext.underscore.string','ext.font-awesome.animation'],
+		['ext.underscore.string','ext.font-awesome.animation','ext.moment.timezone'],
 		cb);
+});
+
+gulp.task('ext.moment.timezone', ['bower.install'], function () {
+	return gulp.src(path.join(BowerPath, '/bower_components/moment-timezone/builds/moment-timezone-with-data.js'))
+		.pipe(gulp.dest(path.join(ClientBowerPath, '/moment-timezone')));
 });
 
 gulp.task('ext.underscore.string', ['bower.install'], function () {

@@ -14,6 +14,8 @@ cd bundle/programs/server
 npm install
 cd -
 
+ln -s bundle/programs/web.browser/app public
+
 mkdir logs
 
 cd ..

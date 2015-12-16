@@ -1,4 +1,6 @@
 <template name="home">
+	{{> clockBar}}
+
 	<div class="row">
 		{{#each buildOrder}}
 			{{> buildItem build}}
@@ -6,6 +8,20 @@
 	</div>
 	<div id="configLink">
 		<a href="/configure"><i class="fa fa-cogs"></i></a>
+	</div>
+</template>
+
+<template name="clockBar">
+	<div class="row clockBar">
+		<div class="col-xs-4">
+			{{currentDate}}
+		</div>
+		<div class="col-xs-4" style="text-align: center;">
+			{{currentTime}}
+		</div>
+		<div class="col-xs-4" style="text-align: right">
+			{{utcTime}}
+		</div>
 	</div>
 </template>
 

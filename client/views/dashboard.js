@@ -12,6 +12,26 @@ Template.home.helpers({
 	}
 });
 
+function _updateTime() {
+	Session.set('timestamp', Date.now());
+}
+
+Template.clockBar.created = function() {
+	setInterval(_updateTime, 1000);
+};
+
+Template.clockBar.helpers({
+	currentDate: function () {
+		return moment(Session.get('timestamp')).format('MMMM Do YYYY');
+	},
+	currentTime: function () {
+		return moment(Session.get('timestamp')).tz("America/Chicago").format('HH:mm:ss z');
+	},
+	utcTime: function () {
+		return moment(Session.get('timestamp')).tz("UTC").format('HH:mm:ss z');
+	}
+});
+
 Template.buildItem.helpers({
 	sizeClass: function () {
 		var user = Meteor.user();
