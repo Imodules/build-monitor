@@ -74,10 +74,10 @@ Template.buildItem.helpers({
 Template.buildHistory.helpers({
 	icon: function () {
 		if (this.isBuilding) {
-			return 'fa-spinner faa-spin animated';
+			return 'fa-magic faa-wrench animated';
 		}
 
-		return this.isSuccess ? 'fa-check-circle' : 'fa-times-circle';
+		return this.isSuccess ? 'fa-sun-o' : 'fa-moon-o';
 	},
 
 	bhClass: function () {
