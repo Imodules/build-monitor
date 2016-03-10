@@ -61,8 +61,8 @@ gulp.task('ext.font-awesome.animation', ['bower.install'], function () {
 		.pipe(gulp.dest(path.join(ClientBowerPath, '/fa-animation')));
 });
 
-gulp.task('clean.ext.dependencies', function (cb) {
-	del([ClientCompatibility, ClientBowerPath, PublicBowerPath, PublicBuildBowerPath, LibBowerPath], cb);
+gulp.task('clean.ext.dependencies', function () {
+	return del([ClientCompatibility, ClientBowerPath, PublicBowerPath, PublicBuildBowerPath, LibBowerPath]);
 });
 
 gulp.task('bower.install', ['bower.copy.json'], function () {
@@ -84,6 +84,6 @@ gulp.task('build', ['install.ext.dependencies','clean.build'], function (cb) {
 	});
 });
 
-gulp.task('clean.build', function (cb) {
-	del([BuildPath], cb);
+gulp.task('clean.build', function () {
+	return del([BuildPath]);
 });
