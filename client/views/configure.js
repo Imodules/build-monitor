@@ -37,9 +37,16 @@ ViewModels.Configure = (function () {
 		});
 	}
 
+	function deleteBuild(build, cb) {
+		if(confirm('Are you sure you want to delete?')) {
+			Meteor.call('removeBuild', build.buildId, cb);
+		}
+	}
+
 	return {
 		onUpdateBuildTypeShortName: updateBuildTypeShortName,
-		onUpdateDisplayToggle: updateDisplayToggle
+		onUpdateDisplayToggle: updateDisplayToggle,
+		onDeleteBuild: deleteBuild
 	};
 })();
 
@@ -179,6 +186,14 @@ Template.cfgBuildTypeRow.events({
 	},
 	'change input.isOn': function (e, t) {
 		ViewModels.Configure.onUpdateDisplayToggle(this.serverId, this.buildId, t.$(e.currentTarget).is(':checked'));
+	},
+	'click button.delete': function (e, t) {
+		e.preventDefault();
+		ViewModels.Configure.onDeleteBuild(this, function (e) {
+			if(e) {
+				console.log(e);
+			}
+		});
 	}
 });
 

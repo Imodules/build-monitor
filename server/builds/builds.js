@@ -15,3 +15,7 @@ Collections.Builds.allow({
 		return false;
 	}
 });
+
+Meteor.methods({
+	removeBuild: Controllers.Builds.onRemoveByBuildId
+});

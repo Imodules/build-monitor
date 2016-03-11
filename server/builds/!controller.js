@@ -52,6 +52,11 @@ Controllers.Builds = (function () {
 		Collections.Builds.remove({serverId: serverId});
 	}
 
+	function RemoveByBuildId(buildId) {
+		Collections.Builds.remove({_id: buildId});
+		Controllers.MyBuildDisplay.onRemoveByBuildId(buildId);
+	}
+
 	return {
 		getBuild: GetBuild,
 		getActiveServerBuilds: GetActiveServerBuilds,
@@ -60,6 +65,7 @@ Controllers.Builds = (function () {
 
 		getAllByProjectId: GetAllByProjectId,
 
-		onRemoveByServerId: RemoveByServerId
+		onRemoveByServerId: RemoveByServerId,
+		onRemoveByBuildId: RemoveByBuildId
 	};
 })();
