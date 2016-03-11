@@ -137,12 +137,15 @@ Models.Build.prototype = {
 		var self = this;
 		service.getBuildData(self.href, 10, function (buildDetailsArray) {
 			var isLastBuildSuccess = true,
-				whoBrokeIt = null;
+				whoBrokeIt = null,
+				isBuilding = false;
 			if (buildDetailsArray.length > 0) {
+				isBuilding = buildDetailsArray[0].isBuilding;
+
 				if (!buildDetailsArray[0].isSuccess) {
 					isLastBuildSuccess = false;
 					whoBrokeIt = buildDetailsArray[0].usernames;
-				} else if (buildDetailsArray[0].isBuilding && buildDetailsArray.length > 1) {
+				} else if (isBuilding && buildDetailsArray.length > 1) {
 					isLastBuildSuccess = buildDetailsArray[1].isSuccess;
 					whoBrokeIt = buildDetailsArray[1].usernames;
 				}
@@ -151,12 +154,13 @@ Models.Build.prototype = {
 			var buildData = _.map(buildDetailsArray, function (bd) {
 				return bd.toJson();
 			});
-
+			
 			Collections.Builds.update({_id: self._id}, {
 				$set: {
 					isLastBuildSuccess: isLastBuildSuccess,
 					whoBrokeIt: whoBrokeIt,
-					builds: buildData
+					builds: buildData,
+					isBuilding: isBuilding
 				}
 			});
 		});
