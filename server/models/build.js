@@ -154,7 +154,7 @@ Models.Build.prototype = {
 			var buildData = _.map(buildDetailsArray, function (bd) {
 				return bd.toJson();
 			});
-			
+
 			Collections.Builds.update({_id: self._id}, {
 				$set: {
 					isLastBuildSuccess: isLastBuildSuccess,

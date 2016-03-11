@@ -127,7 +127,7 @@ Models.Server.prototype = {
 
 			builds.forEach(function (build) {
 				var bm = Controllers.Builds.getBuildByServiceId(self._id, build.serviceBuildId);
-				if (!bm.isBuilding) {
+				if (bm && !bm.isBuilding) {
 					bm.startBuild(self._service, build.href);
 				}
 			});

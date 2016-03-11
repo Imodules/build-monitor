@@ -135,6 +135,9 @@ Services.TeamCity.prototype = {
 		if (buildDetail.triggered) {
 			switch (buildDetail.triggered.type) {
 				case 'buildType':
+				{
+
+				} break;
 				case 'user':
 				{
 					users = [buildDetail.triggered.user.username];
