@@ -96,8 +96,12 @@
 				<input type="checkbox" class="isOn" checked={{isDisplayed}} data-toggle="toggle" data-on="Enabled"
 				       data-off="Disabled" data-size="small" data-width="80">
 			</div>
-			<div class="col-xs-12 col-sm-1"><button class="btn btn-sm btn-danger delete"><i class="fa fa-close"></i></button> </div>
-			<div class="col-xs-12 col-sm-3"></div>
+			{{#if currentUser.isAdmin}}
+				<div class="col-xs-12 col-sm-1"><button class="btn btn-sm btn-danger delete"><i class="fa fa-close"></i></button> </div>
+				<div class="col-xs-12 col-sm-3"></div>
+			{{else}}
+				<div class="col-xs-12 col-sm-4"></div>
+			{{/if}}
 		{{/with}}
 	</div>
 </template>
