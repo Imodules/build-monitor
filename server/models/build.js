@@ -196,6 +196,7 @@ Models.Build.prototype = {
 	updateRunningBuild: function (service) {
 		var self = this,
 			build = self.builds[0];
+		console.log(build);
 		service.getBuildDetails(build.href, function (buildDetail) {
 			self._updateBuild(buildDetail);
 			if (!buildDetail.isBuilding) {

@@ -34,7 +34,7 @@ Services.TeamCity.prototype = {
 
 	_call: function (url, callback) {
 		var opt = this._buildOptions(),
-				fullUrl = this.server.url;
+			fullUrl = this.server.url;
 
 		if (url.indexOf('/httpAuth/') === -1 && url.indexOf('/guestAuth/') === -1) {
 			if (this.hasAuth) {
@@ -77,12 +77,12 @@ Services.TeamCity.prototype = {
 	 */
 	_getDependencyBuildDetails: function (buildDetail, cb) {
 		var self = this,
-				snapshot = buildDetail['snapshot-dependencies'],
-				artifact = buildDetail['artifact-dependencies'],
-				href = false;
-		if(snapshot && snapshot.count > 0) {
+			snapshot = buildDetail['snapshot-dependencies'],
+			artifact = buildDetail['artifact-dependencies'],
+			href = false;
+		if (snapshot && snapshot.count > 0) {
 			href = snapshot.build[0].href;
-		} else if(artifact && artifact.count > 0) {
+		} else if (artifact && artifact.count > 0) {
 			href = artifact.build[0].href;
 		}
 		if (!href) {
@@ -137,11 +137,13 @@ Services.TeamCity.prototype = {
 				case 'buildType':
 				{
 
-				} break;
+				}
+					break;
 				case 'user':
 				{
 					users = [buildDetail.triggered.user.username];
-				}	break;
+				}
+					break;
 
 				case 'vcs':
 				{
@@ -150,7 +152,8 @@ Services.TeamCity.prototype = {
 							return change.username;
 						});
 					}
-				}	break;
+				}
+					break;
 			}
 		}
 
@@ -162,7 +165,7 @@ Services.TeamCity.prototype = {
 
 		self._call(href + '/builds?count=' + historyCount, function (data) {
 			var bhArray = [],
-					expectedCount = data.count;
+				expectedCount = data.count;
 
 			for (var i = 0; i < expectedCount; i++) {
 				var build = data.build[i];
@@ -171,7 +174,9 @@ Services.TeamCity.prototype = {
 					bhArray.push(bh);
 
 					if (bhArray.length === expectedCount) {
-						bhArray = _.sortBy(bhArray, function(item){ return item.id; }).reverse();
+						bhArray = _.sortBy(bhArray, function (item) {
+							return item.id;
+						}).reverse();
 						cb(bhArray);
 					}
 				});
@@ -202,13 +207,13 @@ Services.TeamCity.prototype = {
 
 			buildSummary.build.forEach(function (build) {
 				bsArr.push(new Models.BuildSummary({
-							id: build.id,
-							serviceBuildId: build.buildTypeId,
-							serviceNumber: build.number,
-							isSuccess: build.status === 'SUCCESS',
-							isBuilding: build.running === true,
-							href: build.href
-						})
+						id: build.id,
+						serviceBuildId: build.buildTypeId,
+						serviceNumber: build.number,
+						isSuccess: build.status === 'SUCCESS',
+						isBuilding: build.running === true,
+						href: build.href
+					})
 				);
 			});
 
@@ -233,24 +238,24 @@ Services.TeamCity.prototype = {
 
 				self._call(project.href, function (tcProject) {
 					var proj = new Models.Project({
-								serverId: self.server._id,
-								serviceProjectId: tcProject.id,
-								serviceParentProjectId: tcProject.parentProjectId === '_Root' ? null : tcProject.parentProjectId,
-								name: tcProject.name,
-								href: tcProject.href
-							}),
-							builds = [];
+							serverId: self.server._id,
+							serviceProjectId: tcProject.id,
+							serviceParentProjectId: tcProject.parentProjectId === '_Root' ? null : tcProject.parentProjectId,
+							name: tcProject.name,
+							href: tcProject.href
+						}),
+						builds = [];
 
 					if (tcProject.buildTypes && tcProject.buildTypes.count > 0) {
 						for (var ib = 0; ib < tcProject.buildTypes.count; ib++) {
 							var b = tcProject.buildTypes.buildType[ib],
-									build = new Models.Build({
-										serverId: self.server._id,
-										serviceProjectId: b.projectId,
-										serviceBuildId: b.id,
-										name: b.name,
-										href: b.href
-									});
+								build = new Models.Build({
+									serverId: self.server._id,
+									serviceProjectId: b.projectId,
+									serviceBuildId: b.id,
+									name: b.name,
+									href: b.href
+								});
 
 							builds.push(build);
 						}
