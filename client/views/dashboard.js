@@ -74,10 +74,10 @@ Template.buildItem.helpers({
 Template.buildHistory.helpers({
 	icon: function () {
 		if (this.isBuilding) {
-			return 'fa-fighter-jet faa-passing animated';
+			return 'fa-heartbeat faa-pulse animated';
 		}
 
-		return this.isSuccess ? 'fa-rebel' : 'fa-first-order';
+		return this.isSuccess ? 'fa-bullseye' : 'fa-bug';
 	},
 
 	bhClass: function () {
