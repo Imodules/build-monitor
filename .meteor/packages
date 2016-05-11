@@ -11,7 +11,6 @@ less
 accounts-password
 twbs:bootstrap
 useraccounts:bootstrap
-fortawesome:fontawesome
 accounts-ui
 duongthienduc:meteor-bootstrap-growl
 pstuart2:test-bootstrap
@@ -21,7 +20,8 @@ momentjs:moment
 copleykj:livestamp
 numeral:numeral
 jparker:gravatar
-standard-minifiers
+standard-minifier-css
+standard-minifier-js
 meteor-base
 mobile-experience
 mongo
