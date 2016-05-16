@@ -1,0 +1,107 @@
+<template name="configure">
+	<div class="page-header">
+		<h1><i class="fa fa-cogs"></i> Configure</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<h4>
+				Size Class:
+			</h4>
+		</div>
+
+		<div class="col-xs-12 col-sm-3">
+			<input type="text" class="form-control sizeClass"
+			       placeholder="col-xs-12 col-sm-6 col-md-4 col-lg-3" value="{{sizeClass}}"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<ul class="nav nav-pills">
+				<li id="buildsOnly" role="presentation" class="{{isDisplayedOnlyActive}}"><a href="#"><i
+						class="fa fa-filter"></i> Show Displayed Builds Only</a></li>
+			</ul>
+		</div>
+	</div>
+	<br/>
+
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		{{#unless isDisplayedOnly}}
+			{{#each topLevelProjects}}
+				{{> cfgProjectRow}}
+			{{/each}}
+		{{else}}
+			{{> sortableList}}
+		{{/unless}}
+	</div>
+</template>
+
+<template name="sortableList">
+	<div class="sortable">
+		{{#each allMyBuilds}}
+			{{> cfgBuildTypeRow}}
+		{{/each}}
+	</div>
+</template>
+
+<template name="cfgProjectRow">
+	<div class="panel panel-default">
+		<div class="panel-heading" role="tab" id="ph_{{_id}}">
+			<h4 class="panel-title">
+				<div class="pull-right">
+					<span class="label label-default">{{childProjectCount}}</span>
+					<span class="label label-info">{{childBuildTypeCount}}</span>
+					<span class="label label-primary">{{enabledBuildCount}}</span>
+				</div>
+				<a data-toggle="collapse" data-parent="#{{parentAccordianId}}" href="#co_{{_id}}" aria-expanded="true"
+				   aria-controls="collapseOne">
+					<i id="ic_{{_id}}" class="fa fa-caret-right fa-fw"></i> {{name}}
+				</a>
+			</h4>
+		</div>
+		<div id="co_{{_id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+			<div class="panel-body">
+				{{#if hasChildren}}
+					<div class="panel-group" id="acc_{{_id}}" role="tablist" aria-multiselectable="true">
+						{{#each myChildren}}
+							{{> cfgProjectRow}}
+						{{/each}}
+					</div>
+				{{/if}}
+				{{#each myBuilds}}
+					{{> cfgBuildTypeRow}}
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="cfgBuildTypeRow">
+
+	<div id="{{myBuildDisplayItem._id}}" class="row">
+		<div class="col-xs-12 col-sm-4">
+			<h4>
+				{{name}}
+				{{#if isDisplayedOnly}}
+					<small>{{parentName}}</small>
+				{{/if}}
+			</h4>
+		</div>
+		{{#with myBuildDisplayItem}}
+			<div class="col-xs-12 col-sm-3">
+				<input type="text" class="form-control shortName"
+				       placeholder="Short text to display on the build monitor" value="{{shortName}}"/>
+			</div>
+			<div class="col-xs-12 col-sm-1">
+				<input type="checkbox" class="isOn" checked={{isDisplayed}} data-toggle="toggle" data-on="Enabled"
+				       data-off="Disabled" data-size="small" data-width="80">
+			</div>
+			{{#if currentUser.isAdmin}}
+				<div class="col-xs-12 col-sm-1"><button class="btn btn-sm btn-danger delete"><i class="fa fa-close"></i></button> </div>
+				<div class="col-xs-12 col-sm-3"></div>
+			{{else}}
+				<div class="col-xs-12 col-sm-4"></div>
+			{{/if}}
+		{{/with}}
+	</div>
+</template>

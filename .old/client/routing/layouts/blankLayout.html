@@ -1,0 +1,36 @@
+<template name="blankLayout">
+	<div class="container-fluid">
+		<div class="row" style="margin-bottom: 20px;">
+			<div class="col-xs-6">
+				<a href="/" class="btn btn-default"><i class="fa fa-dashboard"></i>
+					Dashboard</a>
+			</div>
+			<div class="col-xs-6" style="text-align: right">
+				<button type="button" id="logout" class="btn btn-default"><i class="fa fa-sign-out"></i> Logout</button>
+			</div>
+		</div>
+		<div class="row" style="margin-bottom: 10px;">
+			<div class="col-xs-12">
+				<ul class="nav nav-tabs">
+					{{#if currentUser.isAdmin}}
+					<li role="presentation" class="{{isActiveRoute regex='^servers$'}}">
+						<a href="/servers"><i class="fa fa-server"></i> Servers</a>
+					</li>
+						<li role="presentation" class="{{isActiveRoute regex='^users'}}">
+							<a href="/users"><i class="fa fa-users"></i> Users</a>
+						</li>
+					{{/if}}
+					<li role="presentation" class="{{isActiveRoute regex='^configure$'}}">
+						<a href="/configure"><i class="fa fa-cogs"></i> Configure</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				{{> Template.dynamic template=main}}
+			</div>
+		</div>
+	</div>
+</template>

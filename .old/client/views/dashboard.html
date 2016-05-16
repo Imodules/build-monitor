@@ -1,0 +1,76 @@
+<template name="home">
+	{{> clockBar}}
+
+	<div class="row">
+		{{#each buildOrder}}
+			{{> buildItem build}}
+		{{/each}}
+	</div>
+	<div id="configLink">
+		<a href="/configure"><i class="fa fa-cogs"></i></a>
+	</div>
+</template>
+
+<template name="clockBar">
+	<div class="row clockBar">
+		<div class="col-xs-4">
+			{{currentDate}}
+		</div>
+		<div class="col-xs-4" style="text-align: center;">
+			{{currentTime}}
+		</div>
+		<div class="col-xs-4" style="text-align: right">
+			{{utcTime}}
+		</div>
+	</div>
+</template>
+
+<template name="buildItem">
+	<div class="{{sizeClass}} buildItem">
+		<div class="bi-wrapper  {{buildStateClass}} {{isBuildingClass}}">
+			<div class="bi-title">{{myBigName}}</div>
+			<div class="bi-sub-title">{{name}}</div>
+
+			<h4>
+				{{#each builds}}
+					{{> buildHistory}}
+				{{/each}}
+				<div class="clearfix"></div>
+			</h4>
+
+
+			{{#if isBuilding}}
+				{{#with lastBuild}}
+					<div class="bsLast">
+						{{usernames}}
+					</div>
+					<div class="bsTotal">
+						{{percentageComplete}}%
+					</div>
+				{{/with}}
+			{{else}}
+				{{#with lastBuild}}
+
+						{{#if ../isLastBuildSuccess}}
+						<div class="bsLast">
+						{{livestamp finishDate}}
+						</div>
+						{{else}}
+							<div class="bsBrokeit">
+							{{../whoBrokeIt}}
+							</div>
+						{{/if}}
+
+					<div class="bsTotal">
+						{{buildTime startDate finishDate}}
+					</div>
+				{{/with}}
+			{{/if}}
+
+		</div>
+	</div>
+</template>
+
+<template name="buildHistory">
+	<div class="bhLabel {{bhClass}}"><i class="fa {{icon}}"></i></div>
+</template>
