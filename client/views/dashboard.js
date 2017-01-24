@@ -77,7 +77,7 @@ Template.buildHistory.helpers({
 			return 'fa-circle-o-notch faa-spin animated';
 		}
 
-		return this.isSuccess ? 'fa-trophy' : 'fa-user-secret';
+		return this.isSuccess ? 'fa-trophy' : 'fa-trash-o';
 	},
 
 	bhClass: function () {
